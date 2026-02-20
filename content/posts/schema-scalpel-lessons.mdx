@@ -1,0 +1,29 @@
+---
+title: Lessons from building Schema Scalpel
+date: 2025-12-10
+description: Challenges and solutions when creating a WordPress plugin for precise structured data and SEO schema.
+tags: [WordPress, SEO, Plugins]
+featured: false
+---
+
+Schema markup is still under-utilized in WordPress. Schema Scalpel lets users surgically add JSON-LD without bloat.
+
+### Key learnings
+
+- **Performance** — Lazy-load schema on frontend, enqueue only when needed.
+- **Compatibility** — Test against 50+ popular themes (Yoast, Rank Math conflicts).
+- **UI** — Gutenberg block + classic editor support.
+
+Common pitfall example:
+
+```php
+// Bad: loads on every page
+add_action('wp_head', 'output_schema');
+
+// Good: conditional
+add_action('wp_head', function() {
+    if (is_singular('post')) {
+        output_schema();
+    }
+});
+```

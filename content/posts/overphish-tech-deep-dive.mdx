@@ -1,0 +1,40 @@
+---
+title: How OverPhish blocks phishing in under 300 KB
+date: 2026-01-15
+description: Technical breakdown of the lightweight browser extension — Manifest V3, real-time domain checks, minimal permissions, and privacy-first design.
+tags: [Security, Browser Extension, Manifest V3]
+featured: false
+---
+
+Phishing remains one of the top attack vectors in 2026. OverPhish is my attempt at a minimal, auditable blocker that runs entirely in the browser.
+
+Here's another paragraph highlighting the importance of fighting phishing attacks.
+
+## Heading 2
+
+Trying to generate CSS is a fantastic headache.
+
+<div class="callout callout-info float-right ml-6 mb-6 w-full max-w-xs md:max-w-sm shadow-md border-2 rounded-lg">
+	<div class="p-5 text-sm leading-relaxed">This is an info box!</div>
+</div>
+
+### Core techniques
+
+- **Manifest V3** service worker for background processing
+- **Declarative Net Request** rules for fast blocking
+- **Local storage** for user allowlists (no cloud sync)
+- **Size** — bundled to ~280 KB gzipped
+
+#### Example rule logic:
+
+```json
+{
+	"id": 1,
+	"priority": 1,
+	"action": { "type": "block" },
+	"condition": {
+		"urlFilter": "||phishy-site.example^",
+		"resourceTypes": ["main_frame", "sub_frame"]
+	}
+}
+```

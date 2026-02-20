@@ -1,0 +1,27 @@
+---
+title: Rebuilding my portfolio with Next.js 16 & shadcn/ui
+date: 2026-02-19
+description: Why I switched from a static Cloudflare site to a modern Next.js App Router setup, TypeScript, Tailwind, React Compiler, and shadcn/ui for better DX and performance showcase.
+tags: [Next.js, TypeScript, shadcn/ui, Portfolio, Tailwind]
+featured: true
+---
+
+After years of maintaining a simple static site on Cloudflare Pages, I decided it was time for a refresh. The goal was to make the portfolio itself a showcase of modern web dev practices.
+
+### Why the switch?
+
+- **App Router** → Better routing, Server Components, streaming, and partial prerendering.
+- **React Compiler** → Automatic memoization magic — fewer `useMemo` headaches.
+- **shadcn/ui** → Beautiful, copy-paste components without fighting a full design system.
+- **TypeScript everywhere** → End-to-end safety, even in MDX.
+
+The new stack feels productive and the Lighthouse scores are excellent.
+
+Here's a quick code snippet from the hero section:
+
+```tsx
+<Link href="/" className="flex items-center space-x-2 font-bold text-xl">
+	<svg /* ... home icon */ />
+	<span>Kevin Gillispie</span>
+</Link>
+```

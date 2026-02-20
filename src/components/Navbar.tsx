@@ -5,6 +5,7 @@ import {
     MenubarContent,
     MenubarGroup,
     MenubarItem,
+    MenubarShortcut,
     MenubarMenu,
     MenubarSeparator,
     MenubarTrigger,
@@ -33,7 +34,7 @@ export default function Navbar() {
                                 <Link
                                     href="/"
                                     className={cn(
-                                        "flex items-center gap-2",
+                                        "flex items-center gap-2 cursor-pointer",
                                         isActive("/") && "bg-accent font-medium"
                                     )}
                                 >
@@ -45,7 +46,7 @@ export default function Navbar() {
                                 <Link
                                     href="/projects"
                                     className={cn(
-                                        "flex items-center gap-2",
+                                        "flex items-center gap-2 cursor-pointer",
                                         isActive("/projects") && "bg-accent font-medium"
                                     )}
                                 >
@@ -56,18 +57,18 @@ export default function Navbar() {
                                 <Link
                                     href="/blog"
                                     className={cn(
-                                        "flex items-center gap-2",
+                                        "flex items-center gap-2 cursor-pointer",
                                         isActive("/blog") && "bg-accent font-medium"
                                     )}
                                 >
-                                    Insights
+                                    Plain Text <MenubarShortcut>Blog</MenubarShortcut>
                                 </Link>
                             </MenubarItem>
                             <MenubarItem asChild>
                                 <Link
                                     href="/contact"
                                     className={cn(
-                                        "flex items-center gap-2",
+                                        "flex items-center gap-2 cursor-pointer",
                                         isActive("/contact") && "bg-accent font-medium"
                                     )}
                                 >
