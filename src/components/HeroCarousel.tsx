@@ -59,7 +59,7 @@ export function HeroCarousel({ projects }: HeroCarouselProps) {
                                         {project.description}
                                     </p>
                                     <Button asChild size="lg" variant="secondary" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border-white/20">
-                                        <Link href={project.url} target="_blank" rel="noopener noreferrer">
+                                        <Link href={project.url} target="_blank" rel="noopener noreferrer external">
                                             View Project →
                                         </Link>
                                     </Button>

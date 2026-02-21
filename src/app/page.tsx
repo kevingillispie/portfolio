@@ -45,12 +45,12 @@ export default async function Home() {
     return (
         <div className="container mx-auto">
             <div className="text-center mt-8 py-12 md:py-16 lg:py-20">
-                <Badge variant="secondary" className="mb-6 shadow">Code & Content Creator</Badge>
+                <Badge variant="secondary" className="mb-6 py-1 shadow bg-background/80 backdrop-blur-sm">Code & Content Creator</Badge>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                     Kevin Gillispie
                 </h1>
                 <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-3xl mx-auto">
-                    Full-Stack Web Developer • Next.js • TypeScript <br />• Security Tools • SEO Plugins
+                    Full-Stack Web Development • Cyber Security <br /> Plugins • Extensions
                 </p>
                 {/* Optional short tagline or CTA */}
                 <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -81,9 +81,11 @@ export default async function Home() {
                                     <Badge variant="secondary">Tailwind CSS</Badge>
                                     <Badge variant="secondary">shadcn/ui</Badge>
                                     <Badge variant="secondary">React</Badge>
-                                    <Badge variant="secondary">WordPress Plugins</Badge>
+                                    <Badge variant="secondary">WordPress</Badge>
                                     <Badge variant="secondary">Browser Extensions</Badge>
                                     <Badge variant="secondary">Security Tools</Badge>
+                                    <Badge variant="secondary">PHP</Badge>
+                                    <Badge variant="secondary">JavaScript</Badge>
                                 </div>
 
                                 {/* Optional: Add avatar or small photo here later */}
@@ -111,7 +113,10 @@ export default async function Home() {
 
             {/* Recent / Featured Section */}
             <section className="container py-16 md:py-24 bg-zinc-50 dark:bg-zinc-900 p-6">
-                <h2 className="text-3xl font-bold text-center mb-12">Latest from <i>Plain Text</i></h2>
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold">Latest from <i>Plain Text</i></h2>
+                    <p className="text-small text-zinc-400">Updates and observations.</p>
+                </div>
 
                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {latestPosts.map((post) => (

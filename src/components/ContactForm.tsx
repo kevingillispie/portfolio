@@ -101,14 +101,14 @@ export default function ContactForm() {
                                 />
                             </FormControl>
                             <FormDescription>
-                                Keep it concise — max 500 characters.
+                                Max 500 characters—<i>concision is precision!</i>
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
                 <div className="flex justify-end">
-                    <Button type="submit" disabled={isPending}>
+                    <Button type="submit" size={'lg'} disabled={isPending}>
                         {isPending ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

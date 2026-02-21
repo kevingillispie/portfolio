@@ -1,6 +1,8 @@
 // src/app/contact/page.tsx  ← This becomes a Server Component (no "use client")
 import type { Metadata } from "next";
-import ContactForm from "@/components/ContactForm";  // We'll create this next
+import ContactForm from "@/components/ContactForm";
+import { Badge } from "@/components/ui/badge";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 
 export const metadata: Metadata = {
     title: "Contact",
@@ -15,15 +17,21 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
     return (
-        <div className="container mx-auto max-w-2xl py-16 md:py-24">
-            <h1 className="text-4xl font-bold tracking-tight mb-8 text-center">
-                Get in Touch
-            </h1>
-            <p className="text-muted-foreground text-center mb-12 max-w-xl mx-auto">
-                Have a project idea, question about my work, or just want to say hi? Drop me a message!
-            </p>
-
-            <ContactForm />  {/* Client-side form lives here */}
+        <div className="container mx-auto max-w-5xl py-12 md:py-20">
+            <div className="text-center mt-8 pb-12">
+                <Badge variant="secondary" className="mb-6 shadow bg-background/80 backdrop-blur-sm">
+                    <BreadcrumbNav />
+                </Badge>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
+                    Get in Touch
+                </h1>
+                <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-3xl mx-auto">
+                    Have a project idea, question about my work, or just want to say hi? Drop me a message!
+                </p>
+            </div>
+            <div className="w-xl mx-auto">
+                <ContactForm />
+            </div>
         </div>
     );
 }

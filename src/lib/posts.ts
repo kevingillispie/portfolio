@@ -15,6 +15,7 @@ export interface PostData {
     featured?: boolean;
     readTime?: string;
     contentHtml: string;
+    breadcrumbLabel: string;
 }
 
 export async function getPostData(slug: string): Promise<PostData | null> {
@@ -46,6 +47,7 @@ export async function getPostData(slug: string): Promise<PostData | null> {
         tags: (data.tags as string[]) || [],
         featured: data.featured as boolean || false,
         readTime: `${readTimeMinutes} min read (${wordCount} words)`,
+        breadcrumbLabel: data.title as string,
     };
 }
 

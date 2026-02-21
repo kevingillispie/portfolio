@@ -1,9 +1,21 @@
 import { getSortedPostsData } from '@/lib/posts';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
+import { BreadcrumbNav } from '@/components/BreadcrumbNav';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from '@/components/ui/card';
+import {
+    CalendarDays,
+    Clock,
+    ChevronRight
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -21,7 +33,9 @@ export default async function BlogPage() {
     return (
         <div className="container mx-auto max-w-5xl py-12 md:py-20">
             <div className="text-center mt-8 pb-12">
-                <Badge variant="secondary" className="mb-6 shadow">Blog</Badge>
+                <Badge variant="secondary" className="mb-6 shadow bg-background/80 backdrop-blur-sm">
+                    <BreadcrumbNav variant='pathname' />
+                </Badge>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                     Plain Text
                 </h1>
