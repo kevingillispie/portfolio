@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-
 export const metadata: Metadata = {
     title: 'Blog & Insights',
     description: 'Thoughts, tutorials, and lessons on web development, Next.js, security, SEO, and more.',

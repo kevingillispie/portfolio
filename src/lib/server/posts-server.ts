@@ -1,6 +1,10 @@
+// src/lib/server/posts-server.ts
+// This file is server-only — no client code allowed
+
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+
 import { remark } from 'remark';
 import remarkHtml from 'remark-html';
 
@@ -49,6 +53,11 @@ export async function getPostData(slug: string): Promise<PostData | null> {
     };
 }
 
+export async function getLatestPosts(limit = 3): Promise<PostData[]> {
+    const allPosts = await getSortedPostsData();
+    return allPosts.slice(0, limit);
+}
+
 export async function getSortedPostsData(): Promise<PostData[]> {
     const fileNames = fs.readdirSync(postsDirectory);
     const allPostsData = await Promise.all(
@@ -60,10 +69,4 @@ export async function getSortedPostsData(): Promise<PostData[]> {
     );
 
     return allPostsData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-}
-
-// Get latest 3 posts (sorted by date descending)
-export async function getLatestPosts(limit = 3): Promise<PostData[]> {
-    const allPosts = await getSortedPostsData();
-    return allPosts.slice(0, limit);
 }
