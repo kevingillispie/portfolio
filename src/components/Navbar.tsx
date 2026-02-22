@@ -57,17 +57,6 @@ export default function Navbar() {
                             <MenubarSeparator />
                             <MenubarItem asChild>
                                 <Link
-                                    href="/projects"
-                                    className={cn(
-                                        "flex items-center gap-2 cursor-pointer",
-                                        isActive("/projects") && "bg-accent font-medium"
-                                    )}
-                                >
-                                    Projects <MenubarShortcut className="text-zinc-400">/projects</MenubarShortcut>
-                                </Link>
-                            </MenubarItem>
-                            <MenubarItem asChild>
-                                <Link
                                     href="/contact"
                                     className={cn(
                                         "flex items-center gap-2 cursor-pointer",
