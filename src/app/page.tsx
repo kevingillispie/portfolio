@@ -45,7 +45,7 @@ export default async function Home() {
     return (
         <div className="container mx-auto">
             <div className="text-center mt-8 py-12 md:py-16 lg:py-20">
-                <Badge variant="secondary" className="mb-6 py-1 shadow bg-background/80 backdrop-blur-sm">Code & Content Creator</Badge>
+                <Badge variant="secondary" className="mb-6 py-1 shadow-lg bg-background/80 backdrop-blur-sm">Code & Content Creator</Badge>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                     Kevin Gillispie
                 </h1>
@@ -57,6 +57,7 @@ export default async function Home() {
                     Building performant, user-focused tools and sites that solve real problems.
                 </p>
             </div>
+
             {/* Hero Carousel Section */}
             <section className="w-full p-6">
                 <div className="container grid gap-8 lg:grid-cols-3 lg:gap-12 lg:pt-12">
@@ -112,7 +113,7 @@ export default async function Home() {
             </section>
 
             {/* Recent / Featured Section */}
-            <section className="container py-16 md:py-24 bg-zinc-50 dark:bg-zinc-900 p-6">
+            <section className="container py-16 md:py-24 dark:bg-zinc-900 p-6">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold">Latest from <i>Plain Text</i></h2>
                     <p className="text-small text-zinc-400">Updates and observations.</p>

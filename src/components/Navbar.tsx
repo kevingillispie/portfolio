@@ -14,6 +14,7 @@ import { House, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import TransitionLink from "./TransitionLink";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -23,7 +24,7 @@ export default function Navbar() {
         <div className="fixed top-4 left-4 z-50 flex items-center gap-3"> {/* ← flex row + gap */}
             {/* Home icon as standalone Menubar (or just a button) */}
             <Menubar className="rounded-lg border bg-zinc-100/90 backdrop-blur-md shadow-lg px-3 py-2">
-                <Link
+                <TransitionLink
                     href="/"
                     className={cn(
                         "flex items-center gap-2 cursor-pointer",
@@ -31,7 +32,7 @@ export default function Navbar() {
                     )}
                 >
                     <House width={18} height={18} />
-                </Link>
+                </TransitionLink>
             </Menubar>
 
             {/* Menu dropdown */}

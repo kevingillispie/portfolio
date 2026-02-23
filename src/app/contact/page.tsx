@@ -12,14 +12,13 @@ export const metadata: Metadata = {
         description: "Reach out about web development, Next.js projects, or custom tools.",
         images: ["/opengraph-image.png"], // Or a contact-specific image if you make one
     },
-    // Inherits everything else from root
 };
 
 export default function ContactPage() {
     return (
         <div className="container mx-auto max-w-5xl py-12 md:py-20">
             <div className="text-center mt-8 pb-12">
-                <Badge variant="secondary" className="mb-6 shadow bg-background/80 backdrop-blur-sm">
+                <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
                     <BreadcrumbNav />
                 </Badge>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">

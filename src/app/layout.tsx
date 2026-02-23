@@ -2,6 +2,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import ParticlesBackground from "@/components/ParticlesBackground";
+import TransitionCanvas from "@/components/TransitionCanvas";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
@@ -66,17 +68,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body
                 className={`
           ${geistSans.variable} ${geistMono.variable}
-          min-h-screen bg-zinc-50 flex flex-col
+          min-h-screen flex flex-col
         `}
             >
-                <Navbar />
+                <div id="nav-overlay" />
+                <TransitionCanvas />
+                <section className="absolute top-0 left-0 right-0 w-screen h-[245px] overflow-hidden">
+                    <div className="relative w-full h-full pointer-events-auto">
+                        <ParticlesBackground />
+                    </div>
+                    <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none" />
+                </section>
+                <div className="relative z-10 flex flex-col min-h-screen">
+                    <Navbar />
 
-                {/* Main content grows to fill remaining space */}
-                <main className="flex-1">
-                    {children}
-                </main>
+                    {/* Main content grows to fill remaining space */}
+                    <main className="flex-1">
+                        {children}
+                    </main>
 
-                <Footer />
+                    <Footer />
+                </div>
 
                 <Toaster
                     position="top-right"

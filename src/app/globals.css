@@ -120,10 +120,6 @@
     * {
         @apply border-border outline-ring/50;
     }
-
-    body {
-        @apply bg-background text-foreground;
-    }
 }
 
 
@@ -235,4 +231,19 @@
 
 .prose blockquote {
     @apply border-l-4 border-primary/60 pl-5 italic text-muted-foreground mb-6;
+}
+
+#nav-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: #3b82f6;
+    /* Your brand color */
+    z-index: 9999;
+    pointer-events: none;
+    clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
+    transition: clip-path 0.8s ease-in-out;
+}
+
+#nav-overlay.overlay-active {
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
 }
