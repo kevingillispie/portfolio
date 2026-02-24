@@ -11,7 +11,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import TransitionLink from "./TransitionLink";
 import { Home } from "lucide-react";
 
 interface BreadcrumbNavProps {
@@ -69,7 +69,7 @@ export function BreadcrumbNav({ variant = "friendly" }: BreadcrumbNavProps) {
                         <BreadcrumbPage>{label}</BreadcrumbPage>
                     ) : (
                         <BreadcrumbLink asChild>
-                            <Link href={href}>{label}</Link>
+                            <TransitionLink href={href}>{label}</TransitionLink>
                         </BreadcrumbLink>
                     )}
                 </BreadcrumbItem>
@@ -82,10 +82,10 @@ export function BreadcrumbNav({ variant = "friendly" }: BreadcrumbNavProps) {
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                        <Link href="/">
+                        <TransitionLink href="/">
                             <Home className="h-4 w-4" />
                             <span className="sr-only">Home</span>
-                        </Link>
+                        </TransitionLink>
                     </BreadcrumbLink>
                 </BreadcrumbItem>
 

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { getLatestPosts } from "@/lib/server/posts-server";
 import { CalendarDays } from 'lucide-react';
-import Link from "next/link";
+import TransitionLink from "@/components/TransitionLink";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import {
     Card,
@@ -105,7 +105,7 @@ export default async function Home() {
 
                             {/* CTA button at bottom */}
                             <Button asChild size={'lg'} className="mt-auto">
-                                <Link href="/contact">Get in Touch →</Link>
+                                <TransitionLink href="/contact">Get in Touch →</TransitionLink>
                             </Button>
                         </div>
                     </div>
@@ -156,9 +156,9 @@ export default async function Home() {
 
                             <CardFooter className="pt-0">
                                 <Button variant="ghost" asChild className="ml-auto">
-                                    <Link href={`/blog/${post.slug}`}>
+                                    <TransitionLink href={`/blog/${post.slug}`}>
                                         Read more →
-                                    </Link>
+                                    </TransitionLink>
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -167,7 +167,7 @@ export default async function Home() {
 
                 <div className="text-center mt-12">
                     <Button asChild variant="outline" size="lg">
-                        <Link href="/blog">View all posts →</Link>
+                        <TransitionLink href="/blog">View all posts →</TransitionLink>
                     </Button>
                 </div>
             </section>

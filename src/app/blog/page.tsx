@@ -1,6 +1,6 @@
 import { getSortedPostsData } from '@/lib/posts';
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import TransitionLink from '@/components/TransitionLink';
 import { Badge } from '@/components/ui/badge';
 import { BreadcrumbNav } from '@/components/BreadcrumbNav';
 import {
@@ -46,7 +46,7 @@ export default async function BlogPage() {
             {/* Featured post */}
             {featured && (
                 <section className="mb-16">
-                    <Link href={`/blog/${featured.slug}`} className="group block no-underline">
+                    <TransitionLink href={`/blog/${featured.slug}`} className="group block no-underline">
                         <Card className="overflow-hidden border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-2xl">
                             <div className="md:flex">
                                 <div className="md:w-1/2 bg-gradient-to-br from-primary/10 to-primary/5 p-8 flex items-center justify-center">
@@ -83,7 +83,7 @@ export default async function BlogPage() {
                                 </div>
                             </div>
                         </Card>
-                    </Link>
+                    </TransitionLink>
                 </section>
             )}
 
@@ -92,7 +92,7 @@ export default async function BlogPage() {
                 <h2 className="text-2xl font-bold mb-8 text-center md:text-left">Recent Posts</h2>
                 <div className="grid gap-8 md:grid-cols-2">
                     {recent.map((post) => (
-                        <Link key={post.slug} href={`/blog/${post.slug}`} className="group block no-underline">
+                        <TransitionLink key={post.slug} href={`/blog/${post.slug}`} className="group block no-underline">
                             <Card className="h-full transition-all hover:shadow-xl hover:-translate-y-1">
                                 <CardHeader>
                                     <div className="flex flex-wrap gap-2 mb-3">
@@ -119,7 +119,7 @@ export default async function BlogPage() {
                                     </span>
                                 </CardFooter>
                             </Card>
-                        </Link>
+                        </TransitionLink>
                     ))}
                 </div>
             </section>
@@ -129,7 +129,7 @@ export default async function BlogPage() {
                 <h2 className="text-2xl font-bold mb-6 text-center md:text-left">All Posts</h2>
                 <div className="space-y-1">
                     {older.map((post) => (
-                        <Link
+                        <TransitionLink
                             key={post.slug}
                             href={`/blog/${post.slug}`}
                             className={cn(
@@ -162,7 +162,7 @@ export default async function BlogPage() {
                                 </span>
                                 <ChevronRight className="h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity" />
                             </div>
-                        </Link>
+                        </TransitionLink>
                     ))}
                 </div>
             </section>

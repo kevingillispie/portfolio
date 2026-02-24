@@ -14,6 +14,7 @@
         "@hookform/resolvers": "^5.2.2",
         "@next/mdx": "^16.1.6",
         "@tsparticles/engine": "^3.9.1",
+        "@tsparticles/interaction-external-trail": "^3.9.1",
         "@tsparticles/plugin-emitters": "^3.9.1",
         "@tsparticles/react": "^3.0.0",
         "@tsparticles/shape-text": "^3.9.1",

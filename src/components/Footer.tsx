@@ -1,4 +1,4 @@
-import Link from "next/link";
+import TransitionLink from "./TransitionLink";
 import { AtSign } from "lucide-react";
 
 export default function Footer() {
@@ -19,15 +19,15 @@ export default function Footer() {
                 <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
                     {/* Quick nav – use Link for internal */}
                     <div className="flex gap-6 text-sm">
-                        <Link href="/" className="hover:text-zinc-200 transition-colors">
+                        <TransitionLink href="/" className="hover:text-zinc-200 transition-colors">
                             Home
-                        </Link>
-                        <Link href="/blog" className="hover:text-zinc-200 transition-colors">
+                        </TransitionLink>
+                        <TransitionLink href="/blog" className="hover:text-zinc-200 transition-colors">
                             Plain Text
-                        </Link>
-                        <Link href="/contact" className="hover:text-zinc-200 transition-colors">
+                        </TransitionLink>
+                        <TransitionLink href="/contact" className="hover:text-zinc-200 transition-colors">
                             Contact
-                        </Link>
+                        </TransitionLink>
                     </div>
 
                     {/* Social icons */}

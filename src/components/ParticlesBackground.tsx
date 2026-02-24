@@ -28,31 +28,105 @@ export default function ParticlesBackground() {
 
     const particlesLoaded = async (container?: Container) => {
         (window as any).particlesContainer = container;
-        console.log("Does addEmitter exist?", typeof (container as any).addEmitter);
     };
 
     const codeSnippets = [
-        "<div>",
-        "</div>",
-        "<h1>",
-        "</h1>",
-        "className=",
-        "onClick=",
-        "alt=",
-        "{",
-        "}",
-        "=>",
+        // Modern React / hooks era
+        "use client",
+        "'use client'",
+        "use server",
+        "use",
+        "useTransition",
+        "useOptimistic",
+        "useActionState",
+        "useFormStatus",
+        "startTransition",
+
+        // Popular 2025-ish syntax & libs
+        "clsx",
+        "cn",
+        "twMerge",
+        "motion.div",
+        "motion.span",
+        "<motion.div",
+        "animate",
+        "initial",
+        "whileInView",
+        "viewport={{ once: true }}",
+        "framer-motion",
+        "shadcn/ui",
+        "next-themes",
+        "lucide-react",
+        "cmdk",
+
+        // Classic but still sexy
         "const",
         "let",
-        "function",
-        "i=0",
-        "import",
-        "while",
-        "<img",
+        "=>",
+        "async",
+        "await",
+        "fetch",
+        "Promise.all",
+        "...",
+        "??",
+        "?.",
+        "??=",
+        "#private",
+
+        // JSX & components
+        "<div",
+        "</div>",
+        "<>",
         "</>",
-        "useState",
-        "useEffect",
-        "console.log"
+        "{children}",
+        "{...props}",
+        "className=",
+        "className={cn(",
+        "type=",
+        "variant=",
+        "size=",
+
+        // Meme / dev twitter energy
+        "bruh",
+        "wtf",
+        "lmaooo",
+        "skill issue",
+        "works on my machine",
+        "console.debug('pls')",
+        "todo: fix later 💀",
+        "// 🚀",
+        "🤡",
+        "¯\\_(ツ)_/¯",
+
+        // Symbols & punctuation that look nice floating
+        "{",
+        "}",
+        "(",
+        ")",
+        "[",
+        "]",
+        ":",
+        ";",
+        ",",
+        "=",
+        "===",
+        "=>",
+        "->",
+        "??",
+        "?.",
+        "|>",
+        "::",
+        "//",
+        "/* */",
+
+        // Bonus one-liners / snippets
+        "setTimeout(() =>",
+        "setInterval(() =>",
+        "useEffect(() => {",
+        "return () => {",
+        "ReactDOM.createRoot",
+        "createRoot(document.getElementById('root'))",
+        "<Suspense fallback={<Loading />} >",
     ];
 
     const options: ISourceOptions = useMemo(
@@ -63,10 +137,14 @@ export default function ParticlesBackground() {
             limit: 80,
             particles: {
                 number: {
-                    value: 50,
+                    value: 100,
                     density: { enable: true, width: 1920, height: 1080 },
                 },
-                color: { value: ["#60a5fa", "#a78bfa", "#f472b6", "#34d399"] },
+                color: {
+                    value: [
+                        "#333",
+                    ]
+                },
                 shape: {
                     type: "text",
                     options: {
@@ -75,15 +153,15 @@ export default function ParticlesBackground() {
                             font: "var(--font-geist-mono), GeistMono, monospace",
                             style: "",
                             weight: "normal",
-                            size: 12,
+                            size: 7,
                         },
                     },
                 },
                 size: {
-                    value: { min: 8, max: 18 },
+                    value: { min: 8, max: 14 },
                 },
                 opacity: {
-                    value: { min: 0.4, max: 0.75 },
+                    value: .5
                 },
                 links: {
                     enable: true,
@@ -109,17 +187,16 @@ export default function ParticlesBackground() {
             },
             interactivity: {
                 events: {
-                    onHover: { enable: true, mode: "grab" },
-                    onClick: { enable: true, mode: "push" },
+                    onHover: { enable: true, mode: ["grab", "repulse"] },
                     resize: { enable: true, },
                 },
                 modes: {
                     grab: { distance: 160, links: { opacity: 0.6 } },
                     repulse: {
-                        distance: 100,
+                        distance: 50,
                         duration: 0.4,
-                        factor: 100,
-                        speed: 1,
+                        factor: 5,
+                        speed: .5,
                         maxSpeed: 50
                     },
                     push: { quantity: 3 },
@@ -136,7 +213,8 @@ export default function ParticlesBackground() {
     return (
         <Particles
             id="tsparticles-code"
-            className="absolute inset-0 select-none -z-10" // Back to background
+            className="absolute inset-0 select-none -z-10"
+            style={{ width: "100%", height: "100%" }}
             particlesLoaded={particlesLoaded}
             options={options}
         />

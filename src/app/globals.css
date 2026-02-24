@@ -233,11 +233,16 @@
     @apply border-l-4 border-primary/60 pl-5 italic text-muted-foreground mb-6;
 }
 
+[role="menuitemcheckbox"]>span {
+    border: 1px solid oklch(55.2% 0.016 285.938);
+    border-radius: 5px;
+    padding: 9px;
+}
+
 #nav-overlay {
     position: fixed;
     inset: 0;
-    background-color: #3b82f6;
-    /* Your brand color */
+    background-color: oklch(92% 0.004 286.32);
     z-index: 9999;
     pointer-events: none;
     clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
@@ -246,4 +251,10 @@
 
 #nav-overlay.overlay-active {
     clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+}
+
+body {
+    background-image: url();
+    background-size: contain;
+    background-position: center;
 }

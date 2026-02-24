@@ -1,4 +1,6 @@
+import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
+import SettingsMenu from "@/components/SettingsMenu";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -64,38 +66,41 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body
                 className={`
           ${geistSans.variable} ${geistMono.variable}
-          min-h-screen flex flex-col
+          min-h-screen flex flex-col bg-zinc-200 dark:bg-zinc-900
         `}
             >
-                <div id="nav-overlay" />
-                <TransitionCanvas />
-                <section className="absolute top-0 left-0 right-0 w-screen h-[245px] overflow-hidden">
-                    <div className="relative w-full h-full pointer-events-auto">
-                        <ParticlesBackground />
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                    <div id="nav-overlay" />
+                    <TransitionCanvas />
+                    <ParticlesBackground />
+                    {/* <section className="absolute top-0 left-0 right-0 w-full h-[245px] overflow-hidden">
+                        <div className="relative w-full h-full pointer-events-auto">
+                            <ParticlesBackground />
+                        </div>
+                    </section> */}
+                    <div className="relative z-10 flex flex-col min-h-screen">
+                        <Navbar />
+                        <SettingsMenu />
+
+                        {/* Main content grows to fill remaining space */}
+                        <main className="flex-1">
+                            {children}
+                        </main>
+
+                        <Footer />
                     </div>
-                    <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none" />
-                </section>
-                <div className="relative z-10 flex flex-col min-h-screen">
-                    <Navbar />
 
-                    {/* Main content grows to fill remaining space */}
-                    <main className="flex-1">
-                        {children}
-                    </main>
-
-                    <Footer />
-                </div>
-
-                <Toaster
-                    position="top-right"
-                    richColors
-                    closeButton
-                    duration={5000}
-                />
+                    <Toaster
+                        position="top-right"
+                        richColors
+                        closeButton
+                        duration={5000}
+                    />
+                </ThemeProvider>
             </body>
         </html>
     );
