@@ -253,8 +253,12 @@
     clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
 }
 
-body {
-    background-image: url();
-    background-size: contain;
+#tsparticles-code {
+    background-image: url(https://images.pexels.com/photos/50711/board-electronics-computer-data-processing-50711.jpeg);
+    background-size: cover;
     background-position: center;
+}
+
+#tsparticles-code canvas {
+    pointer-events: auto !important;
 }

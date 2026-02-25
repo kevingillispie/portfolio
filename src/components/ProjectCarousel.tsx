@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import TransitionLink from "./TransitionLink";
 
 // Pass projects as prop (or fetch if needed)
-interface HeroCarouselProps {
+interface ProjectCarouselProps {
     projects: {
         name: string;
         slug: string;
@@ -24,7 +24,7 @@ interface HeroCarouselProps {
     }[];
 }
 
-export function HeroCarousel({ projects }: HeroCarouselProps) {
+export function ProjectCarousel({ projects }: ProjectCarouselProps) {
     const plugin = React.useRef(
         Autoplay({ delay: 5000, stopOnInteraction: true })
     );

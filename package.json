@@ -21,6 +21,7 @@
         "@tsparticles/slim": "^3.9.1",
         "@tsparticles/updater-roll": "^3.9.1",
         "@tsparticles/updater-tilt": "^3.9.1",
+        "animejs": "^4.3.6",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "embla-carousel-autoplay": "^8.6.0",

@@ -70,18 +70,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body
                 className={`
           ${geistSans.variable} ${geistMono.variable}
-          min-h-screen flex flex-col bg-zinc-200 dark:bg-zinc-900
+          min-h-screen flex flex-col bg-zinc-100 dark:bg-gradient-to-r from-[#000] via-[#66655a] to-[#000]
         `}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                     <div id="nav-overlay" />
                     <TransitionCanvas />
-                    <ParticlesBackground />
-                    {/* <section className="absolute top-0 left-0 right-0 w-full h-[245px] overflow-hidden">
-                        <div className="relative w-full h-full pointer-events-auto">
-                            <ParticlesBackground />
-                        </div>
-                    </section> */}
                     <div className="relative z-10 flex flex-col min-h-screen">
                         <Navbar />
                         <SettingsMenu />
