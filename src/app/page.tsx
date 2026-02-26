@@ -44,23 +44,23 @@ export default async function Home() {
     const latestPosts = await getLatestPosts(3);
 
     return (
-        <>
-            <HALWireframeWall rows={10} cols={16} />
+        <div className="relative w-full overflow-hidden">
+            <HALWireframeWall rows={8} cols={16} />
 
-            {/* 1. Main wrapper is transparent to mouse events */}
-            <div className="container mx-auto relative z-10">
-
+            <div className="container mx-auto">
                 <div className="hero-container relative text-center mt-8 py-12 mx-6 md:py-20">
-                    <Badge variant="default" className="mb-6 py-1 shadow-lg">Code & Content Creator</Badge>
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
-                        Kevin Gillispie
-                    </h1>
-                    <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto">
-                        Full-Stack Web Development • Cyber Security <br /> WP Plugins • Browser Extensions
-                    </p>
-                    <p className="mt-6 text-lg max-w-2xl mx-auto ">
-                        Building performant, user-focused tools <br />and sites that solve real problems.
-                    </p>
+                    <div className="pointer-events-auto">
+                        <Badge variant="default" className="badge-shadow mb-6 py-1">Code & Content Creator</Badge>
+                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
+                            Kevin Gillispie
+                        </h1>
+                        <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto">
+                            Full-Stack Web Development • Cyber Security <br /> WP Plugins • Browser Extensions
+                        </p>
+                        <p className="mt-6 text-lg max-w-2xl mx-auto ">
+                            Building performant, user-focused tools <br />and sites that solve real problems.
+                        </p>
+                    </div>
                 </div>
 
                 <section className="w-full p-6">
@@ -178,6 +178,6 @@ export default async function Home() {
                     </div>
                 </section>
             </div>
-        </>
+        </div>
     );
 }
