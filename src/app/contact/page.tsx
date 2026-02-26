@@ -28,9 +28,7 @@ export default function ContactPage() {
                     Have a project idea, question about my work, or just want to say hi? Drop me a message!
                 </p>
             </div>
-            <div className="w-xl mx-auto">
-                <ContactForm />
-            </div>
+            <ContactForm />
         </div>
     );
 }

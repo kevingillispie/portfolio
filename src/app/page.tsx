@@ -48,16 +48,16 @@ export default async function Home() {
             <HALWireframeWall rows={8} cols={16} />
 
             <div className="container mx-auto">
-                <div className="hero-container relative text-center mt-8 py-12 mx-6 md:py-20">
+                <div className="hero-container relative text-center mt-8 py-12 mx-6 md:py-20 bg-radial from-zinc-50/70 via-transparent to-transparent dark:bg-none">
                     <div className="pointer-events-auto">
                         <Badge variant="default" className="badge-shadow mb-6 py-1">Code & Content Creator</Badge>
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                             Kevin Gillispie
                         </h1>
-                        <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto">
+                        <p className="text-xl md:text-2xl lg:text-3xl text-zinc-800 max-w-3xl mx-auto">
                             Full-Stack Web Development • Cyber Security <br /> WP Plugins • Browser Extensions
                         </p>
-                        <p className="mt-6 text-lg max-w-2xl mx-auto ">
+                        <p className="mt-6 text-lg max-w-2xl mx-auto text-zinc-800">
                             Building performant, user-focused tools <br />and sites that solve real problems.
                         </p>
                     </div>
@@ -121,7 +121,7 @@ export default async function Home() {
                 {/* Recent / Featured Section */}
                 <section className="container py-16 md:py-24 p-6">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold">Latest from <i>Plain Text</i></h2>
+                        <h2 className="text-3xl font-bold">Latest from <code className="font-normal">//PlainText</code></h2>
                         <p className="text-small text-zinc-400">Updates and observations.</p>
                     </div>
 

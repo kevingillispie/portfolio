@@ -37,7 +37,7 @@ export default async function BlogPage() {
                     <BreadcrumbNav variant='pathname' />
                 </Badge>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
-                    Plain Text
+                    <code>//PlainText</code>
                 </h1>
                 <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-3xl mx-auto">
                     A journal of explanations, insights, and musings about the world of technology.

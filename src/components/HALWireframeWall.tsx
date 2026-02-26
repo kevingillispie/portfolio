@@ -47,8 +47,8 @@ export default function HALWireframeWall({ rows = 6, cols = 14 }) {
             const frontFace = targetModule.querySelector(".front-face");
 
             animate(targetModule, {
-                translateZ: [0, 100, 0],
-                duration: 2500,
+                translateZ: [0, 50, 0],
+                duration: 3000,
                 easing: "easeInOutQuart",
                 onComplete: () => activeIndices.delete(randomIndex),
             });
@@ -56,7 +56,7 @@ export default function HALWireframeWall({ rows = 6, cols = 14 }) {
             animate(frontFace, {
                 backgroundColor: ["rgba(252, 165, 165, 0.6)", "rgba(255, 255, 255, 1)", "rgba(252, 165, 165, 0.6)"],
                 borderColor: ["rgba(0, 0, 0, 0.6)", "rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 0.6)"],
-                duration: 2500,
+                duration: 3000,
                 easing: "easeInOutQuart"
             });
         };

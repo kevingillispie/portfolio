@@ -4,7 +4,6 @@ import SettingsMenu from "@/components/SettingsMenu";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import ParticlesBackground from "@/components/ParticlesBackground";
 import TransitionCanvas from "@/components/TransitionCanvas";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -49,8 +48,8 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: "Kevin Gillispie – Full-Stack Web Developer",
         description: "Building performant tools, SEO plugins, browser extensions, and modern websites.",
-        images: ["/opengraph-image.png"], // Can reuse the same image
-        creator: "@yourhandle", // Add your X handle if you have one
+        images: ["/opengraph-image.png"],
+        creator: "@yourhandle",
     },
     // Optional: robots, alternates, icons, etc.
     robots: {

@@ -23,7 +23,7 @@ export default function Footer() {
                             Home
                         </TransitionLink>
                         <TransitionLink href="/blog" className="hover:text-zinc-200 transition-colors">
-                            Plain Text
+                            <code>//PlainText</code>
                         </TransitionLink>
                         <TransitionLink href="/contact" className="hover:text-zinc-200 transition-colors">
                             Contact
