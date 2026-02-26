@@ -70,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body
                 className={`
           ${geistSans.variable} ${geistMono.variable}
-          min-h-screen flex flex-col bg-zinc-100 dark:bg-gradient-to-r from-[#000] via-[#66655a] to-[#000]
+          min-h-screen flex flex-col bg-gradient-to-br from-zinc-300 via-zinc-50 to-zinc-200 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-700
         `}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

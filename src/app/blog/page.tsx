@@ -32,7 +32,7 @@ export default async function BlogPage() {
 
     return (
         <div className="container mx-auto max-w-5xl py-12 md:py-20">
-            <div className="text-center mt-8 pb-12">
+            <div className="hero-container text-center mt-8 pb-12">
                 <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
                     <BreadcrumbNav variant='pathname' />
                 </Badge>

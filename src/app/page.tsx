@@ -3,7 +3,7 @@ import { getLatestPosts } from "@/lib/server/posts-server";
 import { CalendarDays } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
-import HeroAnimation from "@/components/HeroAnimation";
+import HALWireframeWall from "@/components/HALWireframeWall";
 import {
     Card,
     CardContent,
@@ -45,17 +45,32 @@ export default async function Home() {
 
     return (
         <>
-            <HeroAnimation />
-            <div className="container mx-auto">
+            <HALWireframeWall rows={10} cols={16} />
 
-                {/* Hero Carousel Section */}
+            {/* 1. Main wrapper is transparent to mouse events */}
+            <div className="container mx-auto relative z-10">
+
+                <div className="hero-container relative text-center mt-8 py-12 mx-6 md:py-20">
+                    <Badge variant="default" className="mb-6 py-1 shadow-lg">Code & Content Creator</Badge>
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
+                        Kevin Gillispie
+                    </h1>
+                    <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto">
+                        Full-Stack Web Development • Cyber Security <br /> WP Plugins • Browser Extensions
+                    </p>
+                    <p className="mt-6 text-lg max-w-2xl mx-auto ">
+                        Building performant, user-focused tools <br />and sites that solve real problems.
+                    </p>
+                </div>
+
                 <section className="w-full p-6">
-                    <h2 className="text-3xl text-center font-bold mt-4">Projects</h2>
+                    <h2 className="text-3xl text-center font-bold mt-8">Projects</h2>
                     <div className="container grid gap-8 lg:grid-cols-3 lg:gap-12 lg:pt-12">
-                        {/* Large Hero Carousel - takes 2/3 on lg+ */}
-                        <ProjectCarousel projects={projects} />
+                        {/* 3. Ensure carousel and cards are interactive */}
+                        <div className="lg:col-span-2">
+                            <ProjectCarousel projects={projects} />
+                        </div>
 
-                        {/* Sidebar: "Other featured posts" repurposed as About Me */}
                         <div className="lg:col-span-1">
                             <div className="bg-card text-card-foreground space-y-6 rounded-xl border p-6 shadow-lg h-full flex flex-col">
                                 <h3 className="text-xl font-semibold tracking-tight">About Me</h3>
@@ -95,7 +110,7 @@ export default async function Home() {
                                 </div>
 
                                 {/* CTA button at bottom */}
-                                <Button asChild size={'lg'} className="mt-auto">
+                                <Button asChild size={'lg'} className="mt-auto" style={{ borderRadius: "100px" }}>
                                     <TransitionLink href="/contact">Get in Touch →</TransitionLink>
                                 </Button>
                             </div>
