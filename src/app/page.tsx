@@ -3,6 +3,7 @@ import { getLatestPosts } from "@/lib/server/posts-server";
 import { CalendarDays } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
+import HALHUDFrame from "@/components/HALHUDFrame";
 import HALWireframeWall from "@/components/HALWireframeWall";
 import {
     Card,
@@ -45,6 +46,7 @@ export default async function Home() {
 
     return (
         <div className="relative w-full overflow-hidden">
+            <HALHUDFrame />
             <HALWireframeWall rows={8} cols={16} />
 
             <div className="container mx-auto">
@@ -54,10 +56,10 @@ export default async function Home() {
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                             Kevin Gillispie
                         </h1>
-                        <p className="text-xl md:text-2xl lg:text-3xl text-zinc-800 max-w-3xl mx-auto">
+                        <p className="text-xl md:text-2xl lg:text-3xl text-zinc-800 dark:text-zinc-100 max-w-3xl mx-auto">
                             Full-Stack Web Development • Cyber Security <br /> WP Plugins • Browser Extensions
                         </p>
-                        <p className="mt-6 text-lg max-w-2xl mx-auto text-zinc-800">
+                        <p className="mt-6 text-lg max-w-2xl mx-auto text-zinc-800 dark:text-zinc-100">
                             Building performant, user-focused tools <br />and sites that solve real problems.
                         </p>
                     </div>
