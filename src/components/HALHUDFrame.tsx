@@ -6,11 +6,11 @@ export default function HALHUDFrame() {
         <div className="absolute mt-8 inset-0 z-[1] pointer-events-none overflow-hidden font-mono text-[10px] uppercase tracking-widest text-white/40 min-h-screen">
 
             {/* 1. Left Ruler - Boosted opacity */}
-            <div className="absolute left-8 top-1/4 bottom-1/4 w-[1px] bg-white/20 flex flex-col justify-between items-start py-8">
+            <div className="absolute left-8 top-1/4 bottom-1/4 w-[1px] bg-zinc-400 dark:bg-white/20 flex flex-col justify-between items-start py-8">
                 {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex items-center gap-2">
-                        <div className="w-3 h-[1px] bg-white/60" />
-                        <span className="hidden md:block">MEM_0{i * 2}: DEFRAG</span>
+                        <div className="w-3 h-[1px] bg-zinc-400 dark:bg-white/60" />
+                        <span className="hidden md:block text-zinc-700 dark:text-zinc-200">MEM_0{i * 2}: DEFRAG</span>
                     </div>
                 ))}
             </div>
