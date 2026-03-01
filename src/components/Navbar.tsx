@@ -21,7 +21,7 @@ export default function Navbar() {
     const isActive = (path: string) => pathname === path;
 
     return (
-        <div className="fixed top-4 left-4 z-50 flex items-center gap-3">
+        <div className="fixed top-4 left-10 z-50 flex items-center gap-3">
             {/* Home Link */}
             <Menubar className="rounded-lg border bg-zinc-100/90 dark:bg-zinc-700 backdrop-blur-md shadow-lg px-3 py-2">
                 <TransitionLink
