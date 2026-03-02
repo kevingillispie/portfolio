@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
-    Menubar,
-    MenubarContent,
-    MenubarGroup,
-    MenubarItem,
-    MenubarMenu,
-    MenubarSeparator,
-    MenubarShortcut,
-    MenubarTrigger,
-} from "@/components/ui/menubar";
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { House, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -21,56 +19,73 @@ export default function Navbar() {
     const isActive = (path: string) => pathname === path;
 
     return (
-        <div className="fixed top-4 left-10 z-50 flex items-center gap-3">
-            {/* Home Link */}
-            <Menubar className="rounded-lg border bg-zinc-100/90 dark:bg-zinc-700 backdrop-blur-md shadow-lg px-3 py-2">
+        <div className="fixed top-4 left-2 sm:left-10 z-50 flex items-center gap-3">
+            {/* Home Button */}
+            <Button
+                variant="outline"
+                size="icon"
+                className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border"
+            >
                 <TransitionLink
                     href="/"
                     className={cn(
-                        "flex items-center gap-2 cursor-pointer",
+                        "flex items-center justify-center w-full h-full",
                         isActive("/") && "font-medium"
                     )}
                 >
                     <House width={18} height={18} />
                 </TransitionLink>
-            </Menubar>
+            </Button>
 
-            {/* Menu Dropdown */}
-            <Menubar className="rounded-lg border bg-zinc-100/90 dark:bg-zinc-700 backdrop-blur-md shadow-lg py-2">
-                <MenubarMenu>
-                    <MenubarTrigger className="flex items-center gap-2 cursor-pointer">
+            {/* Menu Dropdown - styled to match the home button */}
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border"
+                    >
                         <Menu width={18} height={18} />
-                        Pages
-                    </MenubarTrigger>
-                    <MenubarContent className="min-w-[200px]">
-                        <MenubarGroup>
-                            <MenubarItem asChild>
-                                <TransitionLink
-                                    href="/blog"
-                                    className={cn(
-                                        "flex items-center gap-2 cursor-pointer",
-                                        isActive("/blog") && "bg-accent font-medium"
-                                    )}
-                                >
-                                    <code>//PlainText</code> <MenubarShortcut className="text-zinc-400">/blog</MenubarShortcut>
-                                </TransitionLink>
-                            </MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem asChild>
-                                <TransitionLink
-                                    href="/contact"
-                                    className={cn(
-                                        "flex items-center gap-2 cursor-pointer",
-                                        isActive("/contact") && "bg-accent font-medium"
-                                    )}
-                                >
-                                    Contact <MenubarShortcut className="text-zinc-400">/contact</MenubarShortcut>
-                                </TransitionLink>
-                            </MenubarItem>
-                        </MenubarGroup>
-                    </MenubarContent>
-                </MenubarMenu>
-            </Menubar>
+                    </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent
+                    align="start"
+                    className="min-w-[200px] mt-1 rounded-lg border bg-zinc-100/90 dark:bg-zinc-800 backdrop-blur-md shadow-lg"
+                >
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem asChild>
+                            <TransitionLink
+                                href="/blog"
+                                className={cn(
+                                    "flex items-center justify-between w-full cursor-pointer px-2 py-1.5 text-sm",
+                                    isActive("/blog") && "bg-accent font-medium"
+                                )}
+                            >
+                                <div className="flex items-center gap-2">
+                                    <code className="text-xs">//PlainText</code>
+                                </div>
+                                <span className="text-xs text-zinc-400 font-mono">/blog</span>
+                            </TransitionLink>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuSeparator className="bg-zinc-200/70 dark:bg-zinc-700/70" />
+
+                        <DropdownMenuItem asChild>
+                            <TransitionLink
+                                href="/contact"
+                                className={cn(
+                                    "flex items-center justify-between w-full cursor-pointer px-2 py-1.5 text-sm",
+                                    isActive("/contact") && "bg-accent font-medium"
+                                )}
+                            >
+                                <span>Contact</span>
+                                <span className="text-xs text-zinc-400 font-mono">/contact</span>
+                            </TransitionLink>
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     );
 }

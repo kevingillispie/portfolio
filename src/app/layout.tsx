@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import TransitionCanvas from "@/components/TransitionCanvas";
 import { Toaster } from "@/components/ui/sonner";
+import HALHUDFrame from "@/components/HALHUDFrame";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -68,14 +69,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" suppressHydrationWarning>
             <body
                 className={`
-          ${geistSans.variable} ${geistMono.variable}
-          min-h-screen flex flex-col bg-gradient-to-br from-zinc-300 via-zinc-50 to-zinc-200 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-700
-        `}
+                ${geistSans.variable} ${geistMono.variable}
+                min-h-screen flex flex-col bg-gradient-to-br from-zinc-300 via-zinc-50 to-zinc-200 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-700
+                `}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                     <div id="nav-overlay" />
                     <TransitionCanvas />
                     <div className="relative z-10 flex flex-col min-h-screen">
+                        <HALHUDFrame />
                         <Navbar />
                         <SettingsMenu />
 

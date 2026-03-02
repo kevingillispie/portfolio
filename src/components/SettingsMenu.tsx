@@ -41,7 +41,7 @@ export default function SettingsMenu() {
     if (!mounted) return null;
 
     return (
-        <div className="fixed top-4 right-10 z-50">
+        <div className="fixed top-4 right-2 sm:right-10 z-50">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon" className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border">

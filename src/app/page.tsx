@@ -3,7 +3,6 @@ import { getLatestPosts } from "@/lib/server/posts-server";
 import { CalendarDays } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
-import HALHUDFrame from "@/components/HALHUDFrame";
 import HALWireframeWall from "@/components/HALWireframeWall";
 import {
     Card,
@@ -46,7 +45,6 @@ export default async function Home() {
 
     return (
         <div className="relative w-full overflow-hidden">
-            <HALHUDFrame />
             <HALWireframeWall rows={8} cols={16} />
 
             <div className="container mx-auto">
