@@ -55,8 +55,9 @@ export default async function Home() {
                             Kevin Gillispie
                         </h1>
                         <p className="text-xl md:text-2xl lg:text-3xl text-zinc-800 dark:text-zinc-100 max-w-3xl mx-auto">
-                            Full-Stack Web Development • Cyber Security <br /> WP Plugins • Browser Extensions
+                            <span className="sm:hidden">• </span>Full-Stack Web Development • Cyber&nbsp;Security <br className="hidden sm:block" /> WP Plugins<span className="hidden sm:inline"> • </span><br className="sm:hidden" />Browser Extensions
                         </p>
+                        <hr className="sm:hidden border border-top-1 border-zinc-800/50 dark:border-zinc-300 w-25 mt-6 mx-auto" />
                         <p className="mt-6 text-lg max-w-2xl mx-auto text-zinc-800 dark:text-zinc-100">
                             Building performant, user-focused tools <br />and sites that solve real problems.
                         </p>
@@ -65,7 +66,7 @@ export default async function Home() {
 
                 <section className="w-full p-6">
                     <h2 className="text-3xl text-center font-bold mt-8">Projects</h2>
-                    <div className="container grid gap-8 lg:grid-cols-3 lg:gap-12 lg:pt-12">
+                    <div className="container grid gap-8 grid-cols-1 lg:grid-cols-3 lg:gap-12 pt-12">
                         {/* 3. Ensure carousel and cards are interactive */}
                         <div className="lg:col-span-2">
                             <ProjectCarousel projects={projects} />
@@ -171,7 +172,7 @@ export default async function Home() {
                         ))}
                     </div>
 
-                    <div className="text-center mt-12">
+                    <div className="text-center mt-12 mb-12 md:mb-0">
                         <Button asChild variant="outline" size="lg">
                             <TransitionLink href="/blog">View all posts →</TransitionLink>
                         </Button>

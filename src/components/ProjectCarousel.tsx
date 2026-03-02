@@ -1,4 +1,4 @@
-"use client";  // ← This makes it a Client Component
+"use client";
 
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
@@ -13,7 +13,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import TransitionLink from "./TransitionLink";
 
-// Pass projects as prop (or fetch if needed)
 interface ProjectCarouselProps {
     projects: {
         name: string;
@@ -30,36 +29,44 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
     );
 
     return (
-        <div className="lg:col-span-2 rounded-xl overflow-hidden shadow-md">
+        <div className="rounded-xl overflow-hidden shadow-md">
             <Carousel
                 plugins={[plugin.current]}
-                className="w-full"
                 onMouseEnter={plugin.current.stop}
                 onMouseLeave={plugin.current.reset}
             >
                 <CarouselContent>
                     {projects.map((project) => (
-                        <CarouselItem key={project.slug}>
-                            <div className="relative h-[50vh] md:h-[60vh] lg:h-[70vh] flex items-center justify-center overflow-hidden rounded-xl">
+                        <CarouselItem key={project.slug} className="pl-2 md:pl-4">
+                            <div className="relative h-[45vh] xs:h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] flex items-center justify-center overflow-hidden rounded-xl">
                                 <div className="absolute inset-0">
                                     <Image
                                         src={project.image}
                                         alt={`${project.name} screenshot`}
                                         fill
                                         className="object-cover brightness-[0.6] transition-transform duration-700 hover:scale-105"
-                                        priority
+                                        priority={projects.indexOf(project) === 0} // only first is priority
                                     />
                                 </div>
 
-                                <div className="relative z-10 text-white text-center px-6 sm:px-12 max-w-4xl">
-                                    <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-4 drop-shadow-md">
+                                <div className="relative z-10 text-white text-center px-4 xs:px-6 sm:px-10 md:px-12 max-w-[90%] sm:max-w-3xl md:max-w-4xl">
+                                    <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4 drop-shadow-lg">
                                         {project.name}
                                     </h1>
-                                    <p className="text-lg md:text-xl lg:text-2xl mb-8 opacity-90 max-w-2xl mx-auto">
+                                    <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 opacity-90 max-w-xl mx-auto">
                                         {project.description}
                                     </p>
-                                    <Button asChild size="lg" variant="secondary" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border-white/20">
-                                        <TransitionLink href={project.url} target="_blank" rel="noopener noreferrer external">
+                                    <Button
+                                        asChild
+                                        size="lg"
+                                        variant="secondary"
+                                        className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white hover:text-white"
+                                    >
+                                        <TransitionLink
+                                            href={project.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer external"
+                                        >
                                             View Project →
                                         </TransitionLink>
                                     </Button>
@@ -68,8 +75,16 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="left-4 lg:left-8" variant="ghost" />
-                <CarouselNext className="right-4 lg:right-8" variant="ghost" />
+
+                {/* More mobile-friendly arrow positioning */}
+                <CarouselPrevious
+                    className="left-4 -translate-x-1/2 sm:translate-x-0"
+                    variant="ghost"
+                />
+                <CarouselNext
+                    className="right-4 translate-x-1/2 sm:translate-x-0"
+                    variant="ghost"
+                />
             </Carousel>
         </div>
     );

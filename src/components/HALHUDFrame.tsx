@@ -212,11 +212,11 @@ export default function HALHUDFrame() {
 
                 // Visual feedback
                 if (distance <= 0) {
-                    label.className = "hidden md:block text-zinc-500/40 line-through";
+                    label.className = "text-zinc-500/40 line-through";
                 } else if (distance < 300) {
-                    label.className = "hidden md:block text-orange-400/90";
+                    label.className = "text-orange-400/90";
                 } else {
-                    label.className = "hidden md:block text-zinc-700 dark:text-zinc-200";
+                    label.className = "text-zinc-700 dark:text-zinc-200";
                 }
             });
         };
@@ -307,14 +307,14 @@ export default function HALHUDFrame() {
             {/* Left Ruler – live distance to viewport top (countdown to 0 px) */}
             <div
                 ref={rulerContainerRef}
-                className="absolute left-10 top-1/4 bottom-1/4 w-[1px] bg-zinc-400 dark:bg-white/20 flex flex-col justify-between items-start py-8"
+                className="absolute left-4 md:left-10 top-1/4 bottom-1/4 w-[1px] bg-zinc-400 dark:bg-white/20 flex flex-col justify-between items-start py-8"
             >
                 {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex items-center gap-2">
                         <div className="w-3 h-[1px] bg-zinc-400 dark:bg-white/60" />
                         <span
                             data-ruler-label
-                            className="hidden md:block text-zinc-700 dark:text-zinc-200"
+                            className="text-zinc-700 dark:text-zinc-200"
                         >
                             ... px
                         </span>
@@ -323,12 +323,12 @@ export default function HALHUDFrame() {
             </div>
 
             {/* Top Navigation Bar */}
-            <div className="absolute top-10 left-16 right-16 flex justify-between border-t border-zinc-400 dark:border-white/20 pt-3">
+            <div className="absolute left-4 md:left-16 right-4 md:right-16 flex justify-between md:border-t border-zinc-400 dark:border-white/20 pt-3 top-auto md:top-10 bottom-[218px] md:bottom-auto">
                 <div className="leading-tight text-zinc-700 dark:text-zinc-200">
                     <p>SER_RESP: <span ref={serverRespRef} className="text-green-500">...</span></p>
                     <p>NET_LOAD: <span ref={sizeRef} id="page-size">LOADING...</span></p>
                 </div>
-                <div className="leading-tight text-zinc-700 dark:text-zinc-200">
+                <div className="leading-tight text-right text-zinc-700 dark:text-zinc-200">
                     <p>
                         DEV_MEM: <span ref={devMemRef} className="text-cyan-400">...</span>
                     </p>
@@ -339,18 +339,18 @@ export default function HALHUDFrame() {
             </div>
 
             {/* Corner Brackets */}
-            <div className="absolute top-10 left-10 w-6 h-8 border-t border-l border-zinc-400 dark:border-white/20" />
-            <div className="absolute top-10 right-10 w-6 h-8 border-t border-r border-zinc-400 dark:border-white/20" />
-            <div className="absolute bottom-32 left-10 w-8 h-8 border-b-2 border-l-2 border-zinc-400 dark:border-white/20" />
-            <div className="absolute bottom-32 right-10 w-8 h-8 border-b-2 border-r-2 border-zinc-400 dark:border-white/20" />
+            <div className="absolute top-10 left-4 md:left-10 w-6 h-8 border-t border-l border-zinc-400 dark:border-white/20" />
+            <div className="absolute top-10 right-4 md:right-10 w-6 h-8 border-t border-r border-zinc-400 dark:border-white/20" />
+            <div className="absolute bottom-[260px] md:bottom-32 left-4 md:left-10 w-8 h-8 border-b-2 border-l-2 border-zinc-400 dark:border-white/20" />
+            <div className="absolute bottom-[260px] md:bottom-32 right-4 md:right-10 w-8 h-8 border-b-2 border-r-2 border-zinc-400 dark:border-white/20" />
 
             {/* Bottom Left – PAGE_LOAD */}
-            <div className="absolute bottom-35 left-16 leading-tight text-zinc-700 dark:text-zinc-200">
+            <div className="absolute bottom-[205px] md:bottom-35 left-4 md:left-16 leading-tight text-zinc-700 dark:text-zinc-200">
                 <p>PAGE_LOAD: <span ref={pageLoadRef} id="timestamp">LOADING...</span></p>
             </div>
 
             {/* Bottom Right – SEQ_ID */}
-            <div className="absolute bottom-35 right-16 text-right leading-tight text-zinc-700 dark:text-zinc-200">
+            <div className="absolute bottom-[205px] md:bottom-35 right-4 md:right-16 text-right leading-tight text-zinc-700 dark:text-zinc-200">
                 <p>SEQ_ID: <span ref={timestampRef} id="timestamp">LOADING...</span></p>
             </div>
         </div>
