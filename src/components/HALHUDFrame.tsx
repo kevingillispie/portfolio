@@ -1,6 +1,29 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from 'next/dynamic';
+
+const LeftRuler = dynamic(() => import('./LeftRuler'), {
+    ssr: false,           // most important – never render on server
+    loading: () => null,  // or a tiny placeholder if you want
+});
+
+function useIsDesktop(breakpoint = 768) {
+    const [isDesktop, setIsDesktop] = useState(false);
+
+    useEffect(() => {
+        const mql = window.matchMedia(`(min-width: ${breakpoint}px)`);
+
+        setIsDesktop(mql.matches);
+
+        const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+        mql.addEventListener('change', onChange);
+
+        return () => mql.removeEventListener('change', onChange);
+    }, [breakpoint]);
+
+    return isDesktop;
+}
 
 function measureRefreshRate(callback: (fps: number) => void, durationMs = 2800) {
     let frameCount = 0;
@@ -87,7 +110,7 @@ export default function HALHUDFrame() {
     const pageLoadRef = useRef<HTMLSpanElement>(null);
     const timestampRef = useRef<HTMLSpanElement>(null);
     const sizeRef = useRef<HTMLSpanElement>(null);
-    const rulerContainerRef = useRef<HTMLDivElement>(null);
+    const isDesktop = useIsDesktop(1024);
     const [measuredHz, setMeasuredHz] = useState<number | null>(null);
 
     // Timestamp – unchanged
@@ -189,48 +212,6 @@ export default function HALHUDFrame() {
         return () => clearTimeout(timer);
     }, []);
 
-    // Live ruler update – distance from each tick to viewport top
-    useEffect(() => {
-        const container = rulerContainerRef.current;
-        if (!container) return;
-
-        const labels = container.querySelectorAll('span[data-ruler-label]') as NodeListOf<HTMLSpanElement>;
-        if (labels.length === 0) return;
-
-        const updateDistances = () => {
-            const scrollY = window.scrollY;
-            const containerRect = container.getBoundingClientRect();
-            const rulerHeight = container.clientHeight;
-
-            labels.forEach((label, i) => {
-                // Approximate absolute document position of this tick mark
-                const tickOffset = (i / (labels.length - 1)) * rulerHeight;
-                const absoluteTop = window.scrollY + containerRect.top + tickOffset;
-
-                const distance = Math.round(absoluteTop - scrollY);
-                label.textContent = `${Math.max(0, distance).toLocaleString()} px`;
-
-                // Visual feedback
-                if (distance <= 0) {
-                    label.className = "text-zinc-500/40 line-through";
-                } else if (distance < 300) {
-                    label.className = "text-orange-400/90";
-                } else {
-                    label.className = "text-zinc-700 dark:text-zinc-200";
-                }
-            });
-        };
-
-        updateDistances(); // initial
-        window.addEventListener('scroll', updateDistances, { passive: true });
-        window.addEventListener('resize', updateDistances);
-
-        return () => {
-            window.removeEventListener('scroll', updateDistances);
-            window.removeEventListener('resize', updateDistances);
-        };
-    }, []);
-
     // All client-only diagnostics
     useEffect(() => {
         if (typeof window === "undefined") return;
@@ -304,26 +285,8 @@ export default function HALHUDFrame() {
     return (
         <div className="absolute mt-8 inset-0 -z-[1] pointer-events-none overflow-hidden font-mono text-[10px] uppercase tracking-widest text-white/40 min-h-screen">
 
-            {/* Left Ruler – live distance to viewport top (countdown to 0 px) */}
-            <div
-                ref={rulerContainerRef}
-                className="absolute left-4 md:left-10 top-1/4 bottom-1/4 w-[1px] bg-zinc-400 dark:bg-white/20 flex flex-col justify-between items-start py-8"
-            >
-                {[...Array(6)].map((_, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                        <div className="w-3 h-[1px] bg-zinc-400 dark:bg-white/60" />
-                        <span
-                            data-ruler-label
-                            className="text-zinc-700 dark:text-zinc-200"
-                        >
-                            ... px
-                        </span>
-                    </div>
-                ))}
-            </div>
-
             {/* Top Navigation Bar */}
-            <div className="absolute left-4 md:left-16 right-4 md:right-16 flex justify-between md:border-t border-zinc-400 dark:border-white/20 pt-3 top-auto md:top-10 bottom-[218px] md:bottom-auto">
+            <div className="absolute left-4 md:left-8 xl:left-16 right-4 md:right-8 xl:right-16 flex justify-between md:border-t border-zinc-400 dark:border-white/20 pt-3 top-auto md:top-10 bottom-[218px] md:bottom-auto">
                 <div className="leading-tight text-zinc-700 dark:text-zinc-200">
                     <p>SER_RESP: <span ref={serverRespRef} className="text-green-500">...</span></p>
                     <p>NET_LOAD: <span ref={sizeRef} id="page-size">LOADING...</span></p>
@@ -338,19 +301,23 @@ export default function HALHUDFrame() {
                 </div>
             </div>
 
+            {/* Left Ruler – live distance to viewport top (countdown to 0 px) */}
+            {isDesktop && <LeftRuler />}
+
+
             {/* Corner Brackets */}
-            <div className="absolute top-10 left-4 md:left-10 w-6 h-8 border-t border-l border-zinc-400 dark:border-white/20" />
-            <div className="absolute top-10 right-4 md:right-10 w-6 h-8 border-t border-r border-zinc-400 dark:border-white/20" />
-            <div className="absolute bottom-[260px] md:bottom-32 left-4 md:left-10 w-8 h-8 border-b-2 border-l-2 border-zinc-400 dark:border-white/20" />
-            <div className="absolute bottom-[260px] md:bottom-32 right-4 md:right-10 w-8 h-8 border-b-2 border-r-2 border-zinc-400 dark:border-white/20" />
+            <div className="absolute top-10 left-4 xl:left-10 w-6 h-8 border-t border-l border-zinc-400 dark:border-white/20" />
+            <div className="absolute top-10 right-4 xl:right-10 w-6 h-8 border-t border-r border-zinc-400 dark:border-white/20" />
+            <div className="absolute bottom-[260px] md:bottom-32 left-4 xl:left-10 w-8 h-8 border-b-2 border-l-2 border-zinc-400 dark:border-white/20" />
+            <div className="absolute bottom-[260px] md:bottom-32 right-4 xl:right-10 w-8 h-8 border-b-2 border-r-2 border-zinc-400 dark:border-white/20" />
 
             {/* Bottom Left – PAGE_LOAD */}
-            <div className="absolute bottom-[205px] md:bottom-35 left-4 md:left-16 leading-tight text-zinc-700 dark:text-zinc-200">
+            <div className="absolute bottom-[205px] md:bottom-35 left-4 md:left-8 xl:left-16 leading-tight text-zinc-700 dark:text-zinc-200">
                 <p>PAGE_LOAD: <span ref={pageLoadRef} id="timestamp">LOADING...</span></p>
             </div>
 
             {/* Bottom Right – SEQ_ID */}
-            <div className="absolute bottom-[205px] md:bottom-35 right-4 md:right-16 text-right leading-tight text-zinc-700 dark:text-zinc-200">
+            <div className="absolute bottom-[205px] md:bottom-35 right-4 md:right-8 xl:right-16 text-right leading-tight text-zinc-700 dark:text-zinc-200">
                 <p>SEQ_ID: <span ref={timestampRef} id="timestamp">LOADING...</span></p>
             </div>
         </div>

@@ -147,11 +147,13 @@ export default async function Home() {
                                         ))}
                                     </div>
                                     <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                                    <CardDescription className="flex items-center gap-2 text-sm">
-                                        <CalendarDays className="h-4 w-4" />
-                                        {post.date}
-                                        <span>•</span>
-                                        {post.readTime}
+                                    <CardDescription className="flex flex-col xl:flex-row xl:items-center gap-2 text-sm">
+                                        <div className="flex items-center gap-1">
+                                            <CalendarDays className="h-4 w-4" />
+                                            <div>{post.date}</div>
+                                        </div>
+                                        <div className="hidden xl:block">•</div>
+                                        <div>{post.readTime}</div>
                                     </CardDescription>
                                 </CardHeader>
 
@@ -178,7 +180,7 @@ export default async function Home() {
                         </Button>
                     </div>
                 </section>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

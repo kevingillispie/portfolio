@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -24,9 +23,9 @@ export function BreadcrumbNav({ variant = "friendly" }: BreadcrumbNavProps) {
 
     const [postTitle, setPostTitle] = useState<string | null>(null);
 
-    // If on blog post page, fetch title
+    // Fetch title for individual blog posts
     useEffect(() => {
-        if (pathSegments[0] === "blog" && pathSegments[1]) {
+        if (pathSegments[0] === "blog" && pathSegments[1] && pathSegments[1] !== "page") {
             const slug = pathSegments[1];
             fetch(`/api/post-title?slug=${slug}`)
                 .then((res) => res.json())
@@ -41,41 +40,59 @@ export function BreadcrumbNav({ variant = "friendly" }: BreadcrumbNavProps) {
         contact: "Contact",
     };
 
-    const items = pathSegments.map((segment, index) => {
-        const href = "/" + pathSegments.slice(0, index + 1).join("/");
-        const isLast = index === pathSegments.length - 1;
+    const items = pathSegments
+        .map((segment, index) => {
+            if (segment === "page") {
+                return null;
+            }
 
-        let label = "";
+            const isPaginated = pathSegments[index - 1] === "page";
+            const href = isPaginated
+                ? "/blog"
+                : "/" + pathSegments.slice(0, index + 1).join("/");
 
-        if (variant === "pathname") {
-            label = segment.split(' ')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' ');
-        } else {
-            label = segmentToLabel[segment] ||
-                segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " ");
-        }
+            const isLast = index === pathSegments.length - 1;
 
-        // Override last segment with real title if fetched
-        if (isLast && pathSegments[0] === "blog" && postTitle) {
-            label = postTitle;
-        }
+            let label = "";
 
-        return (
-            <React.Fragment key={href}>
-                {index > 0 && <BreadcrumbSeparator />}
-                <BreadcrumbItem>
-                    {isLast ? (
-                        <BreadcrumbPage>{label}</BreadcrumbPage>
-                    ) : (
-                        <BreadcrumbLink asChild>
-                            <TransitionLink href={href}>{label}</TransitionLink>
-                        </BreadcrumbLink>
-                    )}
-                </BreadcrumbItem>
-            </React.Fragment>
-        );
-    });
+            if (variant === "pathname") {
+                label = segment
+                    .split(" ")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
+            } else {
+                label =
+                    segmentToLabel[segment] ||
+                    segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " ");
+            }
+
+            if (isPaginated && isLast) {
+                label = segment; // e.g. "2"
+            }
+
+            if (isLast && pathSegments[0] === "blog" && postTitle && pathSegments[1] !== "page") {
+                label = postTitle;
+            }
+
+            // Use a more unique key: index + segment (or index + href if you prefer)
+            const uniqueKey = `${index}-${segment}`;
+
+            return (
+                <React.Fragment key={uniqueKey}>
+                    {index > 0 && <BreadcrumbSeparator />}
+                    <BreadcrumbItem>
+                        {isLast ? (
+                            <BreadcrumbPage>{label}</BreadcrumbPage>
+                        ) : (
+                            <BreadcrumbLink asChild>
+                                <TransitionLink href={href}>{label}</TransitionLink>
+                            </BreadcrumbLink>
+                        )}
+                    </BreadcrumbItem>
+                </React.Fragment>
+            );
+        })
+        .filter(Boolean);
 
     return (
         <Breadcrumb>

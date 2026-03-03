@@ -1,18 +1,10 @@
 import React from 'react';
 import { getSortedPostsData } from '@/lib/posts';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import TransitionLink from '@/components/TransitionLink';
 import { Badge } from '@/components/ui/badge';
 import { BreadcrumbNav } from '@/components/BreadcrumbNav';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
 import {
     Pagination,
     PaginationContent,
@@ -33,10 +25,10 @@ export const metadata: Metadata = {
 export default async function BlogListPage({
     params,
 }: {
-    params?: Promise<{ page?: string[] }>;
+    params?: Promise<{ num?: string[] }>;
 }) {
     const resolvedParams = await params;
-    const pageSegments = resolvedParams?.page || [];
+    const pageSegments = resolvedParams?.num || [];
 
     if (pageSegments.length > 1) {
         notFound();
@@ -51,6 +43,10 @@ export default async function BlogListPage({
         }
     }
 
+    if (currentPage === 1) {
+        redirect('/blog');
+    }
+
     const allPosts = await getSortedPostsData();
     const postsPerPage = 20;
     const totalPages = Math.ceil(allPosts.length / postsPerPage);
@@ -62,8 +58,8 @@ export default async function BlogListPage({
     const startIndex = (currentPage - 1) * postsPerPage;
     const paginatedPosts = allPosts.slice(startIndex, startIndex + postsPerPage);
 
-    const featured = allPosts.find((p) => p.featured);
-    const recent = allPosts.filter((p) => !p.featured).slice(0, 4);
+    // const featured = allPosts.find((p) => p.featured);
+    // const recent = allPosts.filter((p) => !p.featured).slice(0, 4);
 
 
     return (
@@ -81,87 +77,6 @@ export default async function BlogListPage({
                 </p>
             </div>
 
-            {/* Featured post */}
-            {featured && (
-                <section className="mb-16">
-                    <TransitionLink href={`/blog/${featured.slug}`} className="group block no-underline">
-                        <Card className="overflow-hidden border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-2xl">
-                            <div className="md:flex">
-                                <div className="md:w-1/2 bg-gradient-to-br from-primary/10 to-primary/5 p-8 flex items-center justify-center">
-                                    <div>
-                                        <div className="flex flex-wrap gap-2 mb-4">
-                                            {featured.tags.map((tag) => (
-                                                <Badge key={tag} variant="default">
-                                                    {tag}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 group-hover:text-primary transition-colors">
-                                            {featured.title}
-                                        </h2>
-                                        <p className="text-lg text-muted-foreground mb-6 line-clamp-3">
-                                            {featured.description || featured.excerpt}
-                                        </p>
-                                        <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                                            <span className="flex items-center gap-1.5">
-                                                <CalendarDays className="h-4 w-4" />
-                                                {featured.date}
-                                            </span>
-                                            <span className="flex items-center gap-1.5">
-                                                <Clock className="h-4 w-4" />
-                                                {featured.readTime || 'Reading time TBD'}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="md:w-1/2 h-64 md:h-auto bg-muted relative">
-                                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/30 text-6xl font-bold">
-                                        Featured
-                                    </div>
-                                </div>
-                            </div>
-                        </Card>
-                    </TransitionLink>
-                </section>
-            )}
-
-            {/* Recent card-style posts */}
-            <section className="mb-20">
-                <h2 className="text-2xl font-bold mb-8 text-center md:text-left">Recent Posts</h2>
-                <div className="grid gap-8 md:grid-cols-2">
-                    {recent.map((post) => (
-                        <TransitionLink key={post.slug} href={`/blog/${post.slug}`} className="group block no-underline">
-                            <Card className="h-full transition-all hover:shadow-xl hover:-translate-y-1">
-                                <CardHeader>
-                                    <div className="flex flex-wrap gap-2 mb-3">
-                                        {post.tags.map((tag) => (
-                                            <Badge key={tag} variant="secondary">
-                                                {tag}
-                                            </Badge>
-                                        ))}
-                                    </div>
-                                    <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-                                        <h3 className='text-xl'>{post.title}</h3>
-                                    </CardTitle>
-                                    <CardDescription className="flex gap-1 mt-2">
-                                        <Badge><CalendarDays className="h-4 w-4" /> {post.date}</Badge>
-                                        <Badge variant={"secondary"}><Clock className="h-4 w-4" /> {post.readTime || 'TBD'}</Badge>
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-muted-foreground line-clamp-3 p-2 pl-3 text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">{post.description || post.excerpt}</p>
-                                </CardContent>
-                                <CardFooter>
-                                    <span className="text-sm font-medium text-primary group-hover:underline">
-                                        Read more →
-                                    </span>
-                                </CardFooter>
-                            </Card>
-                        </TransitionLink>
-                    ))}
-                </div>
-            </section>
-
             {/* All Posts – now paginated, shows EVERY post */}
             <section>
                 <h2 className="text-2xl font-bold mb-6 text-center md:text-left">All Posts</h2>
@@ -170,7 +85,7 @@ export default async function BlogListPage({
                     {paginatedPosts.map((post) => (
                         <TransitionLink
                             key={post.slug}
-                            href={`/blog/${post.slug}`}
+                            href={`/blog/${post.slug}?fromPage=${currentPage}`}
                             className={cn(
                                 "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-zinc-900 hover:bg-zinc-50/50 shadow-lg",
                                 post.unread && "border-l-4 border-l-primary bg-accent/30"
@@ -199,7 +114,7 @@ export default async function BlogListPage({
                                     <Badge variant="default"><div className='flex gap-2'><CalendarDays className="h-3.5 w-3.5" />{post.date}</div></Badge>
                                     <Badge variant="secondary"><div className='flex gap-2'><Clock className="h-4 w-4" /> {post.readTime || 'TBD'}</div></Badge>
                                 </div>
-                                <ChevronRight className="ml-auto h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity border border-zinc-500 rounded" color="#333" strokeWidth={4} />
+                                <ChevronRight className="ml-auto h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity" />
                             </div>
                         </TransitionLink>
                     ))}

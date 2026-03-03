@@ -19,7 +19,7 @@ export default function Navbar() {
     const isActive = (path: string) => pathname === path;
 
     return (
-        <div className="fixed top-4 left-2 sm:left-10 z-50 flex items-center gap-3">
+        <div className="fixed top-4 left-2 lg:left-4 xl:left-10 z-50 flex items-center gap-3">
             {/* Home Button */}
             <Button
                 variant="outline"
