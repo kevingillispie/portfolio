@@ -184,18 +184,13 @@ export default async function BlogListPage({
                             href={`/blog/${post.slug}`}
                             className={cn(
                                 "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-zinc-900 hover:bg-zinc-50/50 shadow-lg",
-                                post.unread && "border-l-4 border-l-primary bg-accent/30"
                             )}
                         >
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-3 mb-2">
-                                    {post.unread && (
-                                        <div className="h-2.5 w-2.5 rounded-full bg-primary flex-shrink-0" />
-                                    )}
                                     <h3
                                         className={cn(
                                             "text-base font-medium",
-                                            post.unread && "font-semibold"
                                         )}
                                     >
                                         {post.title}
