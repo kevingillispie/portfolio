@@ -160,7 +160,7 @@ export default async function Home() {
 
                                     <CardContent className="flex-1">
                                         <p className="text-muted-foreground line-clamp-3">
-                                            {post.description}
+                                            {post.excerpt}
                                         </p>
                                     </CardContent>
 
