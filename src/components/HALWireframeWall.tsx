@@ -39,26 +39,34 @@ export default function HALWireframeWall({ rows = 6, cols = 14 }) {
         // 2. THE LOOP
         const triggerRandomModule = () => {
             if (activeIndices.size >= 5) return;
-            let randomIndex = Math.floor(Math.random() * modules.length);
+            const randomIndex = Math.floor(Math.random() * modules.length);
             if (activeIndices.has(randomIndex)) return;
 
             activeIndices.add(randomIndex);
             const targetModule = modules[randomIndex];
+
+            // Safely query the front face
             const frontFace = targetModule.querySelector(".front-face");
 
-            animate(targetModule, {
-                translateZ: [0, 50, 0],
-                duration: 3000,
-                easing: "easeInOutQuart",
-                onComplete: () => activeIndices.delete(randomIndex),
-            });
+            // Only animate if we found a valid element
+            if (frontFace instanceof HTMLElement) {
+                animate(targetModule, {
+                    translateZ: [0, 50, 0],
+                    duration: 3000,
+                    easing: "easeInOutQuart",
+                    onComplete: () => activeIndices.delete(randomIndex),
+                });
 
-            animate(frontFace, {
-                backgroundColor: ["rgba(252, 165, 165, 0.6)", "rgba(255, 255, 255, 1)", "rgba(252, 165, 165, 0.6)"],
-                borderColor: ["rgba(0, 0, 0, 0.6)", "rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 0.6)"],
-                duration: 3000,
-                easing: "easeInOutQuart"
-            });
+                animate(frontFace, {
+                    backgroundColor: ["rgba(252, 165, 165, 0.6)", "rgba(255, 255, 255, 1)", "rgba(252, 165, 165, 0.6)"],
+                    borderColor: ["rgba(0, 0, 0, 0.6)", "rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 0.6)"],
+                    duration: 3000,
+                    easing: "easeInOutQuart"
+                });
+            } else {
+                console.warn("No .front-face found in module", randomIndex);
+                activeIndices.delete(randomIndex);
+            }
         };
 
         const interval = setInterval(triggerRandomModule, 800);
