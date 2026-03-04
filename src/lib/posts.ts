@@ -10,7 +10,7 @@ export interface PostData {
     slug: string;
     title: string;
     date: string;
-    description: string;
+    excerpt: string;
     tags: string[];
     featured?: boolean;
     readTime?: string;
@@ -43,7 +43,7 @@ export async function getPostData(slug: string): Promise<PostData | null> {
         contentHtml,
         title: data.title as string,
         date: postDate,
-        description: data.description as string,
+        excerpt: data.description as string,
         tags: (data.tags as string[]) || [],
         featured: data.featured as boolean || false,
         readTime: `${readTimeMinutes} min read (${wordCount} words)`,

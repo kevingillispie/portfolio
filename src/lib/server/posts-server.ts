@@ -7,7 +7,7 @@ export interface PostData {
     slug: string;
     title: string;
     date: string;
-    description: string;
+    excerpt: string;
     tags: string[];
     featured?: boolean;
     readTime?: string;
@@ -75,7 +75,7 @@ export async function getPostData(slug: string): Promise<PostData | null> {
             slug: post.slug,
             title: post.title,
             date: format(new Date(post.date), 'MMMM d, yyyy'),
-            description: plainExcerpt || 'No excerpt available.',
+            excerpt: plainExcerpt || 'No excerpt available.',
             tags: allTags.slice(0, 3),
             featured: false, // ACF later
             readTime: calculateReadTime(post.content ?? ''),
@@ -144,7 +144,7 @@ export async function getLatestPosts(limit = 3): Promise<PostData[]> {
                 slug: post.slug,
                 title: post.title,
                 date: format(new Date(post.date), 'MMMM d, yyyy'),
-                description: plainExcerpt || 'No excerpt available.',
+                excerpt: plainExcerpt || 'No excerpt available.',
                 tags: allTags.slice(0, 3),
                 featured: false,
                 readTime: calculateReadTime(post.content ?? ''), // now real!

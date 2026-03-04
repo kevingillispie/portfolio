@@ -7,7 +7,7 @@ export interface BlogPost {
     slug: string;
     title: string;
     date: string; // formatted
-    description: string;
+    excerpt: string;
     tags: string[];
     featured?: boolean;
     readTime?: string;
@@ -25,6 +25,7 @@ const GET_FEATURED_AND_RECENT = `
         title
         date
         excerpt(format: RENDERED)
+        content(format: RENDERED)
         tags { nodes { name } }
         categories { nodes { name } }
         # acf { featured }  # if you add ACF + WPGraphQL-ACF extension
@@ -46,6 +47,7 @@ const GET_PAGINATED_POSTS = `
         title
         date
         excerpt(format: RENDERED)
+        content(format: RENDERED)
         tags { nodes { name } }
         categories { nodes { name } }
       }
@@ -82,7 +84,7 @@ function mapToBlogPost(node: WPPostNode): BlogPost {
         slug: node.slug,
         title: node.title,
         date: format(new Date(node.date), 'MMMM d, yyyy'),
-        description: plainExcerpt || 'No excerpt available.',
+        excerpt: plainExcerpt || 'No excerpt available.',
         tags: allTags.slice(0, 5), // adjust as needed
         featured: false, // placeholder; use ACF later
         readTime: '5 min read', // placeholder; compute from content later

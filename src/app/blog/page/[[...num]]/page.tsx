@@ -106,7 +106,7 @@ export default async function BlogListPage({
                                     </h3>
                                 </div>
                                 <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
-                                    {post.description || post.excerpt}
+                                    {post.excerpt}
                                 </p>
                             </div>
                             <div className="flex items-center gap-6 text-xs text-muted-foreground whitespace-nowrap">

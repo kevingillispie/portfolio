@@ -111,7 +111,7 @@ export default async function BlogListPage({
                                             {featured.title}
                                         </h2>
                                         <p className="text-lg text-muted-foreground mb-6 line-clamp-3">
-                                            {featured.description || featured.excerpt}
+                                            {featured.excerpt}
                                         </p>
                                         <div className="flex items-center gap-6 text-sm text-muted-foreground">
                                             <span className="flex items-center gap-1.5">
@@ -160,7 +160,7 @@ export default async function BlogListPage({
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-muted-foreground line-clamp-3 p-2 pl-3 text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">{post.description || post.excerpt}</p>
+                                    <p className="text-muted-foreground line-clamp-3 p-2 pl-3 text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">{post.excerpt}</p>
                                 </CardContent>
                                 <CardFooter>
                                     <span className="text-sm font-medium text-primary group-hover:underline">
@@ -202,7 +202,7 @@ export default async function BlogListPage({
                                     </h3>
                                 </div>
                                 <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
-                                    {post.description || post.excerpt}
+                                    {post.excerpt}
                                 </p>
                             </div>
                             <div className="flex items-center gap-6 text-xs text-muted-foreground whitespace-nowrap">
