@@ -1,5 +1,6 @@
 import React from 'react';
-import { getSortedPostsData } from '@/lib/posts';
+import { getFeaturedAndRecent, getPaginatedPosts } from '@/lib/server/blog-server';
+import type { BlogPost } from '@/lib/server/blog-server';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import TransitionLink from '@/components/TransitionLink';
@@ -37,34 +38,44 @@ export default async function BlogListPage({
 }) {
     const resolvedParams = await params;
     const pageSegments = resolvedParams?.page || [];
+    const POSTS_PER_PAGE = 20;
 
-    if (pageSegments.length > 1) {
-        notFound();
-    }
-
+    if (pageSegments.length > 1) notFound();
 
     let currentPage = 1;
     if (pageSegments.length === 1) {
         currentPage = Number(pageSegments[0]);
-        if (isNaN(currentPage) || currentPage < 1) {
-            notFound();
-        }
+        if (isNaN(currentPage) || currentPage < 1) notFound();
     }
 
-    const allPosts = await getSortedPostsData();
-    const postsPerPage = 20;
-    const totalPages = Math.ceil(allPosts.length / postsPerPage);
+    // Featured + recent (independent of pagination)
+    const { featured, recent } = await getFeaturedAndRecent();
 
-    if (currentPage > totalPages) {
+    // For paginated all posts: fetch cumulatively up to currentPage
+    let allPosts: BlogPost[] = [];
+    let endCursor: string | null = null;
+    let hasMore = true;
+
+
+    // Loop to fetch pages sequentially
+    for (let i = 1; i <= currentPage && hasMore; i++) {
+        const { posts, pageInfo } = await getPaginatedPosts(endCursor);
+        allPosts = [...allPosts, ...posts];
+        endCursor = pageInfo.endCursor;
+        hasMore = pageInfo.hasNextPage;
+    }
+
+    // Slice for the current page
+    const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+    const paginatedPosts = allPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
+
+    // Approximate total pages (improves when we fetch more pages than needed)
+    // For better accuracy, you could fetch totalCount separately in a future step
+    const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE) || 1;
+
+    if (currentPage > totalPages && allPosts.length > 0) {
         notFound();
     }
-
-    const startIndex = (currentPage - 1) * postsPerPage;
-    const paginatedPosts = allPosts.slice(startIndex, startIndex + postsPerPage);
-
-    const featured = allPosts.find((p) => p.featured);
-    const recent = allPosts.filter((p) => !p.featured).slice(0, 4);
-
 
     return (
         <div className="container mx-auto max-w-5xl py-12 md:py-20 px-2 lg:px-0">

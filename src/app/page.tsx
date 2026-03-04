@@ -42,7 +42,7 @@ const projects = [
 
 export default async function Home() {
     const latestPosts = await getLatestPosts(3);
-
+    console.log(latestPosts)
     return (
         <div className="relative w-full overflow-hidden">
             <HALWireframeWall rows={8} cols={16} />
@@ -127,51 +127,58 @@ export default async function Home() {
                     </div>
 
                     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        {latestPosts.map((post) => (
-                            <Card key={post.slug} className="flex flex-col overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
-                                <div className="aspect-video relative">
-                                    <Image
-                                        src="/placeholder.svg?height=400&width=600&text=Blog+Post"
-                                        alt={post.title}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-
-                                <CardHeader>
-                                    <div className="flex flex-wrap gap-2 mb-3">
-                                        {post.tags.slice(0, 3).map((tag) => (
-                                            <Badge key={tag} variant="secondary">
-                                                {tag}
-                                            </Badge>
-                                        ))}
+                        {latestPosts.length > 0 ? (
+                            latestPosts.map((post) => (
+                                <Card key={post.slug} className="flex flex-col overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
+                                    <div className="aspect-video relative">
+                                        <Image
+                                            src="/placeholder.svg?height=400&width=600&text=Blog+Post"
+                                            alt={post.title}
+                                            fill
+                                            className="object-cover"
+                                        />
                                     </div>
-                                    <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                                    <CardDescription className="flex flex-col xl:flex-row xl:items-center gap-2 text-sm">
-                                        <div className="flex items-center gap-1">
-                                            <CalendarDays className="h-4 w-4" />
-                                            <div>{post.date}</div>
+
+                                    <CardHeader>
+                                        <div className="flex flex-wrap gap-2 mb-3">
+                                            {post.tags.slice(0, 3).map((tag) => (
+                                                <Badge key={tag} variant="secondary">
+                                                    {tag}
+                                                </Badge>
+                                            ))}
                                         </div>
-                                        <div className="hidden xl:block">•</div>
-                                        <div>{post.readTime}</div>
-                                    </CardDescription>
-                                </CardHeader>
+                                        <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                                        <CardDescription className="flex flex-col xl:flex-row xl:items-center gap-2 text-sm">
+                                            <div className="flex items-center gap-1">
+                                                <CalendarDays className="h-4 w-4" />
+                                                <div>{post.date}</div>
+                                            </div>
+                                            <div className="hidden xl:block">•</div>
+                                            <div>{post.readTime}</div>
+                                        </CardDescription>
+                                    </CardHeader>
 
-                                <CardContent className="flex-1">
-                                    <p className="text-muted-foreground line-clamp-3">
-                                        {post.description}
-                                    </p>
-                                </CardContent>
+                                    <CardContent className="flex-1">
+                                        <p className="text-muted-foreground line-clamp-3">
+                                            {post.description}
+                                        </p>
+                                    </CardContent>
 
-                                <CardFooter className="pt-0">
-                                    <Button variant="ghost" asChild className="ml-auto">
-                                        <TransitionLink href={`/blog/${post.slug}`}>
-                                            Read more →
-                                        </TransitionLink>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        ))}
+                                    <CardFooter className="pt-0">
+                                        <Button variant="ghost" asChild className="ml-auto">
+                                            <TransitionLink href={`/blog/${post.slug}`}>
+                                                Read more →
+                                            </TransitionLink>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            ))
+                        ) : (
+                            <div className="col-span-full text-center py-12 text-muted-foreground">
+                                No recent posts available yet. Check back soon!
+                            </div>
+                        )}
+
                     </div>
 
                     <div className="text-center mt-12 mb-12 md:mb-0">
