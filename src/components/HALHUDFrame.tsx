@@ -91,10 +91,10 @@ async function estimatePageMemory() {
         }
     }
 
-    // Legacy fallback (Chromium only, deprecated but still works in many cases)
-    // @ts-expect-error - non-standard
-    if (performance.memory && typeof performance.memory.usedJSHeapSize === "number") {
-        const mb = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
+    // Legacy Chromium fallback
+    const mem = (performance as any).memory;
+    if (mem && typeof mem.usedJSHeapSize === "number") {
+        const mb = (mem.usedJSHeapSize / 1024 / 1024).toFixed(1);
         return `${mb} MB (JS heap)`;
     }
 
