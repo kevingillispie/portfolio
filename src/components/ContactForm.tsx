@@ -54,9 +54,9 @@ export default function ContactForm() {
                 description: state.message,
             });
             form.reset();
-        } else if (state?.error) {
+        } else if (state && !state.success) {
             toast.error("Error", {
-                description: state.error,
+                description: state.message || "Something went wrong",
             });
         }
     }, [state, form]);
