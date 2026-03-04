@@ -1,7 +1,7 @@
 // src/lib/server/blog-server.ts
 import { wpQuery } from '@/lib/graphql';
 import { format } from 'date-fns';
-import { htmlToText } from 'html-to-text'; // npm install html-to-text if not already
+import { htmlToText } from 'html-to-text';
 
 export interface BlogPost {
     slug: string;
