@@ -78,7 +78,7 @@ export default async function BlogListPage({
     }
 
     return (
-        <div className="container mx-auto max-w-5xl py-12 md:py-20 px-2 lg:px-0">
+        <div className="container mx-auto max-w-5xl py-12 md:py-20 px-6 lg:px-0 min-h-100">
 
             <div className="hero-container text-center mt-8 pb-12">
                 <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
@@ -267,7 +267,10 @@ export default async function BlogListPage({
                         </Pagination>
 
                     </div>
-                )}
+                ) || (
+                        <div className='mb-24'></div>
+                    )
+                }
             </section>
         </div>
     );

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
     return (
-        <div className="container mx-auto max-w-5xl py-12 md:py-20">
+        <div className="container mx-auto mb-24 max-w-5xl py-12 md:py-20 px-6 md:px-0">
             <div className="hero-container text-center mt-8 pb-12">
                 <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
                     <BreadcrumbNav />
