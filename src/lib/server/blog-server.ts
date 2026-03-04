@@ -95,13 +95,18 @@ export async function getFeaturedAndRecent(): Promise<{
     featured: BlogPost | null;
     recent: BlogPost[];
 }> {
-    const data = await wpQuery<any>(GET_FEATURED_AND_RECENT, { first: 50 });
+    type FeaturedResponse = {
+        posts: {
+            nodes: WPPostNode[];
+        };
+    };
+    const data = await wpQuery<FeaturedResponse>(GET_FEATURED_AND_RECENT, { first: 50 });
 
     const rawPosts = data?.posts?.nodes ?? [];
     const mapped = rawPosts.map(mapToBlogPost);
 
-    const featured = mapped.find(p => p.featured) ?? null; // or sort by date if no ACF
-    const recent = mapped.filter(p => !p.featured).slice(0, 4);
+    const featured = mapped.find((p: BlogPost) => p.featured) ?? null;
+    const recent = mapped.filter((p: BlogPost) => !p.featured).slice(0, 4);
 
     return { featured, recent };
 }
