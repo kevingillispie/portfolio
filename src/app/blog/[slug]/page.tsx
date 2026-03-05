@@ -43,7 +43,7 @@ export default async function PostPage({ params }: Props) {
     const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 
     return (
-        <article className="container max-w-4xl mx-auto py-16 md:py-24 px-4 lg:px-0">
+        <article className="container max-w-4xl mx-auto py-16 md:py-24 px-4 lg:px-0 min-h-screen">
             <div className="mt-10 mb-6">
                 <BackButton />
             </div>
