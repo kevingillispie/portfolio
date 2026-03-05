@@ -1,5 +1,6 @@
 import React from 'react';
-import { getSortedPostsData } from '@/lib/posts';
+import { getLatestPosts } from '@/lib/server/posts-server';
+import type { PostData } from '@/lib/server/posts-server';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import TransitionLink from '@/components/TransitionLink';
@@ -34,7 +35,6 @@ export default async function BlogListPage({
         notFound();
     }
 
-
     let currentPage = 1;
     if (pageSegments.length === 1) {
         currentPage = Number(pageSegments[0]);
@@ -47,7 +47,7 @@ export default async function BlogListPage({
         redirect('/blog');
     }
 
-    const allPosts = await getSortedPostsData();
+    const allPosts = await getLatestPosts(200); // ← fixed: use correct function + high limit
     const postsPerPage = 20;
     const totalPages = Math.ceil(allPosts.length / postsPerPage);
 
@@ -58,13 +58,8 @@ export default async function BlogListPage({
     const startIndex = (currentPage - 1) * postsPerPage;
     const paginatedPosts = allPosts.slice(startIndex, startIndex + postsPerPage);
 
-    // const featured = allPosts.find((p) => p.featured);
-    // const recent = allPosts.filter((p) => !p.featured).slice(0, 4);
-
-
     return (
         <div className="container mx-auto max-w-5xl py-12 md:py-20 px-2 lg:px-0">
-
             <div className="hero-container text-center mt-8 pb-12">
                 <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
                     <BreadcrumbNav variant="pathname" />
@@ -82,7 +77,7 @@ export default async function BlogListPage({
                 <h2 className="text-2xl font-bold mb-6 text-center md:text-left">All Posts</h2>
 
                 <div className="space-y-1">
-                    {paginatedPosts.map((post) => (
+                    {paginatedPosts.map((post: PostData) => (
                         <TransitionLink
                             key={post.slug}
                             href={`/blog/${post.slug}?fromPage=${currentPage}`}
@@ -92,13 +87,7 @@ export default async function BlogListPage({
                         >
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <h3
-                                        className={cn(
-                                            "text-base font-medium"
-                                        )}
-                                    >
-                                        {post.title}
-                                    </h3>
+                                    <h3 className="text-base font-medium">{post.title}</h3>
                                 </div>
                                 <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
                                     {post.excerpt}
@@ -106,8 +95,18 @@ export default async function BlogListPage({
                             </div>
                             <div className="flex items-center gap-6 text-xs text-muted-foreground whitespace-nowrap">
                                 <div className="flex items-center gap-1">
-                                    <Badge variant="default"><div className='flex gap-2'><CalendarDays className="h-3.5 w-3.5" />{post.date}</div></Badge>
-                                    <Badge variant="secondary"><div className='flex gap-2'><Clock className="h-4 w-4" /> {post.readTime || 'TBD'}</div></Badge>
+                                    <Badge variant="default">
+                                        <div className="flex gap-2">
+                                            <CalendarDays className="h-3.5 w-3.5" />
+                                            {post.date}
+                                        </div>
+                                    </Badge>
+                                    <Badge variant="secondary">
+                                        <div className="flex gap-2">
+                                            <Clock className="h-4 w-4" />
+                                            {post.readTime || 'TBD'}
+                                        </div>
+                                    </Badge>
                                 </div>
                                 <ChevronRight className="ml-auto h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity" />
                             </div>
@@ -169,7 +168,6 @@ export default async function BlogListPage({
                                 </PaginationItem>
                             </PaginationContent>
                         </Pagination>
-
                     </div>
                 )}
             </section>
