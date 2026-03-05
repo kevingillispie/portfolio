@@ -1,9 +1,8 @@
-import { getPostData, getSortedPostsData } from '@/lib/posts';
+import { getPostData, getAllPostSlugs, getLatestPosts } from '@/lib/server/posts-server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { CalendarDays, Clock, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CalendarDays, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { BackButton } from '@/components/BackButton';
 import TransitionLink from '@/components/TransitionLink';
 
@@ -13,10 +12,8 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-    const posts = await getSortedPostsData();
-    return posts.map((post) => ({
-        slug: post.slug,
-    }));
+    const slugs = await getAllPostSlugs(); // light query, only slugs
+    return slugs.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -30,14 +27,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export default async function PostPage({ params, searchParams }: Props) {
+export default async function PostPage({ params }: Props) {
     const { slug } = await params;
     const post = await getPostData(slug);
 
     if (!post) notFound();
 
-    // Get all posts to find prev/next
-    const allPosts = await getSortedPostsData();
+    // Prev/next: use limited fetch (latest 200 should cover most cases)
+    const allPosts = await getLatestPosts(200);
     const currentIndex = allPosts.findIndex((p) => p.slug === slug);
 
     if (currentIndex === -1) notFound();
@@ -88,29 +85,29 @@ export default async function PostPage({ params, searchParams }: Props) {
                 dangerouslySetInnerHTML={{ __html: post.contentHtml }}
             />
 
-            {/* Pagination: Prev / Next */}
+            {/* Prev / Next */}
             {(prevPost || nextPost) && (
                 <nav className="my-16 flex flex-wrap sm:flex-row justify-center sm:justify-between gap-1 border-t pt-4">
                     {nextPost ? (
                         <TransitionLink href={`/blog/${nextPost.slug}`}>
-                            <Badge variant={"default"} className='my-1'>
+                            <Badge variant="default" className="my-1">
                                 <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
-                                Next |<div className="font-medium italic line-clamp-1">{nextPost.title}</div>
+                                Next | <div className="font-medium italic line-clamp-1">{nextPost.title}</div>
                             </Badge>
                         </TransitionLink>
                     ) : (
-                        <div className="flex-1" /> // spacer
+                        <div className="flex-1" />
                     )}
 
                     {prevPost ? (
                         <TransitionLink href={`/blog/${prevPost.slug}`}>
-                            <Badge variant={"default"} className='my-1'>
-                                <span className="font-medium italic line-clamp-1">{prevPost.title}</span>| Prev
+                            <Badge variant="default" className="my-1">
+                                <span className="font-medium italic line-clamp-1">{prevPost.title}</span> | Prev
                                 <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                             </Badge>
                         </TransitionLink>
                     ) : (
-                        <div className="flex-1" /> // spacer
+                        <div className="flex-1" />
                     )}
                 </nav>
             )}

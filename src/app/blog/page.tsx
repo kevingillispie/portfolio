@@ -1,6 +1,7 @@
 import React from 'react';
-import { getFeaturedAndRecent, getPaginatedPosts } from '@/lib/server/blog-server';
-import type { BlogPost } from '@/lib/server/blog-server';
+import { wpQuery } from '@/lib/graphql';
+import { getFeaturedAndRecent, getPaginatedPosts } from '@/lib/server/posts-server';
+import type { PostData } from '@/lib/server/posts-server';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import TransitionLink from '@/components/TransitionLink';
@@ -31,6 +32,15 @@ export const metadata: Metadata = {
     description: 'Thoughts, tutorials, and lessons on web development, Next.js, security, SEO, and more.',
 };
 
+const POSTS_PER_PAGE = 20;
+
+// Optional: separate query for total count (requires the plugin)
+const GET_TOTAL_COUNT = `
+    query GetPostTotalCount {
+        postTotalCount
+    }
+`;
+
 export default async function BlogListPage({
     params,
 }: {
@@ -38,7 +48,6 @@ export default async function BlogListPage({
 }) {
     const resolvedParams = await params;
     const pageSegments = resolvedParams?.page || [];
-    const POSTS_PER_PAGE = 20;
 
     if (pageSegments.length > 1) notFound();
 
@@ -48,16 +57,14 @@ export default async function BlogListPage({
         if (isNaN(currentPage) || currentPage < 1) notFound();
     }
 
-    // Featured + recent (independent of pagination)
+    // Featured + recent
     const { featured, recent } = await getFeaturedAndRecent();
 
-    // For paginated all posts: fetch cumulatively up to currentPage
-    let allPosts: BlogPost[] = [];
+    // Paginated posts (cumulative fetch)
+    let allPosts: PostData[] = [];
     let endCursor: string | null = null;
     let hasMore = true;
 
-
-    // Loop to fetch pages sequentially
     for (let i = 1; i <= currentPage && hasMore; i++) {
         const { posts, pageInfo } = await getPaginatedPosts(endCursor);
         allPosts = [...allPosts, ...posts];
@@ -65,21 +72,30 @@ export default async function BlogListPage({
         hasMore = pageInfo.hasNextPage;
     }
 
-    // Slice for the current page
     const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
     const paginatedPosts = allPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
-    // Approximate total pages (improves when we fetch more pages than needed)
-    // For better accuracy, you could fetch totalCount separately in a future step
-    const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE) || 1;
+    // Try to get accurate total count (plugin-dependent)
+    let totalCount = 0;
+    try {
+        const totalData = await wpQuery<{ postTotalCount: number }>(GET_TOTAL_COUNT);
+        totalCount = totalData?.postTotalCount ?? 0;
+    } catch (error) {
+        console.warn('Could not fetch postTotalCount:', error);
+        // Fallback to approximation if plugin not active
+    }
+
+    const totalPages = totalCount > 0
+        ? Math.ceil(totalCount / POSTS_PER_PAGE)
+        : Math.ceil(allPosts.length / POSTS_PER_PAGE) || 1;
 
     if (currentPage > totalPages && allPosts.length > 0) {
         notFound();
     }
 
     return (
-        <div className="container mx-auto max-w-5xl py-12 md:py-20 px-6 lg:px-0 min-h-100">
-
+        <div className="container mx-auto max-w-5xl py-12 md:py-20 px-6 lg:px-0 min-h-screen">
+            {/* Hero */}
             <div className="hero-container text-center mt-8 pb-12">
                 <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
                     <BreadcrumbNav variant="pathname" />
@@ -93,7 +109,7 @@ export default async function BlogListPage({
             </div>
 
             {/* Featured post */}
-            {featured && (
+            {featured ? (
                 <section className="mb-16">
                     <TransitionLink href={`/blog/${featured.slug}`} className="group block no-underline">
                         <Card className="overflow-hidden border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-2xl">
@@ -134,90 +150,122 @@ export default async function BlogListPage({
                         </Card>
                     </TransitionLink>
                 </section>
+            ) : (
+                <div className="text-center py-12 text-muted-foreground border rounded-lg mb-16">
+                    No featured post yet.
+                </div>
             )}
 
-            {/* Recent card-style posts */}
+            {/* Recent posts */}
             <section className="mb-20">
                 <h2 className="text-2xl font-bold mb-8 text-center md:text-left">Recent Posts</h2>
-                <div className="grid gap-8 md:grid-cols-2">
-                    {recent.map((post) => (
-                        <TransitionLink key={post.slug} href={`/blog/${post.slug}`} className="group block no-underline">
-                            <Card className="h-full transition-all hover:shadow-xl hover:-translate-y-1">
-                                <CardHeader>
-                                    <div className="flex flex-wrap gap-2 mb-3">
-                                        {post.tags.map((tag) => (
-                                            <Badge key={tag} variant="secondary">
-                                                {tag}
+                {recent.length > 0 ? (
+                    <div className="grid gap-8 md:grid-cols-2">
+                        {recent.map((post: PostData) => (
+                            <TransitionLink key={post.slug} href={`/blog/${post.slug}`} className="group block no-underline">
+                                <Card className="h-full transition-all hover:shadow-xl hover:-translate-y-1">
+                                    <CardHeader>
+                                        <div className="flex flex-wrap gap-2 mb-3">
+                                            {post.tags.map((tag) => (
+                                                <Badge key={tag} variant="secondary">
+                                                    {tag}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                        <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
+                                            <h3 className="text-xl">{post.title}</h3>
+                                        </CardTitle>
+                                        <CardDescription className="flex gap-1 mt-2">
+                                            <Badge>
+                                                <CalendarDays className="h-4 w-4 mr-1" /> {post.date}
                                             </Badge>
-                                        ))}
-                                    </div>
-                                    <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-                                        <h3 className='text-xl'>{post.title}</h3>
-                                    </CardTitle>
-                                    <CardDescription className="flex gap-1 mt-2">
-                                        <Badge><CalendarDays className="h-4 w-4" /> {post.date}</Badge>
-                                        <Badge variant={"secondary"}><Clock className="h-4 w-4" /> {post.readTime || 'TBD'}</Badge>
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-muted-foreground line-clamp-3 p-2 pl-3 text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">{post.excerpt}</p>
-                                </CardContent>
-                                <CardFooter>
-                                    <span className="text-sm font-medium text-primary group-hover:underline">
-                                        Read more →
-                                    </span>
-                                </CardFooter>
-                            </Card>
-                        </TransitionLink>
-                    ))}
-                </div>
+                                            <Badge variant="secondary">
+                                                <Clock className="h-4 w-4 mr-1" /> {post.readTime || 'TBD'}
+                                            </Badge>
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-muted-foreground line-clamp-3 p-2 pl-3 bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
+                                            {post.excerpt}
+                                        </p>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <span className="text-sm font-medium text-primary group-hover:underline">
+                                            Read more →
+                                        </span>
+                                    </CardFooter>
+                                </Card>
+                            </TransitionLink>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-12 text-muted-foreground border rounded-lg">
+                        No recent posts yet.
+                    </div>
+                )}
             </section>
 
-            {/* All Posts – now paginated, shows EVERY post */}
+            {/* All Posts */}
             <section>
                 <h2 className="text-2xl font-bold mb-6 text-center md:text-left">All Posts</h2>
 
-                <div className="space-y-1">
-                    {paginatedPosts.map((post) => (
-                        <TransitionLink
-                            key={post.slug}
-                            href={`/blog/${post.slug}`}
-                            className={cn(
-                                "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-zinc-900 hover:bg-zinc-50/50 shadow-lg",
-                            )}
-                        >
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <h3
-                                        className={cn(
-                                            "text-base font-medium",
-                                        )}
-                                    >
-                                        {post.title}
-                                    </h3>
+                {paginatedPosts.length > 0 ? (
+                    <div className="space-y-1">
+                        {paginatedPosts.map((post: PostData) => (
+                            <TransitionLink
+                                key={post.slug}
+                                href={`/blog/${post.slug}`}
+                                className={cn(
+                                    "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-zinc-900 hover:bg-zinc-50/50 shadow-lg"
+                                )}
+                            >
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <h3 className="text-base font-medium">{post.title}</h3>
+                                    </div>
+                                    <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
+                                        {post.excerpt}
+                                    </p>
                                 </div>
-                                <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
-                                    {post.excerpt}
-                                </p>
-                            </div>
-                            <div className="flex items-center gap-6 text-xs text-muted-foreground whitespace-nowrap">
-                                <div className="flex items-center gap-1">
-                                    <Badge variant="default"><div className='flex gap-2'><CalendarDays className="h-3.5 w-3.5" />{post.date}</div></Badge>
-                                    <Badge variant="secondary"><div className='flex gap-2'><Clock className="h-4 w-4" /> {post.readTime || 'TBD'}</div></Badge>
+                                <div className="flex items-center gap-6 text-xs text-muted-foreground whitespace-nowrap">
+                                    <div className="flex items-center gap-1">
+                                        <Badge variant="default">
+                                            <div className="flex gap-2">
+                                                <CalendarDays className="h-3.5 w-3.5" />
+                                                {post.date}
+                                            </div>
+                                        </Badge>
+                                        <Badge variant="secondary">
+                                            <div className="flex gap-2">
+                                                <Clock className="h-4 w-4" />
+                                                {post.readTime || 'TBD'}
+                                            </div>
+                                        </Badge>
+                                    </div>
+                                    <ChevronRight
+                                        className="ml-auto h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity border border-zinc-500 rounded"
+                                        color="#333"
+                                        strokeWidth={4}
+                                    />
                                 </div>
-                                <ChevronRight className="ml-auto h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity border border-zinc-500 rounded" color="#333" strokeWidth={4} />
-                            </div>
-                        </TransitionLink>
-                    ))}
-                </div>
+                            </TransitionLink>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-12 text-muted-foreground border rounded-lg">
+                        No posts found.
+                    </div>
+                )}
 
-                {totalPages > 1 && (
-                    <div className="mt-12 flex justify-center">
+                {totalPages > 0 ? (
+                    <div className="mt-12 mb-24 md:mb-10 flex justify-center">
                         <Pagination>
                             <PaginationContent>
                                 <PaginationItem>
                                     {currentPage > 1 ? (
-                                        <PaginationPrevious href={currentPage === 2 ? '/blog' : `/blog/page/${currentPage - 1}`} />
+                                        <PaginationPrevious
+                                            href={currentPage === 2 ? '/blog' : `/blog/page/${currentPage - 1}`}
+                                        />
                                     ) : (
                                         <PaginationPrevious className="pointer-events-none opacity-50" aria-disabled="true" />
                                     )}
@@ -265,12 +313,10 @@ export default async function BlogListPage({
                                 </PaginationItem>
                             </PaginationContent>
                         </Pagination>
-
                     </div>
-                ) || (
-                        <div className='mb-24'></div>
-                    )
-                }
+                ) : (
+                    <div className="mb-24" />
+                )}
             </section>
         </div>
     );

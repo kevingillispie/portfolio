@@ -1,4 +1,4 @@
-import { getPostData } from '@/lib/posts';
+import { getPostData } from '@/lib/server/posts-server';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {

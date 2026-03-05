@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
 import { getLatestPosts } from "@/lib/server/posts-server";
+import { Badge } from "@/components/ui/badge";
 import { CalendarDays } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
@@ -42,7 +42,7 @@ const projects = [
 
 export default async function Home() {
     const latestPosts = await getLatestPosts(3);
-    console.log(latestPosts)
+
     return (
         <div className="relative w-full overflow-hidden">
             <HALWireframeWall rows={8} cols={16} />
