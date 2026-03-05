@@ -44,7 +44,7 @@ export default async function PostPage({ params }: Props) {
 
     return (
         <article className="container max-w-4xl mx-auto py-16 md:py-24 px-4 lg:px-0 min-h-screen">
-            <div className="mt-10 mb-6">
+            <div className="mt-16 mb-6">
                 <BackButton />
             </div>
 
