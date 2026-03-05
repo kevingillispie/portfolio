@@ -205,8 +205,8 @@ export async function getFeaturedAndRecent(): Promise<{
             };
         });
 
-        const featured = mapped.find((p) => p.featured) ?? null;
-        const recent = mapped.filter((p) => !p.featured).slice(0, 4);
+        const featured = mapped.find((p: PostData) => p.featured) ?? null;
+        const recent = mapped.filter((p: PostData) => !p.featured).slice(0, 4);
 
         return { featured, recent };
     } catch (error) {
