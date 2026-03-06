@@ -3,16 +3,16 @@ import { AtSign } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="bg-zinc-900 text-zinc-400 py-8 mt-auto border-t border-zinc-800">
-            <div className="container mx-auto text-white text-center md:text-left px-6 md:flex md:justify-between md:items-center">
+        <footer className="bg-zinc-900 text-zinc-400 py-8 mt-auto">
+            <div className="container mx-auto px-6 text-white text-center md:text-left md:flex md:justify-between md:items-center">
                 {/* Left: Copyright + Built with */}
                 <div className="mb-4 md:mb-0">
                     <p className="text-sm">
                         © {new Date().getFullYear()} Kevin Gillispie. All rights reserved.
                     </p>
-                    <p className="text-xs mt-1 opacity-70">
+                    {/* <p className="text-xs mt-1 opacity-70">
                         Built with Next.js, TypeScript, Tailwind CSS, and shadcn/ui.
-                    </p>
+                    </p> */}
                 </div>
 
                 {/* Center/Right: Links + Socials */}

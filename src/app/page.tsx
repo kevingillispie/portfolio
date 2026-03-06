@@ -79,7 +79,7 @@ export default async function Home() {
                                 <div className="space-y-6 flex-1">
                                     {/* Bio paragraph */}
                                     <p className="text-muted-foreground leading-relaxed">
-                                        I&apos;m a full-stack web developer specializing in modern React ecosystems (Next.js, TypeScript, Tailwind, shadcn/ui). I build performant tools like SEO plugins, browser security extensions, and agency-grade sites. Passionate about clean code, security, and user-focused design.
+                                        I&apos;m a full-stack web developer and cybersecurity enthusiast specializing in modern React ecosystems and integrated/headless WordPress installations. I build performant tools like SEO plugins, browser security extensions, and agency-grade sites. Passionate about clean code, security, and user-focused design.
                                     </p>
 
                                     {/* Skills badges - easy to customize */}
@@ -181,7 +181,7 @@ export default async function Home() {
 
                     </div>
 
-                    <div className="text-center mt-12 mb-12 md:mb-0">
+                    <div className="text-center mt-12 mb-20 md:mb-0">
                         <Button asChild variant="outline" size="lg">
                             <TransitionLink href="/blog">View all posts →</TransitionLink>
                         </Button>
