@@ -261,6 +261,20 @@ body[data-scroll-locked] {
     clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
 }
 
+@media screen and (max-width: 768px) {
+    html:not(.dark) .home-hero-container::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 500px;
+        background-image: radial-gradient(ellipse at center, rgba(255, 255, 255, .5), rgba(255, 255, 255, .3), transparent, transparent);
+    }
+}
+
 .perspective-1500px {
     perspective: 1500px;
     perspective-origin: 50% 50%;

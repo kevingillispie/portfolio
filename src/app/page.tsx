@@ -48,7 +48,7 @@ export default async function Home() {
             <HALWireframeWall rows={8} cols={16} />
 
             <div className="container mx-auto">
-                <div className="hero-container relative text-center mt-8 py-12 mx-6 md:py-20 bg-radial from-zinc-50/70 via-transparent to-transparent dark:bg-none">
+                <div className="home-hero-container relative text-center mt-8 py-12 mx-6 md:py-20 bg-radial from-zinc-50/70 via-transparent to-transparent dark:bg-none">
                     <div className="pointer-events-auto">
                         <Badge variant="default" className="badge-shadow mb-6 py-1">Code & Content Creator</Badge>
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
@@ -77,7 +77,7 @@ export default async function Home() {
                                 <h3 className="text-xl font-semibold tracking-tight">About Me</h3>
 
                                 <div className="space-y-6 flex-1">
-                                    {/* Your bio paragraph */}
+                                    {/* Bio paragraph */}
                                     <p className="text-muted-foreground leading-relaxed">
                                         I&apos;m a full-stack web developer specializing in modern React ecosystems (Next.js, TypeScript, Tailwind, shadcn/ui). I build performant tools like SEO plugins, browser security extensions, and agency-grade sites. Passionate about clean code, security, and user-focused design.
                                     </p>
