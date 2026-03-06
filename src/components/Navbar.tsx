@@ -25,6 +25,7 @@ export default function Navbar() {
                 variant="outline"
                 size="icon"
                 className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border"
+                aria-label="Home button"
             >
                 <TransitionLink
                     href="/"
@@ -32,6 +33,7 @@ export default function Navbar() {
                         "flex items-center justify-center w-full h-full",
                         isActive("/") && "font-medium"
                     )}
+                    aria-label="Link to homepage."
                 >
                     <House width={18} height={18} />
                 </TransitionLink>
@@ -44,6 +46,7 @@ export default function Navbar() {
                         variant="outline"
                         size="icon"
                         className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border"
+                        aria-label="Menu open button"
                     >
                         <Menu width={18} height={18} />
                     </Button>
