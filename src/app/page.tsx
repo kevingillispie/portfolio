@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-// Define your projects data (easy to expand/maintain)
 const projects = [
     {
         name: "Schema Scalpel",

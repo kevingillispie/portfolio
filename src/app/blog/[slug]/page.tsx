@@ -19,50 +19,92 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const post = await getPostData(slug);
-    if (!post) return { title: 'Post Not Found' };
+
+    if (!post) {
+        return {
+            title: 'Post Not Found | Kevin Gillispie',
+            description: 'The requested blog post could not be found.',
+        };
+    }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kevingillispie.com';
+    const pageUrl = `${siteUrl}/blog/${slug}`;
+
+    // Use Yoast-computed values with fallbacks
+    const title = post.seo.title;
+    const description = post.seo.description;
+    const image = post.seo.ogImage || '/opengraph-image.png'; // fallback to your static OG
 
     return {
-        title: post.title,
-        description: post.excerpt,
+        title,
+        description,
+        alternates: {
+            canonical: post.seo.canonical || pageUrl,
+        },
+        openGraph: {
+            title,
+            description,
+            url: pageUrl,
+            siteName: 'Kevin Gillispie',
+            images: image ? [{ url: image, width: 1200, height: 630 }] : undefined,
+            type: 'article',
+            publishedTime: new Date(post.date).toISOString(), // better for articles
+            // authors: [{ name: 'Kevin Gillispie' }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: post.seo.twitterImage || image ? [post.seo.twitterImage || image] : undefined,
+            creator: '@kevinlgillispie',
+        },
+        robots: post.seo.noindex
+            ? { index: false, follow: true }
+            : { index: true, follow: true },
+        // Optional: other fields like verification codes, icons, etc.
     };
 }
 
 export default async function PostPage({ params }: Props) {
     const { slug } = await params;
     const post = await getPostData(slug);
-
     if (!post) notFound();
 
-    // Prev/next: use limited fetch (latest 200 should cover most cases)
     const allPosts = await getLatestPosts(200);
     const currentIndex = allPosts.findIndex((p) => p.slug === slug);
-
     if (currentIndex === -1) notFound();
 
     const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
     const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 
     return (
-        <article className="container max-w-4xl mx-auto py-16 md:py-24 px-4 lg:px-0 min-h-screen">
-            <div className="mt-16 mb-6">
-                <BackButton />
-            </div>
+        <>
+            {post.seo?.schemaRaw && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: post.seo.schemaRaw }}
+                />
+            )}
+            <article className="container max-w-4xl mx-auto py-16 md:py-24 px-4 lg:px-0 min-h-screen">
+                <div className="mt-16 mb-6">
+                    <BackButton />
+                </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{post.title}</h1>
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{post.title}</h1>
 
-            <div className="flex items-center gap-3 text-sm text-muted-foreground mb-10">
-                <Badge>
-                    <CalendarDays className="h-4 w-4 mr-1" /> {post.date}
-                </Badge>
-                <Badge variant="secondary">
-                    <Clock className="h-4 w-4 mr-1" /> {post.readTime}
-                </Badge>
-            </div>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground mb-10">
+                    <Badge>
+                        <CalendarDays className="h-4 w-4 mr-1" /> {post.date}
+                    </Badge>
+                    <Badge variant="secondary">
+                        <Clock className="h-4 w-4 mr-1" /> {post.readTime}
+                    </Badge>
+                </div>
 
-            <hr className="my-10 border-border/60" />
+                <hr className="my-10 border-border/60" />
 
-            <div
-                className="prose 
+                <div
+                    className="prose 
                     prose-zinc 
                     dark:prose-invert 
                     max-w-none 
@@ -82,35 +124,36 @@ export default async function PostPage({ params }: Props) {
                     prose-pre:rounded-lg 
                     prose-pre:p-4 
                     overflow-x-auto"
-                dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-            />
+                    dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+                />
 
-            {/* Prev / Next */}
-            {(prevPost || nextPost) && (
-                <nav className="my-16 flex flex-wrap sm:flex-row justify-center sm:justify-between gap-1 border-t pt-4">
-                    {nextPost ? (
-                        <TransitionLink href={`/blog/${nextPost.slug}`}>
-                            <Badge variant="default" className="my-1">
-                                <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
-                                Next | <div className="font-medium italic line-clamp-1">{nextPost.title}</div>
-                            </Badge>
-                        </TransitionLink>
-                    ) : (
-                        <div className="flex-1" />
-                    )}
+                {/* Prev / Next */}
+                {(prevPost || nextPost) && (
+                    <nav className="my-16 flex flex-wrap sm:flex-row justify-center sm:justify-between gap-1 border-t pt-4">
+                        {nextPost ? (
+                            <TransitionLink href={`/blog/${nextPost.slug}`}>
+                                <Badge variant="default" className="my-1">
+                                    <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
+                                    Next | <div className="font-medium italic line-clamp-1">{nextPost.title}</div>
+                                </Badge>
+                            </TransitionLink>
+                        ) : (
+                            <div className="flex-1" />
+                        )}
 
-                    {prevPost ? (
-                        <TransitionLink href={`/blog/${prevPost.slug}`}>
-                            <Badge variant="default" className="my-1">
-                                <span className="font-medium italic line-clamp-1">{prevPost.title}</span> | Prev
-                                <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                            </Badge>
-                        </TransitionLink>
-                    ) : (
-                        <div className="flex-1" />
-                    )}
-                </nav>
-            )}
-        </article>
+                        {prevPost ? (
+                            <TransitionLink href={`/blog/${prevPost.slug}`}>
+                                <Badge variant="default" className="my-1">
+                                    <span className="font-medium italic line-clamp-1">{prevPost.title}</span> | Prev
+                                    <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                </Badge>
+                            </TransitionLink>
+                        ) : (
+                            <div className="flex-1" />
+                        )}
+                    </nav>
+                )}
+            </article>
+        </>
     );
 }

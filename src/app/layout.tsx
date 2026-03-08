@@ -19,28 +19,38 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
+const metaDescription = "Full-stack web developer specializing in Next.js, TypeScript, Tailwind, shadcn/ui. Building performant SEO plugins, browser security tools, and modern sites.";
+
 export const metadata: Metadata = {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kevingillispie.com"), // Use env var for prod URL
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kevingillispie.com"),
+
+    // Keep this — it handles suffix for all pages
     title: {
         default: "Kevin Gillispie – Full-Stack Web Developer",
-        template: "%s | Kevin Gillispie", // %s gets replaced by page-specific title
+        template: "%s | Kevin Gillispie",  // Safe fallback
     },
-    description: "Full-stack web developer specializing in Next.js, TypeScript, Tailwind, shadcn/ui. Building performant SEO plugins, browser security tools, and modern sites.",
+
+    // Site-wide fallback
+    description: metaDescription,
+
+    // Defaults
     keywords: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "web developer", "portfolio", "SEO plugins", "browser extensions"],
     authors: [{ name: "Kevin Gillispie", url: "https://kevingillispie.com" }],
     creator: "Kevin Gillispie",
+
+    // Root OG/Twitter fallback
     openGraph: {
         title: "Kevin Gillispie – Full-Stack Web Developer",
-        description: "Building performant tools, SEO plugins, browser extensions, and modern websites with Next.js & TypeScript.",
+        description: metaDescription,
         url: "https://kevingillispie.com",
         siteName: "Kevin Gillispie",
         images: [
             {
-                url: "/opengraph-image.png", // Static OG image in public/ folder
+                url: "/opengraph-image.png",
                 width: 1200,
                 height: 630,
-                alt: "Kevin Gillispie - Full-Stack Web Developer Portfolio",
-            },
+                alt: "Kevin Gillispie - Full-Stack Web Developer",
+            }
         ],
         locale: "en_US",
         type: "website",
@@ -50,17 +60,16 @@ export const metadata: Metadata = {
         title: "Kevin Gillispie – Full-Stack Web Developer",
         description: "Building performant tools, SEO plugins, browser extensions, and modern websites.",
         images: ["/opengraph-image.png"],
-        creator: "@yourhandle",
+        creator: "@kevinlgillispie",
     },
-    // Optional: robots, alternates, icons, etc.
+
     robots: {
         index: true,
         follow: true,
-        googleBot: {
-            index: true,
-            follow: true,
-        },
+        googleBot: { index: true, follow: true },
     },
+
+    // Optional: Add icons, manifest, etc. here if not using file-based metadata
 };
 
 
