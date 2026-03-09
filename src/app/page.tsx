@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { SchemaWebPage } from "@kevingillispie/schema-scalpel-js";
+import SchemaHeadWrapper from "@/components/SchemaHeadWrapper";
 
 const projects = [
     {
@@ -40,12 +40,16 @@ const projects = [
     },
 ];
 
+export const metadata = {
+    title: "Kevin Gillispie – Full-Stack Web Developer",
+    description: "Full-stack web developer specializing in Next.js, TypeScript, Tailwind, shadcn/ui. Building performant SEO plugins, browser security tools, and modern sites.",
+};
+
 export default async function Home() {
     const latestPosts = await getLatestPosts(3);
 
     return (
-        <>
-            <SchemaWebPage name="Kevin Gillispie – Full-Stack Web Developer" />
+        <SchemaHeadWrapper pageName="Kevin Gillispie – Full-Stack Web Developer">
             <div className="relative w-full overflow-hidden">
                 <HALWireframeWall rows={8} cols={16} />
 
@@ -69,7 +73,6 @@ export default async function Home() {
                     <section className="w-full p-6">
                         <h2 className="text-3xl text-center font-bold mt-8">Projects</h2>
                         <div className="container grid gap-8 grid-cols-1 lg:grid-cols-3 lg:gap-12 pt-12">
-                            {/* 3. Ensure carousel and cards are interactive */}
                             <div className="lg:col-span-2">
                                 <ProjectCarousel projects={projects} />
                             </div>
@@ -79,12 +82,10 @@ export default async function Home() {
                                     <h3 className="text-xl font-semibold tracking-tight">About Me</h3>
 
                                     <div className="space-y-6 flex-1">
-                                        {/* Bio paragraph */}
                                         <p className="text-muted-foreground leading-relaxed">
-                                            I&apos;m a full-stack web developer and cybersecurity enthusiast specializing in modern React ecosystems and integrated/headless WordPress installations. I build performant tools like SEO plugins, browser security extensions, and agency-grade sites. Passionate about clean code, security, and user-focused design.
+                                            I'm a full-stack web developer and cybersecurity enthusiast specializing in modern React ecosystems and integrated/headless WordPress installations. I build performant tools like SEO plugins, browser security extensions, and agency-grade sites. Passionate about clean code, security, and user-focused design.
                                         </p>
 
-                                        {/* Skills badges - easy to customize */}
                                         <div className="flex flex-wrap gap-2">
                                             <Badge variant="secondary">Next.js</Badge>
                                             <Badge variant="secondary">TypeScript</Badge>
@@ -97,22 +98,8 @@ export default async function Home() {
                                             <Badge variant="secondary">PHP</Badge>
                                             <Badge variant="secondary">JavaScript</Badge>
                                         </div>
-
-                                        {/* Optional: Add avatar or small photo here later */}
-                                        {/* <div className="flex items-center gap-4 pt-4 border-t">
-                                    <Avatar className="h-12 w-12">
-                                    <AvatarImage src="/your-photo.jpg" alt="Kevin Gillispie" />
-                                    <AvatarFallback>KG</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                    <p className="font-medium">Kevin Gillispie</p>
-                                    <p className="text-sm text-muted-foreground">Web Developer</p>
-                                    </div>
-                                </div> 
-                                */}
                                     </div>
 
-                                    {/* CTA button at bottom */}
                                     <Button asChild size={'lg'} className="mt-auto" style={{ borderRadius: "100px" }}>
                                         <TransitionLink href="/contact">Get in Touch →</TransitionLink>
                                     </Button>
@@ -180,7 +167,6 @@ export default async function Home() {
                                     No recent posts available yet. Check back soon!
                                 </div>
                             )}
-
                         </div>
 
                         <div className="text-center mt-12 mb-20 md:mb-0">
@@ -189,8 +175,8 @@ export default async function Home() {
                             </Button>
                         </div>
                     </section>
-                </div >
-            </div >
-        </>
+                </div>
+            </div>
+        </SchemaHeadWrapper>
     );
 }
