@@ -7,12 +7,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import TransitionCanvas from "@/components/TransitionCanvas";
 import { Toaster } from "@/components/ui/sonner";
 import HALHUDFrame from "@/components/HALHUDFrame";
-import {
-    SchemaWebSite,
-    SchemaOrganization,
-    SchemaBreadcrumb,
-} from "@kevingillispie/schema-scalpel-js";
-import { schemaConfig } from "@/config/schemaConfig";
 
 import "./globals.css";
 
@@ -91,23 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
-                {/* Global WebSite schema (name + optional SearchAction) */}
-                <SchemaWebSite
-                    data={{
-                        name: schemaConfig.website?.name || "Kevin Gillispie – Full-Stack Web Developer",
-                        url: process.env.NEXT_PUBLIC_SITE_URL || "https://kevingillispie.com",
-                        searchPathTemplate: schemaConfig.website?.searchPathTemplate || "/search?q={search_term_string}",
-                        // If your site doesn't have search, omit or set to undefined → no SearchAction generated
-                    }}
-                />
 
-                {/* Organization schema (global defaults from config/env) */}
-                {schemaConfig.organization && (
-                    <SchemaOrganization data={schemaConfig.organization} />
-                )}
-
-                {/* BreadcrumbList – auto-generated from path, skipped on homepage automatically */}
-                <SchemaBreadcrumb />
             </head>
 
             <body

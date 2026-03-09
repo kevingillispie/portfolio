@@ -16,10 +16,6 @@ import {
 } from '@/components/ui/pagination';
 import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-    SchemaBreadcrumb,
-    SchemaWebPage,
-} from '@kevingillispie/schema-scalpel-js';
 
 export const metadata: Metadata = {
     title: 'Blog & Insights',
@@ -61,23 +57,10 @@ export default async function BlogListPage({
     const startIndex = (currentPage - 1) * postsPerPage;
     const paginatedPosts = allPosts.slice(startIndex, startIndex + postsPerPage);
 
-    // Dynamic page title for schema & metadata
-    const pageTitle = currentPage === 1
-        ? 'Blog & Insights'
-        : `Blog & Insights | Page ${currentPage}`;
-
     return (
         <>
-            {/* Schema markup – auto BreadcrumbList + WebPage */}
-            <SchemaWebPage name={pageTitle} />
-            <SchemaBreadcrumb /> {/* Auto-generates from path, e.g. Home > Blog > Page 3 */}
-
             <div className="container mx-auto max-w-5xl py-12 md:py-20 px-2 lg:px-0">
                 <div className="hero-container text-center mt-8 pb-12">
-                    {/* Optional: Keep your UI breadcrumb nav if you want visual breadcrumbs */}
-                    {/* <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
-            <BreadcrumbNav variant="pathname" />
-          </Badge> */}
 
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                         <code>//PlainText</code>

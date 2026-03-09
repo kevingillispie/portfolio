@@ -23,7 +23,6 @@
             "@/*": ["./src/*"],
             "contentlayer/generated": [".contentlayer/generated/index.d.ts"],
             "contentlayer/generated/*": [".contentlayer/generated/*"],
-            "@kevingillispie/schema-scalpel-js/*": ["./node_modules/@kevingillispie/schema-scalpel-js/*"]
         }
     },
     "include": [
