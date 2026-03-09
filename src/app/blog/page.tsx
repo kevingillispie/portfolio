@@ -1,6 +1,6 @@
 import React from 'react';
 import { wpQuery } from '@/lib/graphql';
-import { getFeaturedAndRecent, getPaginatedPosts, getGlobalSeoSchema } from '@/lib/server/posts-server';
+import { getFeaturedAndRecent, getPaginatedPosts } from '@/lib/server/posts-server';
 import type { PostData } from '@/lib/server/posts-server';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -43,7 +43,6 @@ export const metadata: Metadata = {
 };
 
 const POSTS_PER_PAGE = 20;
-const globalSchema = await getGlobalSeoSchema();
 
 // Optional: separate query for total count (requires the plugin)
 const GET_TOTAL_COUNT = `
@@ -106,13 +105,6 @@ export default async function BlogListPage({
 
     return (
         <>
-            {globalSchema && (
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: globalSchema }}
-                />
-            )}
-
             <div className="container mx-auto max-w-5xl py-12 md:py-20 px-6 lg:px-0 min-h-screen">
                 {/* Hero */}
                 <div className="hero-container text-center mt-8 pb-12">

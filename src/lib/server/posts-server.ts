@@ -12,22 +12,6 @@ export interface PostData {
     featured?: boolean;
     readTime?: string;
     contentHtml: string;
-    seoTitle?: string;
-    seoDescription?: string;
-    seoFullHead?: string;
-    seoCanonical?: string;
-    seoOgImage?: string | null;
-    seo: {
-        title: string;
-        description: string;
-        canonical: string;
-        ogImage: string | null;
-        twitterImage: string | null;
-        noindex?: boolean;
-        fullHead?: string; // optional
-        schemaRaw?: string;
-    };
-
 }
 
 const WORDS_PER_MINUTE = 225;
@@ -47,30 +31,6 @@ function calculateReadTime(text: string): string {
     const wordCount = plainText.split(/\s+/).filter(Boolean).length;
     const minutes = Math.ceil(wordCount / WORDS_PER_MINUTE);
     return `${minutes} min read`;
-}
-
-// ───────────────────────────────────────────────
-// GLOBAL SCHEMA
-// ───────────────────────────────────────────────
-export async function getGlobalSeoSchema(): Promise<string> {
-    const GLOBAL_SCHEMA_QUERY = `
-        query GetGlobalSchema {
-            seo {
-                schema {
-                    raw          # This often includes WebSite + Organization + core pieces
-                }
-                # Or try: webmaster { ... } if needed for verification
-            }
-        }
-    `;
-
-    try {
-        const data = await wpQuery<any>(GLOBAL_SCHEMA_QUERY);
-        return data?.seo?.schema?.raw || '';
-    } catch (error) {
-        console.error('Failed to fetch global schema:', error);
-        return '';
-    }
 }
 
 // ───────────────────────────────────────────────
@@ -100,24 +60,6 @@ export async function getPostData(slug: string): Promise<PostData | null> {
             content(format: RENDERED)
             tags { nodes { name } }
             categories { nodes { name } }
-            seo {
-                title
-                metaDesc
-                canonical
-                fullHead                # Full <head> snippet (fallback / for schema)
-                opengraphTitle
-                opengraphDescription
-                opengraphImage {
-                    sourceUrl
-                }
-                twitterTitle
-                twitterDescription
-                twitterImage {
-                    sourceUrl
-                }
-                metaRobotsNoindex
-                schema { raw }       # If you need raw JSON-LD separately
-            }
         }
     }
 `;
@@ -139,14 +81,6 @@ export async function getPostData(slug: string): Promise<PostData | null> {
         }).trim();
 
         const fullContent = post.content ?? '';
-        const frontendDomain = 'https://kevingillispie.com';
-        const backendDomain = 'https://api.kevingillispie.com';
-
-        const schemaRaw = post.seo?.schema?.raw || '';
-        const correctedSchema = schemaRaw
-            .replace(new RegExp(backendDomain.replace(/\./g, '\\.'), 'g'), frontendDomain)
-            // Optional: also fix any http/https mismatches if needed
-            .replace(/http:\/\/api\.kevingillispie\.com/g, frontendDomain);
 
         return {
             slug: post.slug,
@@ -157,15 +91,6 @@ export async function getPostData(slug: string): Promise<PostData | null> {
             featured: false,
             readTime: calculateReadTime(fullContent),
             contentHtml: fullContent,
-            seo: {
-                title: post.seo?.title || post.title,
-                description: post.seo?.metaDesc || plainExcerpt,
-                canonical: post.seo?.canonical || `https://kevingillispie.com/blog/${post.slug}`,
-                ogImage: post.seo?.opengraphImage?.sourceUrl || null,
-                twitterImage: post.seo?.twitterImage?.sourceUrl || null,
-                noindex: post.seo?.metaRobotsNoindex === 'noindex',
-                schemaRaw: correctedSchema || '',
-            },
         };
     } catch (error) {
         console.error(`Failed to fetch post "${slug}":`, error);
@@ -188,14 +113,6 @@ const GET_LATEST_POSTS = `
                 tags { nodes { name } }
                 categories { nodes { name } }
                 postFeaturedFlag {featurePost}
-                seo {
-                    title
-                    metaDesc
-                    fullHead
-                    canonical
-                    opengraphImage { sourceUrl }
-                    schema { raw }
-                }
             }
         }
     }
@@ -251,14 +168,6 @@ const GET_FEATURED_AND_RECENT = `
                 tags { nodes { name } }
                 categories { nodes { name } }
                 postFeaturedFlag {featurePost}
-                seo {
-                    title
-                    metaDesc
-                    fullHead
-                    canonical
-                    opengraphImage { sourceUrl }
-                    schema { raw }
-                }
             }
         }
     }
@@ -325,14 +234,6 @@ const GET_PAGINATED_POSTS = `
                 content(format: RAW)
                 tags { nodes { name } }
                 categories { nodes { name } }
-                seo {
-                    title
-                    metaDesc
-                    fullHead
-                    canonical
-                    opengraphImage { sourceUrl }
-                    schema { raw }
-                }
             }
         }
     }
