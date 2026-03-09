@@ -7,6 +7,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import TransitionCanvas from "@/components/TransitionCanvas";
 import { Toaster } from "@/components/ui/sonner";
 import HALHUDFrame from "@/components/HALHUDFrame";
+import {
+    SchemaWebSite,
+    SchemaOrganization,
+    SchemaBreadcrumb,
+} from "@kevingillispie/schema-scalpel-js";
+import { schemaConfig } from "@/config/schemaConfig";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,7 +26,8 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
-const metaDescription = "Full-stack web developer specializing in Next.js, TypeScript, Tailwind, shadcn/ui. Building performant SEO plugins, browser security tools, and modern sites.";
+const metaDescription =
+    "Full-stack web developer specializing in Next.js, TypeScript, Tailwind, shadcn/ui. Building performant SEO plugins, browser security tools, and modern sites.";
 
 export const metadata: Metadata = {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kevingillispie.com"),
@@ -27,14 +35,23 @@ export const metadata: Metadata = {
     // Keep this — it handles suffix for all pages
     title: {
         default: "Kevin Gillispie – Full-Stack Web Developer",
-        template: "%s | Kevin Gillispie",  // Safe fallback
+        template: "%s | Kevin Gillispie", // Safe fallback
     },
 
     // Site-wide fallback
     description: metaDescription,
 
     // Defaults
-    keywords: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "web developer", "portfolio", "SEO plugins", "browser extensions"],
+    keywords: [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "web developer",
+        "portfolio",
+        "SEO plugins",
+        "browser extensions",
+    ],
     authors: [{ name: "Kevin Gillispie", url: "https://kevingillispie.com" }],
     creator: "Kevin Gillispie",
 
@@ -50,7 +67,7 @@ export const metadata: Metadata = {
                 width: 1200,
                 height: 630,
                 alt: "Kevin Gillispie - Full-Stack Web Developer",
-            }
+            },
         ],
         locale: "en_US",
         type: "website",
@@ -68,18 +85,36 @@ export const metadata: Metadata = {
         follow: true,
         googleBot: { index: true, follow: true },
     },
-
-    // Optional: Add icons, manifest, etc. here if not using file-based metadata
 };
-
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <head>
+                {/* Global WebSite schema (name + optional SearchAction) */}
+                <SchemaWebSite
+                    data={{
+                        name: schemaConfig.website?.name || "Kevin Gillispie – Full-Stack Web Developer",
+                        url: process.env.NEXT_PUBLIC_SITE_URL || "https://kevingillispie.com",
+                        searchPathTemplate: schemaConfig.website?.searchPathTemplate || "/search?q={search_term_string}",
+                        // If your site doesn't have search, omit or set to undefined → no SearchAction generated
+                    }}
+                />
+
+                {/* Organization schema (global defaults from config/env) */}
+                {schemaConfig.organization && (
+                    <SchemaOrganization data={schemaConfig.organization} />
+                )}
+
+                {/* BreadcrumbList – auto-generated from path, skipped on homepage automatically */}
+                <SchemaBreadcrumb />
+            </head>
+
             <body
                 className={`
-                ${geistSans.variable} ${geistMono.variable}
-                min-h-screen flex flex-col bg-gradient-to-br from-zinc-300 via-zinc-50 to-zinc-200 dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-700
+                    ${geistSans.variable} ${geistMono.variable}
+                    min-h-screen flex flex-col bg-gradient-to-br from-zinc-300 via-zinc-50 to-zinc-200 
+                    dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-700
                 `}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -91,19 +126,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         <SettingsMenu />
 
                         {/* Main content grows to fill remaining space */}
-                        <main className="flex-1">
-                            {children}
-                        </main>
+                        <main className="flex-1">{children}</main>
 
                         <Footer />
                     </div>
 
-                    <Toaster
-                        position="top-right"
-                        richColors
-                        closeButton
-                        duration={5000}
-                    />
+                    <Toaster position="top-right" richColors closeButton duration={5000} />
                 </ThemeProvider>
             </body>
         </html>
