@@ -6,11 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { getScscSchema } from '@/lib/server/get-scsc-schema';
 
-interface Props {
-    params: Promise<{ slug: string }>;
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
 export const metadata: Metadata = {
     title: "Contact",
     description: "Get in touch with Kevin Gillispie for collaborations, questions, or project inquiries.",

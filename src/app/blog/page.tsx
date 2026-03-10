@@ -60,8 +60,6 @@ export default async function BlogListPage({
 }: {
     params?: Promise<{ page?: string[] }>;
 }) {
-    console.log(schemas);
-
     const resolvedParams = await params;
     const pageSegments = resolvedParams?.page || [];
 

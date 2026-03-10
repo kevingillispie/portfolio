@@ -17,8 +17,6 @@ import Image from "next/image";
 import Script from "next/script";
 import { getScscSchema } from "@/lib/server/get-scsc-schema";
 
-const schemas = await getScscSchema('/');
-
 const projects = [
     {
         name: "Schema Scalpel",
@@ -49,6 +47,7 @@ export const metadata = {
 };
 
 export default async function Home() {
+    const schemas = await getScscSchema('/');
     const latestPosts = await getLatestPosts(3);
     return (
         <>

@@ -1,4 +1,5 @@
 // src/lib/server/get-scsc-schema.ts
+// https://api.kevingillispie.com/wp-json/custom/v1/schema-scalpel-api/?path=/
 import { cache } from 'react';
 
 const FRONTEND_URL = 'https://kevingillispie.com';
@@ -8,7 +9,7 @@ export const getScscSchema = cache(async (path: string): Promise<any[]> => {
     if (!path) return [];
 
     const cleanPath = path.startsWith('/') ? path : `/${path}`;
-    const endpoint = `${BACKEND_URL.replace(/\/$/, '')}/wp-json/custom/v1/scsc-schema/?path=${encodeURIComponent(cleanPath)}`;
+    const endpoint = `${BACKEND_URL.replace(/\/$/, '')}/wp-json/custom/v1/schema-scalpel-api/?path=${encodeURIComponent(cleanPath)}`;
 
     try {
         const res = await fetch(endpoint, {
