@@ -1,9 +1,15 @@
 // src/app/contact/page.tsx
 import type { Metadata } from "next";
+import Script from "next/script";
 import ContactForm from "@/components/ContactForm";
 import { Badge } from "@/components/ui/badge";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
-import SchemaHeadWrapper from "@/components/SchemaHeadWrapper";
+import { getScscSchema } from '@/lib/server/get-scsc-schema';
+
+interface Props {
+    params: Promise<{ slug: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
 export const metadata: Metadata = {
     title: "Contact",
@@ -15,9 +21,24 @@ export const metadata: Metadata = {
     },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+    const schemas = await getScscSchema('/contact');
+
     return (
-        <SchemaHeadWrapper pageName="Contact Kevin Gillispie">
+        <>
+            {/* Page-specific schema – Next.js places in <head> automatically */}
+            {
+                schemas.map((schema: any, i: number) => (
+                    <Script
+                        id={`schema-scalpel-${i}`}
+                        className='schema-scalpel'
+                        key={`schema-${i}`}
+                        type="application/ld+json"
+                        strategy="beforeInteractive"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+                    />
+                ))
+            }
             <div className="container mx-auto mb-24 max-w-5xl py-12 md:py-20 px-6 md:px-0">
                 <div className="hero-container text-center mt-8 pb-12">
                     <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
@@ -32,6 +53,6 @@ export default function ContactPage() {
                 </div>
                 <ContactForm />
             </div>
-        </SchemaHeadWrapper>
+        </>
     );
 }

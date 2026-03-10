@@ -26,16 +26,13 @@ const metaDescription =
 export const metadata: Metadata = {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kevingillispie.com"),
 
-    // Keep this — it handles suffix for all pages
     title: {
         default: "Kevin Gillispie – Full-Stack Web Developer",
-        template: "%s | Kevin Gillispie", // Safe fallback
+        template: "%s | Kevin Gillispie",
     },
 
-    // Site-wide fallback
     description: metaDescription,
 
-    // Defaults
     keywords: [
         "Next.js",
         "TypeScript",
@@ -49,7 +46,6 @@ export const metadata: Metadata = {
     authors: [{ name: "Kevin Gillispie", url: "https://kevingillispie.com" }],
     creator: "Kevin Gillispie",
 
-    // Root OG/Twitter fallback
     openGraph: {
         title: "Kevin Gillispie – Full-Stack Web Developer",
         description: metaDescription,
@@ -81,13 +77,9 @@ export const metadata: Metadata = {
     },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <head>
-
-            </head>
-
             <body
                 className={`
                     ${geistSans.variable} ${geistMono.variable}
@@ -103,7 +95,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         <Navbar />
                         <SettingsMenu />
 
-                        {/* Main content grows to fill remaining space */}
                         <main className="flex-1">{children}</main>
 
                         <Footer />
