@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react';
-import { Button } from '@/components/ui/badge'; // Or your custom button
-import { Share2, Twitter, Linkedin, Link as LinkIcon, Check } from 'lucide-react';
+import { Share2, Link as LinkIcon, Check } from 'lucide-react';
 import { useState } from 'react';
 
 interface ShareProps {
