@@ -25,11 +25,6 @@ interface Props {
     params: Promise<{ slug: string }>;
 }
 
-// export async function generateStaticParams() {
-//     const slugs = await getAllPostSlugs();
-//     return slugs.map(({ slug }) => ({ slug }));
-// }
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const post = await getPostData(slug);
@@ -150,7 +145,7 @@ export default async function PostPage({ params }: Props) {
                 <hr className="my-10 border-border/60" />
 
                 <div
-                    className="prose prose-zinc dark:prose-invert max-w-none prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:underline prose-blockquote:border-l-4 prose-blockquote:border-primary/60 prose-blockquote:pl-5 prose-blockquote:italic prose-code:bg-zinc-100 dark:prose-code:bg-zinc-800 prose-pre:bg-zinc-950 dark:prose-pre:bg-black prose-pre:rounded-lg prose-pre:p-4 overflow-x-auto prose-ul:list-disc prose-ul:pl-5 prose-li:my-1"
+                    className="prose dark:prose-invert max-w-none"
                     dangerouslySetInnerHTML={{ __html: post.contentHtml }}
                 />
 

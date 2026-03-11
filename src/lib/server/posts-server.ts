@@ -3,6 +3,29 @@ import { wpQuery } from '@/lib/graphql';
 import { format } from 'date-fns';
 import { htmlToText } from 'html-to-text';
 
+// Add this near your other interfaces in [slug]/page.tsx
+interface SeoData {
+    title?: string;
+    metaDesc?: string;
+    canonical?: string;
+    opengraphTitle?: string;
+    opengraphDescription?: string;
+    opengraphImage?: {
+        sourceUrl: string;
+        mediaDetails?: {
+            width: number;
+            height: number;
+        };
+    };
+    twitterTitle?: string;
+    twitterDescription?: string;
+    twitterImage?: {
+        sourceUrl: string;
+    };
+    metaRobotsNoindex?: string;
+    metaRobotsNofollow?: string;
+}
+
 export interface PostData {
     slug: string;
     title: string;
@@ -13,6 +36,7 @@ export interface PostData {
     featured?: boolean;
     readTime?: string;
     contentHtml: string;
+    seo?: SeoData;
 }
 
 const WORDS_PER_MINUTE = 225;
@@ -46,6 +70,7 @@ type WPPostResponse = {
         content: string | null;
         tags: { nodes: { name: string }[] };
         categories: { nodes: { name: string }[] };
+        seo: SeoData;
     } | null;
 };
 
@@ -72,7 +97,6 @@ export async function getPostData(slug: string): Promise<PostData | null> {
                 twitterTitle
                 twitterDescription
                 twitterImage { sourceUrl }
-                fullHead
             }
         }
     }
@@ -106,6 +130,7 @@ export async function getPostData(slug: string): Promise<PostData | null> {
             featured: false,
             readTime: calculateReadTime(fullContent),
             contentHtml: fullContent,
+            seo: post.seo,
         };
     } catch (error) {
         console.error(`Failed to fetch post "${slug}":`, error);

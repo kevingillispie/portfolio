@@ -234,8 +234,25 @@ body[data-scroll-locked] {
 
 /* Add this at the bottom of globals.css */
 
-.prose .wp-block-pullquote {
-    @apply float-right text-2xl m-6 p-6 w-full max-w-xs md:max-w-sm bg-zinc-100 dark:bg-zinc-700 rounded border border-r-8 border-l-8 border-zinc-300 shadow-xl overflow-hidden z-[9999];
+.prose figure {
+    @apply relative float-right text-2xl m-6 ml-8 p-10 pt-8 w-full max-w-xs md:max-w-sm bg-zinc-100 dark:bg-zinc-700 rounded border border-t-20 border-zinc-300 shadow-xl z-[9999];
+}
+
+.prose figure::before,
+.prose figure::after {
+    content: "•••";
+    position: absolute;
+    top: -45px;
+    left: 4px;
+    font-size: 3rem;
+    color: oklch(96.7% 0.001 286.375);
+    letter-spacing: -5px;
+}
+
+.prose figure::after {
+    content: "•";
+    left: 100%;
+    transform: translateX(-120%);
 }
 
 [role="menuitemcheckbox"]>span {
