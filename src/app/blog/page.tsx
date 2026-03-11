@@ -1,3 +1,4 @@
+// src/app/blog/page.tsx
 import React from 'react';
 import { wpQuery } from '@/lib/graphql';
 import { getFeaturedAndRecent, getPaginatedPosts } from '@/lib/server/posts-server';
@@ -47,11 +48,9 @@ export const metadata: Metadata = {
 };
 
 const POSTS_PER_PAGE = 20;
-
-// Optional: separate query for total count (requires the plugin)
 const GET_TOTAL_COUNT = `
     query GetPostTotalCount {
-        postTotalCount
+        publishedPostCount
     }
 `;
 
@@ -89,13 +88,12 @@ export default async function BlogListPage({
     const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
     const paginatedPosts = allPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
-    // Try to get accurate total count (plugin-dependent)
     let totalCount = 0;
     try {
-        const totalData = await wpQuery<{ postTotalCount: number }>(GET_TOTAL_COUNT);
-        totalCount = totalData?.postTotalCount ?? 0;
+        const totalData = await wpQuery<{ publishedPostCount: number }>(GET_TOTAL_COUNT);
+        totalCount = totalData?.publishedPostCount ?? 0;
     } catch (error) {
-        console.warn('Could not fetch postTotalCount:', error);
+        console.warn('Could not fetch publishedPostCount:', error);
         // Fallback to approximation if plugin not active
     }
 

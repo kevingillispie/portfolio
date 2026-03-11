@@ -7,6 +7,7 @@ export interface PostData {
     slug: string;
     title: string;
     date: string;          // formatted: "March 4, 2026"
+    rawDate: string;       // "2026-03-04T12:00:00" for queries
     excerpt: string;
     tags: string[];
     featured?: boolean;
@@ -60,6 +61,19 @@ export async function getPostData(slug: string): Promise<PostData | null> {
             content(format: RENDERED)
             tags { nodes { name } }
             categories { nodes { name } }
+            seo {
+                title
+                metaDesc
+                canonical
+                metaRobotsNoindex
+                opengraphTitle
+                opengraphDescription
+                opengraphImage { sourceUrl mediaDetails { width height } }
+                twitterTitle
+                twitterDescription
+                twitterImage { sourceUrl }
+                fullHead
+            }
         }
     }
 `;
@@ -86,6 +100,7 @@ export async function getPostData(slug: string): Promise<PostData | null> {
             slug: post.slug,
             title: post.title,
             date: format(new Date(post.date), 'MMMM d, yyyy'),
+            rawDate: post.date,
             excerpt: plainExcerpt || 'No excerpt available.',
             tags: allTags.slice(0, 3),
             featured: false,
@@ -170,6 +185,7 @@ const GET_FEATURED_AND_RECENT = `
                 postFeaturedFlag {featurePost}
             }
         }
+        publishedPostCount
     }
 `;
 
@@ -236,6 +252,7 @@ const GET_PAGINATED_POSTS = `
                 categories { nodes { name } }
             }
         }
+        publishedPostCount
     }
 `;
 
@@ -254,13 +271,22 @@ type WPPostsConnection = {
     nodes: WPPostNode[];
 };
 
-export async function getPaginatedPosts(afterCursor?: string | null): Promise<{
+type WPPostsResponse = {
+    posts: WPPostsConnection;
+    publishedPostCount: number;
+};
+
+export async function getPaginatedPosts(
+    afterCursor?: string | null,
+    first = 20
+): Promise<{
     posts: PostData[];
     pageInfo: { hasNextPage: boolean; endCursor: string | null };
+    totalCount: number;
 }> {
     try {
-        const data = await wpQuery<{ posts: WPPostsConnection }>(GET_PAGINATED_POSTS, {
-            first: 20,
+        const data = await wpQuery<WPPostsResponse>(GET_PAGINATED_POSTS, {
+            first,
             after: afterCursor || null,
         });
 
@@ -293,10 +319,97 @@ export async function getPaginatedPosts(afterCursor?: string | null): Promise<{
         return {
             posts,
             pageInfo: data?.posts?.pageInfo ?? { hasNextPage: false, endCursor: null },
+            totalCount: data?.publishedPostCount ?? 0,  // ← pull from response
         };
     } catch (error) {
         console.error('Failed to fetch paginated posts:', error);
-        return { posts: [], pageInfo: { hasNextPage: false, endCursor: null } };
+        return {
+            posts: [],
+            pageInfo: { hasNextPage: false, endCursor: null },
+            totalCount: 0,
+        };
+    }
+}
+
+// ───────────────────────────────────────────────
+// ADJACENT POSTS (prev/next for single post page)
+// ───────────────────────────────────────────────
+const GET_ADJACENT_POSTS = `
+    query GetAdjacentPosts($date: DateInput!) {
+        previous: posts(
+            first: 1
+            where: {
+                dateQuery: { 
+                    before: $date
+                }
+                orderby: { field: DATE, order: DESC }
+            }
+        ) {
+            nodes {
+                slug
+                title
+                date
+            }
+        }
+        next: posts(
+            first: 1
+            where: {
+                dateQuery: { 
+                    after: $date
+                }
+                orderby: { field: DATE, order: ASC }
+            }
+        ) {
+            nodes {
+                slug
+                title
+                date
+            }
+        }
+    }
+`;
+
+interface AdjacentPost {
+    slug: string;
+    title: string;
+    date: string; // raw WP date
+}
+
+export async function getAdjacentPosts(
+    slug: string,
+    currentDate: string
+): Promise<{ prev: AdjacentPost | null; next: AdjacentPost | null }> {
+    try {
+        const dateObj = new Date(currentDate);
+
+        const data = await wpQuery<any>(GET_ADJACENT_POSTS, {
+            date: {
+                year: dateObj.getFullYear(),
+                month: dateObj.getMonth() + 1,
+                day: dateObj.getDate()
+            }
+        });
+
+        // Basic filtering to ensure we don't return the current post 
+        // if multiple posts share the same date.
+        const prevNode = data?.previous?.nodes?.find((n: any) => n.slug !== slug) || null;
+        const nextNode = data?.next?.nodes?.find((n: any) => n.slug !== slug) || null;
+
+        return {
+            prev: prevNode ? {
+                slug: prevNode.slug,
+                title: prevNode.title,
+                date: format(new Date(prevNode.date), 'MMMM d, yyyy')
+            } : null,
+            next: nextNode ? {
+                slug: nextNode.slug,
+                title: nextNode.title,
+                date: format(new Date(nextNode.date), 'MMMM d, yyyy')
+            } : null,
+        };
+    } catch (error) {
+        console.error(`Failed to fetch adjacent for "${slug}":`, error);
+        return { prev: null, next: null };
     }
 }
 
@@ -319,6 +432,66 @@ export async function getAllPostSlugs(): Promise<{ slug: string }[]> {
         return data?.posts?.nodes ?? [];
     } catch (error) {
         console.error('Failed to fetch post slugs:', error);
+        return [];
+    }
+}
+
+const GET_RELATED_POSTS = `
+    query GetRelatedPosts($tagIn: [String], $notIn: [ID], $first: Int) {
+        posts(
+            first: $first
+            where: {
+                tagSlugIn: $tagIn,
+                notIn: $notIn,
+                orderby: { field: DATE, order: DESC }
+            }
+        ) {
+            nodes {
+                slug
+                title
+                date
+                excerpt(format: RENDERED)
+                content(format: RAW)
+                tags { nodes { name } }
+                categories { nodes { name } }
+            }
+        }
+    }
+`;
+
+export async function getRelatedPosts(
+    tags: string[],
+    currentSlug: string,
+    limit = 3
+): Promise<PostData[]> {
+    if (!tags || tags.length === 0) return [];
+
+    try {
+        const data = await wpQuery<any>(GET_RELATED_POSTS, {
+            tagIn: tags, // Passing the array of tag names/slugs
+            notIn: [currentSlug],
+            first: limit
+        });
+
+        const nodes = data?.posts?.nodes ?? [];
+        return nodes.map((node: any) => {
+            const allTags = [
+                ...(node.categories?.nodes?.map((c: any) => c.name) ?? []),
+                ...(node.tags?.nodes?.map((t: any) => t.name) ?? []),
+            ].filter(Boolean);
+
+            return {
+                slug: node.slug,
+                title: node.title,
+                date: format(new Date(node.date), 'MMM d, yyyy'),
+                excerpt: htmlToText(node.excerpt ?? '', { wordwrap: false }).trim(),
+                tags: allTags,
+                readTime: calculateReadTime(node.content ?? ''),
+                contentHtml: node.content ?? '',
+            };
+        });
+    } catch (error) {
+        console.error("Failed to fetch related posts:", error);
         return [];
     }
 }

@@ -1,3 +1,4 @@
+// src/app/blog/page/[[...num]]/page.tsx
 import React from 'react';
 import { getLatestPosts } from '@/lib/server/posts-server';
 import type { PostData } from '@/lib/server/posts-server';
