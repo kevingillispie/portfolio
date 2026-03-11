@@ -82,9 +82,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <html lang="en" suppressHydrationWarning>
             <body
                 className={`
-                    ${geistSans.variable} ${geistMono.variable}
+                    ${geistSans.variable} ${geistMono.variable} text-foreground dark:text-zinc-300
                     min-h-screen flex flex-col bg-gradient-to-br from-zinc-300 via-zinc-50 to-zinc-200 
-                    dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-700
+                    dark:bg-gradient-to-br dark:from-gray-950 dark:via-gray-900 dark:to-gray-950
                 `}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

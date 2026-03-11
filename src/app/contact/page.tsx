@@ -36,7 +36,7 @@ export default async function ContactPage() {
             }
             <div className="container mx-auto mb-24 max-w-5xl py-12 md:py-20 px-6 md:px-0">
                 <div className="hero-container text-center mt-8 pb-12">
-                    <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
+                    <Badge variant="secondary" className="mb-6 pr-3 shadow-lg bg-background/80 backdrop-blur-sm dark:border dark:border-gray-600">
                         <BreadcrumbNav />
                     </Badge>
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">

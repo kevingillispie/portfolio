@@ -120,7 +120,7 @@ export default async function BlogListPage({
             <div className="container mx-auto max-w-5xl py-12 md:py-20 px-6 lg:px-0 min-h-screen">
                 {/* Hero */}
                 <div className="hero-container text-center mt-8 pb-12">
-                    <Badge variant="secondary" className="mb-6 shadow-lg bg-background/80 backdrop-blur-sm">
+                    <Badge variant="secondary" className="mb-6 pr-3 shadow-lg bg-background/80 backdrop-blur-sm dark:border dark:border-gray-600">
                         <BreadcrumbNav variant="pathname" />
                     </Badge>
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
@@ -135,9 +135,9 @@ export default async function BlogListPage({
                 {featured ? (
                     <section className="mb-16">
                         <TransitionLink href={`/blog/${featured.slug}`} className="group block no-underline">
-                            <Card className="overflow-hidden border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-2xl">
+                            <Card className="overflow-hidden border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-2xl dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
                                 <div className="md:flex">
-                                    <div className="md:w-1/2 bg-gradient-to-br from-primary/10 to-primary/5 p-8 flex items-center justify-center">
+                                    <div className="md:w-1/2 bg-gradient-to-br from-zinc-100 to-zinc-200/80 dark:from-gray-800 dark:to-gray-900 p-8 flex items-center justify-center">
                                         <div>
                                             <div className="flex flex-wrap gap-2 mb-4">
                                                 {featured.tags.map((tag) => (
@@ -239,14 +239,14 @@ export default async function BlogListPage({
                                     key={post.slug}
                                     href={`/blog/${post.slug}`}
                                     className={cn(
-                                        "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-zinc-900 hover:bg-zinc-50/50 shadow-lg"
+                                        "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 hover:-translate-y-1 hover:bg-zinc-50/50 shadow-lg hover:shadow-xl"
                                     )}
                                 >
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <h3 className="text-base font-medium">{post.title}</h3>
+                                            <h3 className="font-bold">{post.title}</h3>
                                         </div>
-                                        <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
+                                        <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-slate-800 rounded-sm border-l-4 shadow-md">
                                             {post.excerpt}
                                         </p>
                                     </div>
@@ -266,8 +266,7 @@ export default async function BlogListPage({
                                             </Badge>
                                         </div>
                                         <ChevronRight
-                                            className="ml-auto h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity border border-zinc-500 rounded"
-                                            color="#333"
+                                            className="ml-auto h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity border border-zinc-500 dark:border-slate-400 rounded"
                                             strokeWidth={4}
                                         />
                                     </div>

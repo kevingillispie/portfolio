@@ -1,6 +1,6 @@
 import { getLatestPosts } from "@/lib/server/posts-server";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays } from 'lucide-react';
+import { CalendarDays, Clock } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
 import HALWireframeWall from "@/components/HALWireframeWall";
@@ -12,10 +12,16 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Script from "next/script";
 import { getScscSchema } from "@/lib/server/get-scsc-schema";
+import Link from "next/link";
 
 const projects = [
     {
@@ -68,15 +74,15 @@ export default async function Home() {
                 <div className="container mx-auto">
                     <div className="home-hero-container relative text-center mt-8 py-12 mx-6 md:py-20 bg-radial from-zinc-50/70 via-transparent to-transparent dark:bg-none">
                         <div className="pointer-events-auto">
-                            <Badge variant="default" className="badge-shadow mb-6 py-1">Code & Content Creator</Badge>
+                            <Badge variant="default" className="badge-shadow mb-6 py-1 dark:text-zinc-300 dark:bg-slate-800 dark:border dark:border-gray-600">Code & Content Creator</Badge>
                             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                                 Kevin Gillispie
                             </h1>
-                            <p className="text-xl md:text-2xl lg:text-3xl text-zinc-800 dark:text-zinc-100 max-w-3xl mx-auto">
+                            <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto">
                                 <span className="sm:hidden">• </span>Full-Stack Web Development • Cyber&nbsp;Security <br className="hidden sm:block" /> WP Plugins<span className="hidden sm:inline"> • </span><br className="sm:hidden" />Browser Extensions
                             </p>
                             <hr className="sm:hidden border border-top-1 border-zinc-800/50 dark:border-zinc-300 w-25 mt-6 mx-auto" />
-                            <p className="mt-6 text-lg max-w-2xl mx-auto text-zinc-800 dark:text-zinc-100">
+                            <p className="mt-6 text-lg max-w-2xl mx-auto">
                                 Building performant, user-focused tools <br />and sites that solve real problems.
                             </p>
                         </div>
@@ -90,12 +96,31 @@ export default async function Home() {
                             </div>
 
                             <div className="lg:col-span-1">
-                                <div className="bg-card text-card-foreground space-y-6 rounded-xl border p-6 shadow-lg h-full flex flex-col">
+                                <div className="bg-card dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-900 dark:to-slate-950 text-card-foreground space-y-6 rounded-xl border dark:border-slate-700 p-6 shadow-xl h-full flex flex-col">
                                     <h3 className="text-xl font-semibold tracking-tight">About Me</h3>
 
                                     <div className="space-y-6 flex-1">
                                         <p className="text-muted-foreground leading-relaxed">
-                                            I&apos;m a full-stack web developer and cybersecurity enthusiast specializing in modern React ecosystems and integrated/headless WordPress installations. I build performant tools like SEO plugins, browser security extensions, and agency-grade sites. Passionate about clean code, security, and user-focused design.
+                                            I&rsquo;m a full-stack web developer and cybersecurity practitioner with over 8 years of experience building performant, secure digital solutions. Specializing in modern React ecosystems, headless WordPress, browser extensions, and PHP/JavaScript stacks, I create user-focused tools that solve real-world problems.
+                                        </p>
+                                        <p className="text-muted-foreground leading-relaxed">
+                                            Notable projects include <HoverCard openDelay={10} closeDelay={100}>
+                                                <HoverCardTrigger asChild>
+                                                    <Button variant="link" className="p-0 h-0">Schema Scalpel</Button>
+                                                </HoverCardTrigger>
+                                                <HoverCardContent className="flex w-64 flex-col gap-0.5 mt-3">
+                                                    <div>Official WordPress plugin for per-page JSON-LD schema customization, 8,500+ downloads and counting!</div>
+                                                    <Link href={'https://schemascalpel.com'} className="flex justify-center"><Button variant={"outline"} className="mt-3">Schema Scalpel website</Button></Link>
+                                                </HoverCardContent>
+                                            </HoverCard> and <HoverCard openDelay={10} closeDelay={100}>
+                                                <HoverCardTrigger asChild>
+                                                    <Button variant="link" className="p-0 h-0">OverPhish</Button>
+                                                </HoverCardTrigger>
+                                                <HoverCardContent className="flex w-64 flex-col gap-0.5 mt-3">
+                                                    <div>Privacy-first browser extension blocking phishing/malware in real time, live on Chrome, Firefox, and Edge</div>
+                                                    <Link href={'https://overphish.app'} className="flex justify-center"><Button variant={"outline"} className="mt-3">OverPhish website</Button></Link>
+                                                </HoverCardContent>
+                                            </HoverCard>. He holds CompTIA Security+, Network+, and Google Cybersecurity Professional certificates.
                                         </p>
 
                                         <div className="flex flex-wrap gap-2">
@@ -130,7 +155,7 @@ export default async function Home() {
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                             {latestPosts.length > 0 ? (
                                 latestPosts.map((post) => (
-                                    <Card key={post.slug} className="flex flex-col overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
+                                    <Card key={post.slug} className="flex flex-col overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-900 dark:to-slate-800">
                                         <div className="aspect-video relative">
                                             <Image
                                                 src="/placeholder.svg?height=400&width=600&text=Blog+Post"
@@ -148,14 +173,16 @@ export default async function Home() {
                                                     </Badge>
                                                 ))}
                                             </div>
-                                            <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                                            <CardTitle className="line-clamp-2"><h3 className="text-xl">{post.title}</h3></CardTitle>
                                             <CardDescription className="flex flex-col xl:flex-row xl:items-center gap-2 text-sm">
-                                                <div className="flex items-center gap-1">
-                                                    <CalendarDays className="h-4 w-4" />
-                                                    <div>{post.date}</div>
-                                                </div>
-                                                <div className="hidden xl:block">•</div>
-                                                <div>{post.readTime}</div>
+                                                <Badge variant="default">
+                                                    <CalendarDays className="h-4 w-4 mr-1" aria-hidden="true" />
+                                                    {post.date}
+                                                </Badge>
+                                                <Badge variant="secondary">
+                                                    <Clock className="h-4 w-4 mr-1" aria-hidden="true" />
+                                                    {post.readTime}
+                                                </Badge>
                                             </CardDescription>
                                         </CardHeader>
 
@@ -166,7 +193,7 @@ export default async function Home() {
                                         </CardContent>
 
                                         <CardFooter className="pt-0">
-                                            <Button variant="ghost" asChild className="ml-auto">
+                                            <Button variant="outline" asChild className="ml-auto">
                                                 <TransitionLink href={`/blog/${post.slug}`}>
                                                     Read more →
                                                 </TransitionLink>

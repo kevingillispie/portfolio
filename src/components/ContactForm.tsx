@@ -62,7 +62,7 @@ export default function ContactForm() {
     }, [state, form]);
 
     return (
-        <Card className="max-w-lg mx-auto">
+        <Card className="max-w-lg mx-auto dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-950 shadow-xl">
             <CardContent>
                 <Form {...form}>
                     <form action={formAction} className="space-y-6">

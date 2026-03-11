@@ -167,7 +167,7 @@ body[data-scroll-locked] {
 .prose h2,
 .prose h3,
 .prose h4 {
-    @apply tracking-tight text-foreground [&:not(:first-child)]:mt-8;
+    @apply tracking-tight [&:not(:first-child)]:mt-8;
 }
 
 .prose h1 {
@@ -219,7 +219,7 @@ body[data-scroll-locked] {
 }
 
 .prose code {
-    @apply text-foreground bg-muted/50 px-1 py-0.5 rounded text-sm font-mono font-medium;
+    @apply bg-muted/50 px-1 py-0.5 rounded text-sm font-mono font-medium;
 }
 
 .prose hr {
@@ -235,7 +235,7 @@ body[data-scroll-locked] {
 /* Add this at the bottom of globals.css */
 
 .prose figure {
-    @apply relative float-right text-xl m-6 ml-8 p-10 pt-8 w-full max-w-xs md:max-w-sm bg-zinc-100 dark:bg-zinc-700 rounded border-t-20 border-zinc-300 shadow-md z-[9999];
+    @apply relative float-right text-xl m-6 ml-8 p-10 pt-8 w-full max-w-xs md:max-w-sm bg-zinc-100 dark:bg-slate-800 rounded border-t-20 border-zinc-300 dark:border-slate-950 shadow-md z-[9999];
 }
 
 .prose figure::before,
@@ -253,6 +253,11 @@ body[data-scroll-locked] {
     content: "•";
     left: 100%;
     transform: translateX(-20px);
+}
+
+.dark .prose figure::before,
+.dark .prose figure::after {
+    color: oklch(55.1% 0.027 264.364);
 }
 
 [role="menuitemcheckbox"]>span {
