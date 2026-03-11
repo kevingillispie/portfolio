@@ -18,6 +18,7 @@ import {
     HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import Image from "next/image";
 import Script from "next/script";
 import { getScscSchema } from "@/lib/server/get-scsc-schema";
@@ -135,6 +136,14 @@ export default async function Home() {
                                             <Badge variant="secondary">PHP</Badge>
                                             <Badge variant="secondary">JavaScript</Badge>
                                         </div>
+                                    </div>
+
+                                    <div className="flex justify-center">
+                                        <ButtonGroup>
+                                            <Button><Link href={'https://github.com/kevingillispie'}>GitHub Profile</Link></Button>
+                                            <Button><Link href={'https://schemascalpel.com/'}>Schema Scalpel</Link></Button>
+                                            <Button><Link href={'https://overphish.app'}>OverPhish</Link></Button>
+                                        </ButtonGroup>
                                     </div>
 
                                     <Button asChild size={'lg'} className="mt-auto" style={{ borderRadius: "100px" }}>
