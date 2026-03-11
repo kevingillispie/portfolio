@@ -7,7 +7,7 @@ import Script from 'next/script';
 import { ReadingProgressBar } from '@/components/ReadingProgressBar';
 import { ShareButtons } from '@/components/ShareButtons';
 import { BackToTop } from '@/components/BackToTop';
-import { CalendarDays, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CalendarDays, Clock, ChevronLeft, ChevronRight, Tag, Tags } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { BackButton } from '@/components/BackButton';
@@ -125,7 +125,7 @@ export default async function PostPage({ params }: Props) {
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{post.title}</h1>
 
                 <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-10">
-                    <Badge variant="outline">
+                    <Badge variant="default">
                         <CalendarDays className="h-4 w-4 mr-1" aria-hidden="true" />
                         {post.date}
                     </Badge>
@@ -133,13 +133,23 @@ export default async function PostPage({ params }: Props) {
                         <Clock className="h-4 w-4 mr-1" aria-hidden="true" />
                         {post.readTime}
                     </Badge>
-                    {post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                            {post.tags.map((tag) => (
-                                <Badge key={tag} variant="default">{tag}</Badge>
-                            ))}
-                        </div>
-                    )}
+                    {/* Inside your [slug]/page.tsx */}
+                    <div className="flex flex-wrap items-center gap-3">
+                        {/* Categories as primary badges */}
+                        {post.categories.map((cat) => (
+                            <Badge key={cat} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
+                                <Tag />
+                                {cat}
+                            </Badge>
+                        ))}
+
+                        {post.tags.map((tag) => (
+                            <Badge key={tag} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
+                                <Tags />
+                                #{tag}
+                            </Badge>
+                        ))}
+                    </div>
                 </div>
 
                 <hr className="my-10 border-border/60" />

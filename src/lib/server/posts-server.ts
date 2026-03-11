@@ -32,6 +32,7 @@ export interface PostData {
     date: string;          // formatted: "March 4, 2026"
     rawDate: string;       // "2026-03-04T12:00:00" for queries
     excerpt: string;
+    categories: string[];
     tags: string[];
     featured?: boolean;
     readTime?: string;
@@ -105,33 +106,9 @@ export async function getPostData(slug: string): Promise<PostData | null> {
     try {
         const data = await wpQuery<WPPostResponse>(GET_POST, { slug });
         const post = data?.post;
-
         if (!post) return null;
 
-        const allTags = [
-            ...(post.categories?.nodes?.map((c: any) => c.name) ?? []),
-            ...(post.tags?.nodes?.map((t: any) => t.name) ?? []),
-        ].filter(Boolean);
-
-        const plainExcerpt = htmlToText(post.excerpt ?? '', {
-            wordwrap: false,
-            selectors: [{ selector: 'a', options: { ignoreHref: true } }],
-        }).trim();
-
-        const fullContent = post.content ?? '';
-
-        return {
-            slug: post.slug,
-            title: post.title,
-            date: format(new Date(post.date), 'MMMM d, yyyy'),
-            rawDate: post.date,
-            excerpt: plainExcerpt || 'No excerpt available.',
-            tags: allTags.slice(0, 3),
-            featured: false,
-            readTime: calculateReadTime(fullContent),
-            contentHtml: fullContent,
-            seo: post.seo,
-        };
+        return mapNodeToPostData(post);
     } catch (error) {
         console.error(`Failed to fetch post "${slug}":`, error);
         return null;
@@ -163,31 +140,7 @@ export async function getLatestPosts(limit = 3): Promise<PostData[]> {
         const data = await wpQuery<any>(GET_LATEST_POSTS, { first: limit });
         const rawPosts = data?.posts?.nodes ?? [];
 
-        return rawPosts.map((node: any) => {
-            const allTags = [
-                ...(node.categories?.nodes?.map((c: any) => c.name) ?? []),
-                ...(node.tags?.nodes?.map((t: any) => t.name) ?? []),
-            ].filter(Boolean);
-
-            const plainExcerpt = htmlToText(node.excerpt ?? '', {
-                wordwrap: false,
-                selectors: [{ selector: 'a', options: { ignoreHref: true } }],
-            }).trim();
-
-            const fullContent = node.content ?? '';
-
-            return {
-                slug: node.slug,
-                title: node.title,
-                date: format(new Date(node.date), 'MMMM d, yyyy'),
-                rawDate: node.date,
-                excerpt: plainExcerpt || 'No excerpt available.',
-                tags: allTags.slice(0, 3),
-                featured: false,
-                readTime: calculateReadTime(fullContent),
-                contentHtml: fullContent,
-            };
-        });
+        return rawPosts.map(mapNodeToPostData);
     } catch (error) {
         console.error('Failed to fetch latest posts:', error);
         return [];
@@ -318,31 +271,7 @@ export async function getPaginatedPosts(
         });
 
         const rawPosts = data?.posts?.nodes ?? [];
-        const posts = rawPosts.map((node: WPPostNode) => {
-            const allTags = [
-                ...(node.categories?.nodes?.map((c: any) => c.name) ?? []),
-                ...(node.tags?.nodes?.map((t: any) => t.name) ?? []),
-            ].filter(Boolean);
-
-            const plainExcerpt = htmlToText(node.excerpt ?? '', {
-                wordwrap: false,
-                selectors: [{ selector: 'a', options: { ignoreHref: true } }],
-            }).trim();
-
-            const fullContent = node.content ?? '';
-
-            return {
-                slug: node.slug,
-                title: node.title,
-                date: format(new Date(node.date), 'MMMM d, yyyy'),
-                rawDate: node.date,
-                excerpt: plainExcerpt || 'No excerpt available.',
-                tags: allTags.slice(0, 5),
-                featured: false,
-                readTime: calculateReadTime(fullContent),
-                contentHtml: fullContent,
-            };
-        });
+        const posts = rawPosts.map(mapNodeToPostData);
 
         return {
             posts,
@@ -523,4 +452,29 @@ export async function getRelatedPosts(
         console.error("Failed to fetch related posts:", error);
         return [];
     }
+}
+
+function mapNodeToPostData(node: any): PostData {
+    const categories = node.categories?.nodes?.map((c: any) => c.name) || [];
+    const tags = node.tags?.nodes?.map((t: any) => t.name) || [];
+
+    const fullContent = node.content ?? '';
+    const plainExcerpt = htmlToText(node.excerpt ?? '', {
+        wordwrap: false,
+        selectors: [{ selector: 'a', options: { ignoreHref: true } }],
+    }).trim();
+
+    return {
+        slug: node.slug,
+        title: node.title,
+        date: format(new Date(node.date), 'MMMM d, yyyy'),
+        rawDate: node.date,
+        excerpt: plainExcerpt || 'No excerpt available.',
+        categories,
+        tags,
+        featured: node.postFeaturedFlag?.featurePost ?? false,
+        readTime: calculateReadTime(fullContent),
+        contentHtml: fullContent,
+        seo: node.seo || undefined,
+    };
 }
