@@ -30,21 +30,24 @@ const projects = [
         slug: "schemascalpel",
         url: "https://schemascalpel.com",
         description: "Surgical precision for WordPress structured data & SEO schema.",
-        image: "/placeholder.svg"
+        logo: "/scalpel-scalpel-logo.png",
+        image: "/schema-scalpel-hero-background.png"
     },
     {
         name: "OverPhish",
         slug: "overphish",
         url: "https://overphish.app",
         description: "Lightweight browser extension to block phishing domains in real-time.",
-        image: "/placeholder.svg",
+        logo: "/overphish-logo.png",
+        image: "/overphish-hero-background.png",
     },
     {
         name: "Unityper",
         slug: "unityper",
         url: "https://unityper.com",
         description: "Modern web agency — launching soon with clean, performant sites.",
-        image: "/placeholder.svg",
+        logo: "/unityper-logo.png",
+        image: "/unityper-hero-background.png",
     },
 ];
 
