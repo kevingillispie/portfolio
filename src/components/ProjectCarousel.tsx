@@ -20,6 +20,7 @@ interface ProjectCarouselProps {
         url: string;
         description: string;
         image: string;
+        logo: string;
     }[];
 }
 
