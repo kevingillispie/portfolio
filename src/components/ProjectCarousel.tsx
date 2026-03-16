@@ -50,12 +50,12 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
                                     />
                                 </div>
 
-                                <div className="relative z-10 text-white text-center p-4 xs:py-6 xs:px-6 sm:px-10 md:px-12 max-w-[90%] sm:max-w-3xl md:max-w-4xl rounded-xl backdrop-blur-xs">
+                                <div className="relative z-10 text-white text-center p-4 xs:py-6 xs:px-6 sm:px-10 md:px-12 max-w-[90%] sm:max-w-3xl md:max-w-4xl rounded-xl">
                                     <Image src={project.logo} alt={`${project.name} screenshot`} width={100} height={100} className="mx-auto mb-3" />
                                     <h3 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4 drop-shadow-lg">
                                         {project.name}
                                     </h3>
-                                    <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 opacity-90 max-w-xl mx-auto">
+                                    <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 opacity-90 max-w-xl mx-auto p-2 backdrop-blur-sm rounded-lg">
                                         {project.description}
                                     </p>
                                     <Button
