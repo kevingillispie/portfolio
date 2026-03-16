@@ -29,7 +29,7 @@ const projects = [
         name: "Schema Scalpel",
         slug: "schemascalpel",
         url: "https://schemascalpel.com",
-        description: "Boost your <u>search engine rankings</u> with <i>surgical control</i> over your brand&rsquo;s identity!",
+        description: "Boost your <strong>search engine rankings</strong> with <i>surgical control</i> over your brand&rsquo;s identity!",
         logo: "/scalpel-scalpel-logo.png",
         image: "/schema-scalpel-hero-background.png"
     },
