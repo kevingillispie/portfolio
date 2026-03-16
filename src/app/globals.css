@@ -324,3 +324,19 @@ body[data-scroll-locked] {
     font-weight: 800;
     font-style: italic;
 }
+
+@media screen and (max-width: 768px) {
+
+    [data-slot*="carousel-previous"],
+    [data-slot*="carousel-next"] {
+        position: absolute;
+        top: 100%;
+        left: 30px;
+        transform: translateY(-100%);
+    }
+
+    [data-slot*="carousel-next"] {
+        right: 30px;
+        left: initial;
+    }
+}

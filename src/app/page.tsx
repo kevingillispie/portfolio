@@ -94,12 +94,12 @@ export default async function Home() {
 
                     <section className="w-full p-6">
                         <h2 className="text-3xl text-center font-bold mt-8">Projects</h2>
-                        <div className="container grid gap-8 grid-cols-1 lg:grid-cols-3 lg:gap-12 pt-12">
-                            <div className="lg:col-span-2">
+                        <div className="container grid gap-8 grid-cols-1 xl:grid-cols-3 xl:gap-12 pt-12">
+                            <div className="xl:col-span-2">
                                 <ProjectCarousel projects={projects} />
                             </div>
 
-                            <div className="lg:col-span-1">
+                            <div className="xl:col-span-1">
                                 <div className="bg-card dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-900 dark:to-slate-950 text-card-foreground space-y-6 rounded-xl border dark:border-slate-700 p-6 shadow-xl h-full flex flex-col">
                                     <h3 className="text-xl font-semibold tracking-tight">About Me</h3>
 
