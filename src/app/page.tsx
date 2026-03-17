@@ -138,6 +138,7 @@ export default async function Home() {
                                             <Badge variant="secondary">Security Tools</Badge>
                                             <Badge variant="secondary">PHP</Badge>
                                             <Badge variant="secondary">JavaScript</Badge>
+                                            <Badge variant="secondary">Python</Badge>
                                         </div>
                                     </div>
 
