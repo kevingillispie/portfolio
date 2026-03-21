@@ -134,22 +134,7 @@ export default async function Home() {
                                                 </HoverCardContent>
                                             </HoverCard> anti-phishing browser extension.
                                         </p>
-
-                                        <h4 className="mt-6 mb-3 font-medium">Skills</h4>
-
                                         <SkillSpheroid />
-
-                                        <div className="flex flex-wrap gap-3 justify-center">
-                                            <div className="inline-flex items-center gap-2 rounded-full bg-secondary/80 px-4 py-1.5 text-sm font-medium">
-                                                <Shield className="h-4 w-4" /> CompTIA Security+
-                                            </div>
-                                            <div className="inline-flex items-center gap-2 rounded-full bg-secondary/80 px-4 py-1.5 text-sm font-medium">
-                                                <Network className="h-4 w-4" /> CompTIA Network+
-                                            </div>
-                                            <div className="inline-flex items-center gap-2 rounded-full bg-secondary/80 px-4 py-1.5 text-sm font-medium">
-                                                Google Cybersecurity Professional
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

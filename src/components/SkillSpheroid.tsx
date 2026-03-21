@@ -2,36 +2,42 @@
 
 import React, { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
+import { Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils"; // Standard shadcn helper
+import { cn } from "@/lib/utils";
 
-const skills = [
+const baseSkills = [
     { name: "Security+", cat: "cyber" }, { name: "Network+", cat: "cyber" },
     { name: "Full-Stack Dev", cat: "dev" }, { name: "SOC Level 1", cat: "cyber" },
-    { name: "MDiv Student", cat: "theology" }, { name: "OverPhish", cat: "project" },
-    { name: "Schema Scalpel", cat: "project" }, { name: "Stage of Fools", cat: "creative" },
+    { name: "OverPhish", cat: "project" }, { name: "Schema Scalpel", cat: "project" },
+    { name: "AI Integration", cat: "dev" }, { name: "Digital Art", cat: "creative" },
     { name: "Google Cyber", cat: "cyber" }, { name: "React", cat: "dev" },
-    { name: "WordPress", cat: "dev" }, { name: "PHP", cat: "dev" },
-    { name: "Classical Ed", cat: "teaching" }, { name: "Chrome Extensions", cat: "dev" },
-    { name: "Biblical Greek", cat: "theology" }, { name: "Linux", cat: "cyber" },
-    { name: "Python", cat: "cyber" }, { name: "English Lit", cat: "creative" }
+    { name: "Photography", cat: "creative" }, { name: "WordPress", cat: "dev" },
+    { name: "CompTIA Certified", cat: "cyber" }, { name: "PHP", cat: "dev" },
+    { name: "Classical Ed", cat: "teaching" }, { name: "Browser Addons", cat: "dev" },
+    { name: "Linux", cat: "cyber" }, { name: "Adobe CC", cat: "creative" },
+    { name: "Python", cat: "cyber" }, { name: "English Comp", cat: "creative" },
+    { name: "WP Plugins", cat: "dev" },
 ];
 
-// Color mapping based on your background
+const multipliedSkills = [...baseSkills, ...baseSkills, ...baseSkills];
+
 const catColors: Record<string, string> = {
-    cyber: "border-blue-500/50 bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white",
-    dev: "border-cyan-500/50 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500 hover:text-white",
-    theology: "border-amber-500/50 bg-amber-500/10 text-amber-400 hover:bg-amber-500 hover:text-white",
-    project: "border-purple-500/50 bg-purple-500/10 text-purple-400 hover:bg-purple-500 hover:text-white",
-    creative: "border-pink-500/50 bg-pink-500/10 text-pink-400 hover:bg-pink-500 hover:text-white",
-    teaching: "border-emerald-500/50 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500 hover:text-white",
+    cyber: "border-blue-500/40 bg-blue-500/10 text-blue-400 hover:bg-blue-500",
+    dev: "border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500",
+    project: "border-purple-500/40 bg-purple-500/10 text-purple-400 hover:bg-purple-500",
+    creative: "border-pink-500/20 bg-pink-500/5 text-pink-500/60 hover:bg-pink-500",
+    teaching: "border-emerald-500/20 bg-emerald-500/5 text-emerald-500/60 hover:bg-emerald-500",
 };
 
-function Word({ children, category, ...props }: { children: string; category: string;[key: string]: any }) {
-    const [hovered, setHovered] = useState(false);
+const lineColors: Record<string, string> = {
+    cyber: "#3b82f6", dev: "#06b6d4", project: "#a855f7", creative: "#ec4899", teaching: "#10b981",
+};
+
+function Word({ children, category, onHover, ...props }: { children: string; category: string; onHover: (cat: string | null) => void;[key: string]: any }) {
     const ref = useRef<THREE.Group>(null!);
+    const isPriority = ['cyber', 'dev', 'project'].includes(category);
 
     useFrame((state) => {
         ref.current.quaternion.copy(state.camera.quaternion);
@@ -39,20 +45,21 @@ function Word({ children, category, ...props }: { children: string; category: st
 
     return (
         <group ref={ref} {...props}>
-            <Html distanceFactor={12}>
+            <Html distanceFactor={10}>
                 <div
-                    onPointerOver={() => setHovered(true)}
-                    onPointerOut={() => setHovered(false)}
-                    className="transition-all duration-300 hover:scale-125 cursor-pointer"
+                    onPointerOver={() => onHover(category)}
+                    onPointerOut={() => onHover(null)}
+                    className={cn(
+                        "transition-all duration-300 ease-out select-none cursor-grab active:cursor-grabbing",
+                        isPriority ? "scale-[1.1]" : "scale-90 opacity-60",
+                        "hover:scale-125 hover:z-50 hover:opacity-100"
+                    )}
                 >
-                    <Badge
-                        variant="outline"
-                        className={cn(
-                            "whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors",
-                            catColors[category] || "border-muted bg-muted/10 text-muted-foreground",
-                            hovered && "shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                        )}
-                    >
+                    <Badge variant="outline" className={cn(
+                        "whitespace-nowrap px-2 py-0.5 text-[8px] font-bold uppercase tracking-tighter -translate-x-1/2",
+                        catColors[category],
+                        "hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:border-white hover:text-white"
+                    )}>
                         {children}
                     </Badge>
                 </div>
@@ -61,41 +68,81 @@ function Word({ children, category, ...props }: { children: string; category: st
     );
 }
 
-function Cloud({ radius = 15 }) { // Reduced radius for higher density
-    const words = useMemo(() => {
-        const temp = [];
+function Cloud({ radius = 6.4 }) {
+    const groupRef = useRef<THREE.Group>(null!);
+    const [activeCat, setActiveCat] = useState<string | null>(null);
+
+    const { words, connections } = useMemo(() => {
+        const wordArr = [];
+        const connMap: Record<string, THREE.Vector3[]> = {};
         const phiSpan = Math.PI * (3 - Math.sqrt(5));
 
-        for (let i = 0; i < skills.length; i++) {
-            const y = 1 - (i / (skills.length - 1)) * 2;
+        for (let i = 0; i < multipliedSkills.length; i++) {
+            const y = 1 - (i / (multipliedSkills.length - 1)) * 2;
             const r = Math.sqrt(1 - y * y);
             const theta = phiSpan * i;
-
-            const pos = new THREE.Vector3(
-                Math.cos(theta) * r * radius,
-                y * radius,
-                Math.sin(theta) * r * radius
-            );
-            temp.push({ pos, name: skills[i].name, cat: skills[i].cat });
+            const pos = new THREE.Vector3(Math.cos(theta) * r * radius, y * radius, Math.sin(theta) * r * radius);
+            const cat = multipliedSkills[i].cat;
+            wordArr.push({ pos, name: multipliedSkills[i].name, cat });
+            if (!connMap[cat]) connMap[cat] = [];
+            connMap[cat].push(pos);
         }
-        return temp;
+        return { words: wordArr, connections: connMap };
     }, [radius]);
 
-    const groupRef = useRef<THREE.Group>(null!);
+    const rotationRef = useRef({ velX: 0, velY: 0 });
+    const pointerRef = useRef({ x: 0, y: 0, isDown: false });
 
-    useFrame((state) => {
-        const { x, y } = state.mouse;
-        // Auto-rotation
-        groupRef.current.rotation.y += 0.003;
-        // Subtle mouse influence
-        groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -y * 0.3, 0.1);
-        groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, x * 0.3, 0.1);
+    useFrame(() => {
+        if (!pointerRef.current.isDown) {
+            rotationRef.current.velX *= 0.95;
+            rotationRef.current.velY *= 0.95;
+            groupRef.current.rotation.y += 0.0015 + rotationRef.current.velX;
+            groupRef.current.rotation.x += rotationRef.current.velY;
+        } else {
+            groupRef.current.rotation.y += rotationRef.current.velX;
+            groupRef.current.rotation.x += rotationRef.current.velY;
+        }
     });
 
+    const handlePointerDown = (e: any) => { e.stopPropagation(); pointerRef.current.isDown = true; pointerRef.current.x = e.clientX; pointerRef.current.y = e.clientY; };
+    const handlePointerUp = () => { pointerRef.current.isDown = false; };
+    const handlePointerMove = (e: any) => {
+        if (!pointerRef.current.isDown) return;
+        rotationRef.current.velX = (e.clientX - pointerRef.current.x) * 0.005;
+        rotationRef.current.velY = (e.clientY - pointerRef.current.y) * 0.005;
+        pointerRef.current.x = e.clientX; pointerRef.current.y = e.clientY;
+    };
+
     return (
-        <group ref={groupRef}>
+        <group
+            ref={groupRef}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerMove={handlePointerMove}
+            onPointerLeave={handlePointerUp}
+            rotation={[-0.6, 0, -0.6]} // <--- CHANGE AXIS HERE (X, Y, Z in radians)
+        >
+            {Object.entries(connections).map(([cat, points]) => (
+                <Line
+                    key={cat}
+                    points={points}
+                    color={lineColors[cat]}
+                    lineWidth={activeCat === cat ? 1.5 : 1} // Glow effect on width
+                    transparent
+                    opacity={activeCat === cat ? 0.6 : 0.1} // Glow effect on opacity
+                />
+            ))}
+
+            <mesh visible={false}><sphereGeometry args={[radius * 1.2, 16, 16]} /><meshBasicMaterial /></mesh>
+
             {words.map((item, index) => (
-                <Word key={index} position={item.pos} category={item.cat}>
+                <Word
+                    key={index}
+                    position={item.pos}
+                    category={item.cat}
+                    onHover={setActiveCat}
+                >
                     {item.name}
                 </Word>
             ))}
@@ -105,18 +152,19 @@ function Cloud({ radius = 15 }) { // Reduced radius for higher density
 
 export default function SkillSpheroid() {
     return (
-        <div className="w-full h-[500px] bg-black/5 rounded-xl border relative overflow-hidden group">
-            <div className="absolute top-6 left-6 z-10 pointer-events-none">
-                <h3 className="text-lg font-bold tracking-tighter uppercase opacity-50">Expertise Cluster</h3>
+        <div className="relative z-0 w-full h-[355px] bg-background rounded-xl border relative overflow-hidden flex items-center justify-center">
+            <div className="absolute z-1 top-[1rem] left-[1rem] pointer-events-none select-none">
+                <Badge variant="default" className="px-4 py-2 shadow-xl border-white/20">
+                    <h3 className="text-sm tracking-[0.3em] uppercase">Skill Nexus</h3>
+                </Badge>
             </div>
-
-            <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 60 }}>
-                <ambientLight intensity={0.8} />
-                <pointLight position={[10, 10, 10]} intensity={1} />
+            <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 16], fov: 35 }} className='z-0'>
+                <ambientLight intensity={1.5} />
                 <React.Suspense fallback={null}>
-                    <Cloud radius={4} />
+                    <Cloud radius={6.2} />
                 </React.Suspense>
             </Canvas>
+
         </div>
     );
 }
