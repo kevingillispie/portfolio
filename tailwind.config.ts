@@ -8,9 +8,7 @@ const config: Config = {
     ],
     darkMode: "class",
     theme: {
-        extend: {
-            // CSS variable mapping in globals.css
-        },
+        extend: {},
     },
     plugins: [
         typography,

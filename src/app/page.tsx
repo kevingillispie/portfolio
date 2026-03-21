@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Clock, Network, Shield } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
+import SkillSpheroid from "@/components/SkillSpheroid";
 import HALWireframeWall from "@/components/HALWireframeWall";
 import {
     Card,
@@ -16,9 +17,8 @@ import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-} from "@/components/ui/hover-card"
+} from "@/components/ui/hover-card";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
 import Image from "next/image";
 import Script from "next/script";
 import { getScscSchema } from "@/lib/server/get-scsc-schema";
@@ -105,10 +105,7 @@ export default async function Home() {
 
                                     <div className="space-y-6 flex-1">
                                         <p className="text-muted-foreground leading-relaxed">
-                                            I love computer code. It&rsquo;s the language of logic that moves machines. I also love human language. It&rsquo;s the code of thought that moves minds. Apps and ideas, and my observations about them, are the things that will fill this website.
-                                        </p>
-                                        <p className="text-muted-foreground leading-relaxed">
-                                            By day, I&rsquo;m a full-stack web developer and cybersecurity practitioner running <HoverCard openDelay={10} closeDelay={100}>
+                                            I&rsquo;m the founder of <HoverCard openDelay={10} closeDelay={100}>
                                                 <HoverCardTrigger asChild>
                                                     <Button variant="link" className="p-0 h-0"><i>Unityper Agency</i></Button>
                                                 </HoverCardTrigger>
@@ -116,10 +113,10 @@ export default async function Home() {
                                                     <div>Official WordPress plugin for per-page JSON-LD schema customization, 8,500+ downloads and counting!</div>
                                                     <Link href={'https://unityper.com'} className="flex justify-center"><Button variant={"outline"} className="mt-3">Schema Scalpel website</Button></Link>
                                                 </HoverCardContent>
-                                            </HoverCard>, where I build performant, secure, SEO-friendly solutions—specializing in modern React stacks, headless WordPress, browser extensions, and PHP/JS.
+                                            </HoverCard>, a full-service web development studio specializing in fast, secure, accessible, and SEO-aware websites.
                                         </p>
                                         <p className="text-muted-foreground leading-relaxed">
-                                            Notable projects include <HoverCard openDelay={10} closeDelay={100}>
+                                            Professional projects include the <HoverCard openDelay={10} closeDelay={100}>
                                                 <HoverCardTrigger asChild>
                                                     <Button variant="link" className="p-0 h-0">Schema Scalpel</Button>
                                                 </HoverCardTrigger>
@@ -127,7 +124,7 @@ export default async function Home() {
                                                     <div>Official WordPress plugin for per-page JSON-LD schema customization, 8,500+ downloads and counting!</div>
                                                     <Link href={'https://schemascalpel.com'} className="flex justify-center"><Button variant={"outline"} className="mt-3">Schema Scalpel website</Button></Link>
                                                 </HoverCardContent>
-                                            </HoverCard> and <HoverCard openDelay={10} closeDelay={100}>
+                                            </HoverCard> WordPress plugin and the <HoverCard openDelay={10} closeDelay={100}>
                                                 <HoverCardTrigger asChild>
                                                     <Button variant="link" className="p-0 h-0">OverPhish</Button>
                                                 </HoverCardTrigger>
@@ -135,16 +132,12 @@ export default async function Home() {
                                                     <div>Privacy-first browser extension blocking phishing/malware in real time, live on Chrome, Firefox, and Edge</div>
                                                     <Link href={'https://overphish.app'} className="flex justify-center"><Button variant={"outline"} className="mt-3">OverPhish website</Button></Link>
                                                 </HoverCardContent>
-                                            </HoverCard>. I hold CompTIA Security+, Network+, and Google Cybersecurity Professional certificates.
+                                            </HoverCard> anti-phishing browser extension.
                                         </p>
 
-                                        <div className="flex justify-center">
-                                            <ButtonGroup>
-                                                <Button><Link href={'https://github.com/kevingillispie'} target="_blank">GitHub</Link></Button>
-                                                <Button><Link href={'https://schemascalpel.com/'} target="_blank">Schema Scalpel</Link></Button>
-                                                <Button><Link href={'https://overphish.app'} target="_blank">OverPhish</Link></Button>
-                                            </ButtonGroup>
-                                        </div>
+                                        <h4 className="mt-6 mb-3 font-medium">Skills</h4>
+
+                                        <SkillSpheroid />
 
                                         <div className="flex flex-wrap gap-3 justify-center">
                                             <div className="inline-flex items-center gap-2 rounded-full bg-secondary/80 px-4 py-1.5 text-sm font-medium">

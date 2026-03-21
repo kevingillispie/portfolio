@@ -12,6 +12,8 @@
     },
     "dependencies": {
         "@hookform/resolvers": "^5.2.2",
+        "@react-three/drei": "^10.7.7",
+        "@react-three/fiber": "^9.5.0",
         "@tsparticles/engine": "^3.9.1",
         "@tsparticles/interaction-external-trail": "^3.9.1",
         "@tsparticles/plugin-emitters": "^3.9.1",
@@ -20,6 +22,7 @@
         "@tsparticles/slim": "^3.9.1",
         "@tsparticles/updater-roll": "^3.9.1",
         "@tsparticles/updater-tilt": "^3.9.1",
+        "@types/three": "^0.183.1",
         "animejs": "^4.3.6",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
@@ -40,6 +43,7 @@
         "react-hook-form": "^7.71.1",
         "sonner": "^2.0.7",
         "tailwind-merge": "^3.4.1",
+        "three": "^0.183.2",
         "zod": "^4.3.6"
     },
     "devDependencies": {
