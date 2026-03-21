@@ -24,18 +24,18 @@ export default function Navbar() {
             <Button
                 variant="outline"
                 size="icon"
-                className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border"
+                className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border size-10"
                 aria-label="Home button"
             >
                 <TransitionLink
                     href="/"
                     className={cn(
-                        "flex items-center justify-center w-full h-full",
+                        "flex items-center justify-center",
                         isActive("/") && "font-medium"
                     )}
                     aria-label="Link to homepage."
                 >
-                    <House width={18} height={18} />
+                    <House className="size-5" />
                 </TransitionLink>
             </Button>
 
@@ -45,10 +45,10 @@ export default function Navbar() {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border"
+                        className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border size-10"
                         aria-label="Menu open button"
                     >
-                        <Menu width={18} height={18} />
+                        <Menu className="size-5" />
                     </Button>
                 </DropdownMenuTrigger>
 

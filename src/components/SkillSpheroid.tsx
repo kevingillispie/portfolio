@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
@@ -68,9 +68,19 @@ function Word({ children, category, onHover, ...props }: { children: string; cat
     );
 }
 
-function Cloud({ radius = 6.4 }) {
+function Cloud({ radius = 6.4, isMobile = false, isInView = false }) {
     const groupRef = useRef<THREE.Group>(null!);
     const [activeCat, setActiveCat] = useState<string | null>(null);
+    const hasFlicked = useRef(false);
+
+    // Initial flick when scrolled into view
+    useEffect(() => {
+        if (isInView && !hasFlicked.current) {
+            rotationRef.current.velY = 0.08; // Vertical flick
+            rotationRef.current.velX = 0.05; // Horizontal flick
+            hasFlicked.current = true;
+        }
+    }, [isInView]);
 
     const { words, connections } = useMemo(() => {
         const wordArr = [];
@@ -95,9 +105,14 @@ function Cloud({ radius = 6.4 }) {
 
     useFrame(() => {
         if (!pointerRef.current.isDown) {
+            // Apply friction
             rotationRef.current.velX *= 0.95;
             rotationRef.current.velY *= 0.95;
-            groupRef.current.rotation.y += 0.0015 + rotationRef.current.velX;
+
+            // Only auto-rotate if NOT on mobile
+            const autoSpeed = isMobile ? 0 : 0.0015;
+
+            groupRef.current.rotation.y += autoSpeed + rotationRef.current.velX;
             groupRef.current.rotation.x += rotationRef.current.velY;
         } else {
             groupRef.current.rotation.y += rotationRef.current.velX;
@@ -121,28 +136,21 @@ function Cloud({ radius = 6.4 }) {
             onPointerUp={handlePointerUp}
             onPointerMove={handlePointerMove}
             onPointerLeave={handlePointerUp}
-            rotation={[-0.6, 0, -0.6]} // <--- CHANGE AXIS HERE (X, Y, Z in radians)
+            rotation={[-0.6, 0, -0.6]}
         >
             {Object.entries(connections).map(([cat, points]) => (
                 <Line
                     key={cat}
                     points={points}
                     color={lineColors[cat]}
-                    lineWidth={activeCat === cat ? 1.5 : 1} // Glow effect on width
+                    lineWidth={activeCat === cat ? 1.5 : 1}
                     transparent
-                    opacity={activeCat === cat ? 0.6 : 0.1} // Glow effect on opacity
+                    opacity={activeCat === cat ? 0.6 : 0.1}
                 />
             ))}
-
             <mesh visible={false}><sphereGeometry args={[radius * 1.2, 16, 16]} /><meshBasicMaterial /></mesh>
-
             {words.map((item, index) => (
-                <Word
-                    key={index}
-                    position={item.pos}
-                    category={item.cat}
-                    onHover={setActiveCat}
-                >
+                <Word key={index} position={item.pos} category={item.cat} onHover={setActiveCat}>
                     {item.name}
                 </Word>
             ))}
@@ -151,20 +159,42 @@ function Cloud({ radius = 6.4 }) {
 }
 
 export default function SkillSpheroid() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        // Detect mobile
+        const mql = window.matchMedia('(max-width: 768px)');
+        setIsMobile(mql.matches);
+
+        // Intersection Observer for the "scroll flick"
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsInView(entry.isIntersecting),
+            { threshold: 0.1 }
+        );
+
+        if (containerRef.current) observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <div className="relative z-0 w-full h-[355px] bg-background rounded-xl border relative overflow-hidden flex items-center justify-center">
+        <div
+            ref={containerRef}
+            className="relative z-0 w-full h-100 bg-background rounded-xl border relative overflow-hidden flex items-center justify-center"
+        >
             <div className="absolute z-1 top-[1rem] left-[1rem] pointer-events-none select-none">
                 <Badge variant="default" className="px-4 py-2 shadow-xl border-white/20">
                     <h3 className="text-sm tracking-[0.3em] uppercase">Skill Nexus</h3>
                 </Badge>
             </div>
+            {/* Canvas is first in DOM, but visually lower */}
             <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 16], fov: 35 }} className='z-0'>
                 <ambientLight intensity={1.5} />
                 <React.Suspense fallback={null}>
-                    <Cloud radius={6.2} />
+                    <Cloud radius={6.2} isMobile={isMobile} isInView={isInView} />
                 </React.Suspense>
             </Canvas>
-
         </div>
     );
 }

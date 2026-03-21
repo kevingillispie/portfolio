@@ -13,18 +13,34 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import TransitionLink from "./TransitionLink";
 
-interface ProjectCarouselProps {
-    projects: {
-        name: string;
-        slug: string;
-        url: string;
-        description: string;
-        image: string;
-        logo: string;
-    }[];
-}
+const projects = [
+    {
+        name: "Schema Scalpel",
+        slug: "schemascalpel",
+        url: "https://schemascalpel.com",
+        description: "Boost your <strong>search engine rankings</strong> with <i>surgical control</i> over your brand&rsquo;s identity!",
+        logo: "/scalpel-scalpel-logo.png",
+        image: "/schema-scalpel-hero-background.png"
+    },
+    {
+        name: "OverPhish",
+        slug: "overphish",
+        url: "https://overphish.app",
+        description: "Lightweight browser extension that blocks <strong>1M+</strong> phishing domains in <i>milliseconds</i>.",
+        logo: "/overphish-logo.png",
+        image: "/overphish-hero-background.png",
+    },
+    {
+        name: "Unityper",
+        slug: "unityper",
+        url: "https://unityper.com",
+        description: "Modern, <i>AI-enhanced</i> web agency — building secure, performant sites with maximal <strong>SEO</strong> value.",
+        logo: "/unityper-logo.png",
+        image: "/unityper-hero-background.png",
+    },
+];
 
-export function ProjectCarousel({ projects }: ProjectCarouselProps) {
+export function ProjectCarousel() {
     const plugin = React.useRef(
         Autoplay({ delay: 5000, stopOnInteraction: true })
     );
@@ -39,7 +55,7 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
                 <CarouselContent>
                     {projects.map((project) => (
                         <CarouselItem key={project.slug} className="pl-2 md:pl-4">
-                            <div className="relative h-[45vh] xs:h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] flex items-center justify-center overflow-hidden rounded-xl">
+                            <div className="relative h-[45vh] xs:h-[50vh] sm:h-[725px] lg:h-[699px] flex items-center justify-center overflow-hidden rounded-xl">
                                 <div className="absolute inset-0">
                                     <Image
                                         src={project.image}
@@ -51,7 +67,7 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
                                 </div>
 
                                 <div className="relative z-10 text-white text-center p-4 xs:py-6 xs:px-6 sm:px-10 md:px-12 max-w-[90%] sm:max-w-3xl md:max-w-4xl rounded-xl">
-                                    <Image src={project.logo} alt={`${project.name} screenshot`} width={100} height={100} className="mx-auto mb-3 w-12 md:w-[100px]" />
+                                    <Image src={project.logo} alt={`${project.name} screenshot`} width={100} height={100} className="mx-auto mb-3 w-16 md:w-[100px]" />
                                     <h3 className={`text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4 drop-shadow-lg ${project.name === "Unityper" ? "condor" : ''}`}>
                                         {project.name}
                                     </h3>

@@ -24,33 +24,6 @@ import Script from "next/script";
 import { getScscSchema } from "@/lib/server/get-scsc-schema";
 import Link from "next/link";
 
-const projects = [
-    {
-        name: "Schema Scalpel",
-        slug: "schemascalpel",
-        url: "https://schemascalpel.com",
-        description: "Boost your <strong>search engine rankings</strong> with <i>surgical control</i> over your brand&rsquo;s identity!",
-        logo: "/scalpel-scalpel-logo.png",
-        image: "/schema-scalpel-hero-background.png"
-    },
-    {
-        name: "OverPhish",
-        slug: "overphish",
-        url: "https://overphish.app",
-        description: "Lightweight browser extension that blocks <strong>1M+</strong> phishing domains in <i>milliseconds</i>.",
-        logo: "/overphish-logo.png",
-        image: "/overphish-hero-background.png",
-    },
-    {
-        name: "Unityper",
-        slug: "unityper",
-        url: "https://unityper.com",
-        description: "Modern, <i>AI-enhanced</i> web agency — building secure, performant sites with maximal <strong>SEO</strong> value.",
-        logo: "/unityper-logo.png",
-        image: "/unityper-hero-background.png",
-    },
-];
-
 export const metadata = {
     title: "Kevin Gillispie – Full-Stack Web Developer",
     description: "Full-stack web developer specializing in Next.js, TypeScript, Tailwind, shadcn/ui. Building performant SEO plugins, browser security tools, and modern sites.",
@@ -96,11 +69,11 @@ export default async function Home() {
                         <h2 className="text-3xl text-center font-bold mt-8">Projects</h2>
                         <div className="container grid gap-8 grid-cols-1 xl:grid-cols-3 xl:gap-12 pt-12">
                             <div className="xl:col-span-2">
-                                <ProjectCarousel projects={projects} />
+                                <ProjectCarousel />
                             </div>
 
                             <div className="xl:col-span-1">
-                                <div className="bg-card dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-900 dark:to-slate-950 text-card-foreground space-y-6 rounded-xl border dark:border-slate-700 p-6 shadow-xl h-full flex flex-col">
+                                <div className="bg-card dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-900 dark:to-slate-950 text-card-foreground space-y-6 rounded-xl border dark:border-slate-700 p-6 shadow-xl h-full flex flex-col h-100">
                                     <h3 className="text-xl font-semibold tracking-tight border-b-1 pb-1 mb-3">About Me</h3>
 
                                     <div className="space-y-6 flex-1">
@@ -130,7 +103,7 @@ export default async function Home() {
                                                 </HoverCardTrigger>
                                                 <HoverCardContent className="flex w-64 flex-col gap-0.5 mt-3">
                                                     <div>Privacy-first browser extension blocking phishing/malware in real time, live on Chrome, Firefox, and Edge</div>
-                                                    <Link href={'https://overphish.app'} className="flex justify-center"><Button variant={"outline"} className="mt-3">OverPhish website</Button></Link>
+                                                    <Link href={'https://overphish.app'} target="_blank" className="flex justify-center"><Button variant={"outline"} className="mt-3 cursor-pointer">OverPhish website</Button></Link>
                                                 </HoverCardContent>
                                             </HoverCard> anti-phishing browser extension.
                                         </p>

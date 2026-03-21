@@ -44,8 +44,8 @@ export default function SettingsMenu() {
         <div className="fixed top-4 right-2 lg:right-4 xl:right-10 z-50">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border" aria-label="Settings menu">
-                        <Settings className="h-5 w-5" />
+                    <Button variant="outline" size="icon" className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border size-10" aria-label="Settings menu">
+                        <Settings className="size-5" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
