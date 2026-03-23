@@ -1,6 +1,6 @@
 import { getLatestPosts } from "@/lib/server/posts-server";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, Clock, Network, Shield } from 'lucide-react';
+import { CalendarDays, Clock, Tag } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
 import SkillSpheroid from "@/components/SkillSpheroid";
@@ -86,7 +86,7 @@ export default async function Home() {
                                                     <div>Official WordPress plugin for per-page JSON-LD schema customization, 8,500+ downloads and counting!</div>
                                                     <Link href={'https://unityper.com'} className="flex justify-center"><Button variant={"outline"} className="mt-3">Schema Scalpel website</Button></Link>
                                                 </HoverCardContent>
-                                            </HoverCard>, a full-service web development studio specializing in fast, secure, accessible, and SEO-aware websites.
+                                            </HoverCard>, a full-service web dev studio specializing in fast, secure, accessible, and SEO-aware websites.
                                         </p>
                                         <p className="text-muted-foreground leading-relaxed">
                                             Professional projects include the <HoverCard openDelay={10} closeDelay={100}>
@@ -117,7 +117,7 @@ export default async function Home() {
                     {/* Recent / Featured Section */}
                     <section className="container py-16 md:py-24 p-6">
                         <div className="text-center mb-12">
-                            <h2 className="text-3xl font-bold">Latest from <code className="font-normal">//PlainText</code></h2>
+                            <h2 className="text-3xl font-bold">Latest from <code className="font-semibold bg-zinc-300 dark:bg-slate-800 rounded px-2">//PlainText</code></h2>
                             <p className="text-small text-zinc-400">Updates and observations.</p>
                         </div>
 
@@ -135,13 +135,6 @@ export default async function Home() {
                                         </div>
 
                                         <CardHeader>
-                                            <div className="flex flex-wrap gap-2 mb-3">
-                                                {post.tags.slice(0, 3).map((tag) => (
-                                                    <Badge key={tag} variant="secondary">
-                                                        {tag}
-                                                    </Badge>
-                                                ))}
-                                            </div>
                                             <CardTitle className="line-clamp-2"><h3 className="text-xl">{post.title}</h3></CardTitle>
                                             <CardDescription className="flex flex-col xl:flex-row xl:items-center gap-2 text-sm">
                                                 <Badge variant="default">
@@ -152,6 +145,12 @@ export default async function Home() {
                                                     <Clock className="h-4 w-4 mr-1" aria-hidden="true" />
                                                     {post.readTime}
                                                 </Badge>
+                                                {post.categories.map((cat) => (
+                                                    <Badge key={cat} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
+                                                        <Tag />
+                                                        {cat}
+                                                    </Badge>
+                                                ))}
                                             </CardDescription>
                                         </CardHeader>
 
@@ -162,6 +161,13 @@ export default async function Home() {
                                         </CardContent>
 
                                         <CardFooter className="pt-0">
+                                            <div className="flex flex-wrap gap-2">
+                                                {post.tags.slice(0, 3).map((tag) => (
+                                                    <Badge key={tag} variant="secondary" className="border-green-500 bg-transparent text-green-500 dark:text-blue-300">
+                                                        #{tag}
+                                                    </Badge>
+                                                ))}
+                                            </div>
                                             <Button variant="outline" asChild className="ml-auto">
                                                 <TransitionLink href={`/blog/${post.slug}`}>
                                                     Read more →

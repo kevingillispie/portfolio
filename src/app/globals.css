@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -7,8 +8,8 @@
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
+    --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -136,128 +137,181 @@ body[data-scroll-locked] {
     margin-right: 0 !important;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────
-   CONSOLIDATED PROSE OVERRIDES (FIXED FOR TAILWIND V4)
-   ────────────────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────
+   CONSOLIDATED PROSE OVERRIDES 
+   ───────────────────────────────────────── */
+@layer components {
+    .prose {
+        max-width: none;
+    }
 
-.prose {
-    --tw-prose-body: var(--foreground);
-    --tw-prose-headings: var(--foreground);
-    --tw-prose-links: var(--primary);
-    --tw-prose-bold: var(--foreground);
-    --tw-prose-code: var(--foreground);
-    --tw-prose-pre-code: var(--foreground);
-    --tw-prose-pre-bg: var(--card);
-    --tw-prose-quote-borders: var(--primary);
-    --tw-prose-quote: var(--muted-foreground);
-    --tw-prose-bullets: var(--foreground);
-}
+    .prose p {
+        line-height: 1.75rem;
+        /* ≈ leading-7 */
+        margin-top: 0.75rem;
+        /* not-first:mt-3 ≈ mt-3 but safer */
+    }
 
-/* Base Layout & Text */
-.prose p {
-    @apply leading-7 [&:not(:first-child)]:mt-3;
-}
+    .prose p:first-child {
+        margin-top: 0;
+        font-size: 1.5rem;
+    }
 
-.prose a {
-    @apply text-primary hover:underline;
-}
+    .prose a {
+        color: var(--color-primary);
+        text-decoration-line: underline;
+        text-underline-offset: 2px;
 
-/* Force Heading Styles & Hierarchy */
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4 {
-    @apply tracking-tight [&:not(:first-child)]:mt-8;
-}
+        &:hover {
+            text-decoration-thickness: 2px;
+        }
+    }
 
-.prose h1 {
-    @apply scroll-m-20 text-center text-4xl font-extrabold text-balance;
-}
+    /* Headings */
+    .prose h1,
+    .prose h2,
+    .prose h3,
+    .prose h4 {
+        margin-top: 2rem;
+        font-weight: 600;
+        line-height: 1.25;
+    }
 
-.prose h2 {
-    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold first:mt-0;
-}
+    .prose h1 {
+        @apply text-4xl md:text-5xl font-extrabold text-center text-balance scroll-m-20;
+        /* this one can stay — built-in utilities */
+    }
 
-.prose h3 {
-    @apply scroll-m-20 text-2xl font-semibold mt-2;
-}
+    .prose h2 {
+        @apply text-3xl border-b border-border/70 pb-2 scroll-m-20;
+        /* border + pb */
+    }
 
-.prose h4 {
-    @apply scroll-m-20 text-xl font-semibold;
-}
+    .prose h3 {
+        @apply text-2xl mt-8 scroll-m-20;
+    }
 
-/* The List Fix - Standard CSS syntax to avoid @apply !important errors */
-.prose ul,
-.prose .wp-block-list {
-    @apply my-6 ml-6 list-disc [&>li]:mt-2;
-    list-style-type: disc !important;
-    display: block !important;
-}
+    .prose h4 {
+        @apply text-xl scroll-m-20;
+    }
 
-.prose ol {
-    @apply list-decimal pl-6 mb-6;
-    list-style-type: decimal !important;
-}
+    /* Lists */
+    .prose ul,
+    .prose ol {
+        margin: 1.5rem 0 1.5rem 1.75rem;
+        /* ml-7-ish */
+        padding-left: 0;
+    }
 
-.prose li {
-    @apply mt-2 mb-2;
-    display: list-item !important;
-}
+    .prose ul {
+        list-style-type: disc;
+    }
 
-/* Prevent double margins if WP wraps LI in P */
-.prose li>p {
-    @apply m-0 inline;
-}
+    .prose ol {
+        list-style-type: decimal;
+    }
 
-/* Blockquotes & Code */
-.prose blockquote:not(figure blockquote) {
-    @apply border-l-5 border-zinc-300 pl-5 italic text-muted-foreground mt-4 mb-6;
-}
+    .prose li {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
 
-.prose pre {
-    @apply bg-zinc-100 dark:bg-zinc-900 rounded-lg overflow-x-auto p-4 shadow-inner border border-border clear-both mb-6;
-}
+    .prose li>p {
+        margin: 0;
+        display: inline;
+    }
 
-.prose code {
-    @apply bg-muted/50 px-1 py-0.5 rounded text-sm font-mono font-medium;
-}
+    /* Others */
+    .prose blockquote:not(figure blockquote) {
+        border-left: 5px solid var(--color-border);
+        padding-left: 1.25rem;
+        font-style: italic;
+        color: var(--color-muted-foreground);
+        margin: 1.5rem 0;
+    }
 
-.prose hr {
-    @apply my-8;
-}
+    .prose pre {
+        background-color: var(--color-muted);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: 1rem;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+    }
 
-/* Remove backticks */
-.prose code::before,
-.prose code::after {
-    content: "" !important;
-}
+    .prose code {
+        background-color: var(--color-muted)/50;
+        padding: 0.125rem 0.25rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.875rem;
+        font-family: var(--font-mono);
+    }
 
-/* Add this at the bottom of globals.css */
+    .prose hr {
+        margin: 2rem 0;
+        border-color: var(--color-border);
+    }
 
-.prose figure {
-    @apply relative float-right text-xl m-6 ml-8 p-10 pt-8 w-full max-w-xs md:max-w-sm bg-zinc-100 dark:bg-slate-800 rounded border-t-20 border-zinc-300 dark:border-slate-950 shadow-md z-[9999];
-}
+    .prose figure {
+        position: relative;
+        float: right;
+        margin: 1.5rem 0 1.5rem 2rem;
+        padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+        padding-top: 2rem;
+        width: 100%;
+        max-width: 20rem;
+        background-color: var(--tw-bg-opacity, 1) #f4f4f5;
+        border-top-color: var(--tw-border-opacity, 1) #d4d4d8;
+        border-radius: var(--radius-sm, 0.5rem);
+        border-top: 1.25rem solid #d4d4d8;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+            0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
 
-.prose figure::before,
-.prose figure::after {
-    content: "•••";
-    position: absolute;
-    top: -47px;
-    left: 0;
-    font-size: 3rem;
-    color: oklch(96.7% 0.001 286.375);
-    letter-spacing: -5px;
-}
+    .prose figure>blockquote {
+        border: none;
+        padding: 0 !important;
+        color: oklch(27.4% 0.006 286.033) !important;
+    }
 
-.prose figure::after {
-    content: "•";
-    left: 100%;
-    transform: translateX(-20px);
-}
+    .prose figure p {
+        margin: 0 !important;
+    }
 
-.dark .prose figure::before,
-.dark .prose figure::after {
-    color: oklch(55.1% 0.027 264.364);
+    .prose figure::before,
+    .prose figure::after {
+        content: "•••";
+        position: absolute;
+        top: -54px;
+        left: 0;
+        font-size: 3rem;
+        color: oklch(96.7% 0.001 286.375);
+    }
+
+    .prose figure::before {
+        transform: translateX(5px);
+    }
+
+    .prose figure::after {
+        content: "•";
+        left: 100%;
+        transform: translateX(-19px);
+    }
+
+    .dark .prose figure {
+        background-color: oklch(27.9% 0.041 260.031);
+        border-top-color: #0f172a;
+    }
+
+    .dark .prose figure::before,
+    .dark .prose figure::after {
+        color: oklch(37.2% 0.044 257.287);
+    }
+
+    .dark .prose figure>blockquote {
+        color: oklch(92% 0.004 286.32) !important;
+    }
 }
 
 [role="menuitemcheckbox"]>span {

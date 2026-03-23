@@ -124,7 +124,7 @@ export default async function BlogListPage({
                         <BreadcrumbNav variant="pathname" />
                     </Badge>
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
-                        <code>//PlainText</code>
+                        <code className='font-semibold bg-zinc-300 dark:bg-slate-800 rounded-md px-3'>//PlainText</code>
                     </h1>
                     <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-3xl mx-auto">
                         A journal of explanations, insights, and musings about the world of technology.
@@ -246,7 +246,7 @@ export default async function BlogListPage({
                                         <div className="flex items-center gap-3 mb-2">
                                             <h3 className="font-bold">{post.title}</h3>
                                         </div>
-                                        <p className="mt-1 p-2 pl-3 text-sm text-muted-foreground bg-zinc-100 dark:bg-slate-800 rounded-sm border-l-4 shadow-md">
+                                        <p className="mt-1 p-2 pl-3 text-sm italic text-muted-foreground bg-zinc-100 dark:bg-slate-800 rounded-sm border-l-4 shadow-md">
                                             {post.excerpt}
                                         </p>
                                     </div>

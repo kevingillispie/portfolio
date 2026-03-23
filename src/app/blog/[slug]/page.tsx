@@ -117,7 +117,7 @@ export default async function PostPage({ params }: Props) {
             {/* {post.seo?.fullHead && <div dangerouslySetInnerHTML={{ __html: post.seo.fullHead }} />} */}
             <ReadingProgressBar />
             <BackToTop />
-            <article className="container max-w-4xl mx-auto py-16 md:py-24 px-4 lg:px-0 min-h-screen">
+            <article className="container max-w-3xl mx-auto py-16 md:py-24 px-4 lg:px-0 min-h-screen">
                 <div className="mt-16 mb-8">
                     <BackButton />
                 </div>
@@ -144,8 +144,7 @@ export default async function PostPage({ params }: Props) {
                         ))}
 
                         {post.tags.map((tag) => (
-                            <Badge key={tag} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
-                                <Tags />
+                            <Badge key={tag} className="border-green-500 bg-transparent text-green-500 dark:text-blue-300">
                                 #{tag}
                             </Badge>
                         ))}

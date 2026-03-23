@@ -3,22 +3,13 @@ import Navbar from "@/components/Navbar";
 import SettingsMenu from "@/components/SettingsMenu";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 import TransitionCanvas from "@/components/TransitionCanvas";
 import { Toaster } from "@/components/ui/sonner";
 import HALHUDFrame from "@/components/HALHUDFrame";
 
 import "./globals.css";
-
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
 
 const metaDescription =
     "Full-stack web developer specializing in Next.js, TypeScript, Tailwind, shadcn/ui. Building performant SEO plugins, browser security tools, and modern sites.";
@@ -79,12 +70,12 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
             <body
                 className={`
-                    ${geistSans.variable} ${geistMono.variable} text-foreground dark:text-zinc-300
+                    text-foreground dark:text-zinc-300
                     min-h-screen flex flex-col bg-gradient-to-br from-zinc-300 via-zinc-50 to-zinc-200 
-                    dark:bg-gradient-to-br dark:from-gray-950 dark:via-gray-900 dark:to-gray-950
+                    dark:bg-gradient-to-br dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 antialiased
                 `}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
