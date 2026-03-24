@@ -26,7 +26,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
-import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
+import { CalendarDays, Clock, ChevronRight, Tag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getScscSchema } from '@/lib/server/get-scsc-schema';
 
@@ -113,7 +113,7 @@ export default async function BlogListPage({
                         <code className='font-semibold bg-zinc-300 dark:bg-slate-800 rounded-md px-3'>//PlainText</code>
                     </h1>
                     <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-3xl mx-auto">
-                        A journal of explanations, insights, and musings about the world of technology.
+                        A journal of personal insights, observations, and tutorials from technology to art.
                     </p>
                 </div>
 
@@ -126,9 +126,15 @@ export default async function BlogListPage({
                                     <div className="md:w-1/2 bg-gradient-to-br from-zinc-100 to-zinc-200/80 dark:from-gray-800 dark:to-gray-900 p-8 flex items-center justify-center">
                                         <div>
                                             <div className="flex flex-wrap gap-2 mb-4">
+                                                {featured.categories.map((cat) => (
+                                                    <Badge key={cat} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
+                                                        <Tag />
+                                                        {cat}
+                                                    </Badge>
+                                                ))}
                                                 {featured.tags.map((tag) => (
-                                                    <Badge key={tag} variant="default">
-                                                        {tag}
+                                                    <Badge key={tag} variant="secondary" className="border-green-500 bg-transparent text-green-500 dark:text-green-400">
+                                                        #{tag}
                                                     </Badge>
                                                 ))}
                                             </div>
@@ -260,7 +266,7 @@ export default async function BlogListPage({
                                         "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 hover:-translate-y-1 hover:bg-zinc-50/50 shadow-lg hover:shadow-xl"
                                     )}
                                 >
-                                    <div className="flex-1 min-w-0 sm:border-r-1 border-zinc-300 sm:pr-4">
+                                    <div className="flex-1 min-w-0 sm:border-r-1 border-zinc-300 dark:border-slate-700 sm:pr-4">
                                         <div className="flex items-center gap-3 mb-2">
                                             <h3 className="font-bold">{post.title}</h3>
                                         </div>

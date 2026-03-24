@@ -55,14 +55,14 @@ export function LoadingScreen({ children }: { children: React.ReactNode }) {
             {children}
 
             {isPending && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/90 backdrop-blur-md">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-300/30 dark:bg-slate-900/30 backdrop-blur-xs">
                     <div className="flex flex-col items-center gap-6">
-                        <Spinner className="size-12 text-white" />
+                        <Spinner className="size-12 text-zinc-800 dark:text-white" />
                         <p
-                            className="text-zinc-400 text-sm font-mono tracking-widest min-h-[1.25em] transition-opacity duration-300"
+                            className="text-zinc-800 dark:text-zinc-50 text-sm font-mono tracking-widest min-h-[1.25em] transition-opacity duration-300"
                             key={currentMessageIndex}
                         >
-                            {messages[currentMessageIndex]}
+                            <strong>{messages[currentMessageIndex]}</strong>
                         </p>
                     </div>
                 </div>

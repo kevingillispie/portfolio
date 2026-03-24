@@ -39,21 +39,9 @@ export default function TransitionLink({ href, children, className, ...props }: 
             detail: { x: clientX, y: clientY }
         }));
 
-        const overlay = document.getElementById("nav-overlay");
-        if (overlay) {
-            overlay.style.setProperty("--x", `${clientX}px`);
-            overlay.style.setProperty("--y", `${clientY}px`);
-            overlay.classList.add("overlay-active");
-        }
-
         // Start the transition → loading screen appears and stays until page is ready
         startTransition(() => {
             router.push(href);
-
-            // Clean up overlay after navigation (small delay for smoothness)
-            setTimeout(() => {
-                overlay?.classList.remove("overlay-active");
-            }, 400);
         });
     };
 

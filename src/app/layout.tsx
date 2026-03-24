@@ -80,7 +80,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 `}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                    <div id="nav-overlay" />
                     <TransitionCanvas />
                     <LoadingScreen>
                         <div className="relative z-10 flex flex-col min-h-screen">

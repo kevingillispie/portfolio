@@ -218,7 +218,7 @@ const GET_FEATURED_AND_RECENT = `
                 content(format: RAW)
                 tags { nodes { name } }
                 categories { nodes { name } }
-                postFeaturedFlag {featurePost}
+                postFeaturedFlag { featurePost }
                 featuredImage {
                     node {
                         sourceUrl
@@ -250,11 +250,6 @@ export async function getFeaturedAndRecent(): Promise<{
         const rawPosts = data?.posts?.nodes ?? [];
 
         const mapped = rawPosts.map((node: any) => {
-            const allTags = [
-                ...(node.categories?.nodes?.map((c: any) => c.name) ?? []),
-                ...(node.tags?.nodes?.map((t: any) => t.name) ?? []),
-            ].filter(Boolean);
-
             const plainExcerpt = htmlToText(node.excerpt ?? '', {
                 wordwrap: false,
                 selectors: [{ selector: 'a', options: { ignoreHref: true } }],
@@ -284,7 +279,11 @@ export async function getFeaturedAndRecent(): Promise<{
                 date: format(new Date(node.date), 'MMMM d, yyyy'),
                 rawDate: node.date,
                 excerpt: plainExcerpt || 'No excerpt available.',
-                tags: allTags.slice(0, 3),
+
+                // ← Changed: Keep tags and categories separate
+                categories: (node.categories?.nodes?.map((c: any) => c.name) ?? []).filter(Boolean),
+                tags: (node.tags?.nodes?.map((t: any) => t.name) ?? []).filter(Boolean),
+
                 featured: node.postFeaturedFlag?.featurePost ?? false,
                 readTime: calculateReadTime(fullContent),
                 contentHtml: fullContent,

@@ -58,7 +58,7 @@ export default function Navbar() {
                     className="min-w-[200px] mt-1 rounded-lg border bg-zinc-100/90 dark:bg-zinc-800 backdrop-blur-md shadow-lg"
                 >
                     <DropdownMenuGroup>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem asChild>
                             <TransitionLink
                                 href="/blog"
                                 className={cn(
@@ -80,7 +80,7 @@ export default function Navbar() {
 
                         <DropdownMenuSeparator className="bg-zinc-200/70 dark:bg-zinc-700/70" />
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem asChild>
                             <TransitionLink
                                 href="/contact"
                                 className={cn(

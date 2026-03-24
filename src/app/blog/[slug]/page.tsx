@@ -178,10 +178,58 @@ export default async function PostPage({ params }: Props) {
                     </p>
                 </div>
 
+                {/* Navigation */}
+                {(prevPost || nextPost) && (
+                    <nav className="mt-16 flex flex-col sm:flex-row justify-between gap-6 border-t pt-8">
+                        {prevPost ? (
+                            <TransitionLink
+                                href={`/blog/${prevPost.slug}`}
+                                className="group flex-1"
+                                aria-label={`Previous post: ${prevPost.title}`}
+                            >
+                                <div className="flex items-center gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                                    <ChevronLeft className="h-6 w-6 flex-shrink-0 transition-transform group-hover:-translate-x-1" />
+                                    <div className="min-w-0">
+                                        <p className="text-sm text-muted-foreground">Previous</p>
+                                        <p className="font-medium line-clamp-2">{prevPost.title}</p>
+                                    </div>
+                                </div>
+                            </TransitionLink>
+                        ) : (
+                            <div className="flex-1" />
+                        )}
+
+                        {nextPost ? (
+                            <TransitionLink
+                                href={`/blog/${nextPost.slug}`}
+                                className="group flex-1 text-right"
+                                aria-label={`Next post: ${nextPost.title}`}
+                            >
+                                <div className="flex items-center justify-end gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                                    <div className="min-w-0">
+                                        <p className="text-sm text-muted-foreground">Next</p>
+                                        <p className="font-medium line-clamp-2">{nextPost.title}</p>
+                                    </div>
+                                    <ChevronRight className="h-6 w-6 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+                                </div>
+                            </TransitionLink>
+                        ) : (
+                            <div className="flex-1" />
+                        )}
+                    </nav>
+                )}
+
+                {/* Total Count Footnote (Optional/Debug) */}
+                {totalCount > 0 && (
+                    <p className="text-center text-xs text-muted-foreground mt-8 opacity-40">
+                        <i>Just 1 of {totalCount} postings and counting. Read more below!</i>
+                    </p>
+                )}
+
                 {relatedPosts.length > 0 && (
-                    <section className="mt-20 border-t pt-12">
+                    <section className="mt-2 pt-12">
                         <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-2xl font-bold tracking-tight">Related Insights</h2>
+                            <h2 className="text-2xl font-bold tracking-tight">Related Posts</h2>
                             <div className="h-px flex-1 bg-border mx-4 hidden sm:block" />
                         </div>
                         <div className="grid gap-6 md:grid-cols-3">
@@ -223,52 +271,6 @@ export default async function PostPage({ params }: Props) {
                     </section>
                 )}
 
-                {/* Navigation */}
-                {(prevPost || nextPost) && (
-                    <nav className="mt-16 flex flex-col sm:flex-row justify-between gap-6 border-t pt-8">
-                        {prevPost ? (
-                            <TransitionLink
-                                href={`/blog/${prevPost.slug}`}
-                                className="group flex-1"
-                                aria-label={`Previous post: ${prevPost.title}`}
-                            >
-                                <div className="flex items-center gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                                    <ChevronLeft className="h-6 w-6 flex-shrink-0 transition-transform group-hover:-translate-x-1" />
-                                    <div className="min-w-0">
-                                        <p className="text-sm text-muted-foreground">Previous</p>
-                                        <p className="font-medium line-clamp-2">{prevPost.title}</p>
-                                    </div>
-                                </div>
-                            </TransitionLink>
-                        ) : (
-                            <div className="flex-1" />
-                        )}
-
-                        {nextPost ? (
-                            <TransitionLink
-                                href={`/blog/${nextPost.slug}`}
-                                className="group flex-1 text-right"
-                                aria-label={`Next post: ${nextPost.title}`}
-                            >
-                                <div className="flex items-center justify-end gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                                    <div className="min-w-0">
-                                        <p className="text-sm text-muted-foreground">Next</p>
-                                        <p className="font-medium line-clamp-2">{nextPost.title}</p>
-                                    </div>
-                                    <ChevronRight className="h-6 w-6 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-                                </div>
-                            </TransitionLink>
-                        ) : (
-                            <div className="flex-1" />
-                        )}
-                    </nav>
-                )}
-                {/* Total Count Footnote (Optional/Debug) */}
-                {totalCount > 0 && (
-                    <p className="text-center text-xs text-muted-foreground mt-8 mb-20 opacity-40">
-                        <i>Just one of {totalCount} postings and counting.</i>
-                    </p>
-                )}
             </article>
         </>
     );

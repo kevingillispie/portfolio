@@ -320,24 +320,6 @@ body[data-scroll-locked] {
     padding: 9px;
 }
 
-#nav-overlay {
-    position: fixed;
-    inset: 0;
-    background-color: oklch(92% 0.004 286.32);
-    z-index: 9999;
-    pointer-events: none;
-    clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
-    transition: clip-path 0.8s ease-in-out;
-}
-
-.dark #nav-overlay {
-    background-color: oklch(12.9% 0.042 264.695);
-}
-
-#nav-overlay.overlay-active {
-    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
-}
-
 @media screen and (max-width: 768px) {
     html:not(.dark) .home-hero-container::before {
         content: "";

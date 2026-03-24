@@ -52,7 +52,7 @@ export default function TransitionCanvas() {
         fpsLimit: 120,
         particles: {
             number: { value: 0 },
-            color: { value: ["#0056B3", "#333"] },
+            color: { value: ["#00f0ff", "#00b8ff", "#ff00aa", "#d9c50e"] },
             shape: {
                 type: "text",
                 options: { text: { value: particles } }

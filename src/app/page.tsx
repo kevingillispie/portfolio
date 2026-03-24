@@ -55,10 +55,11 @@ export default async function Home() {
                             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
                                 Kevin Gillispie
                             </h1>
-                            <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto">
+                            <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto font-semibold md:font-normal">
                                 <span className="sm:hidden">• </span>Full-Stack Web Development • Cyber&nbsp;Security <br className="hidden sm:block" /> WP Plugins<span className="hidden sm:inline"> • </span><br className="sm:hidden" />Browser Extensions
                             </p>
-                            <hr className="sm:hidden border border-top-1 border-zinc-800/50 dark:border-zinc-300 w-25 mt-6 mx-auto" />
+                            <p className="mt-2 text-lg italic">(...and more!)</p>
+                            {/* <hr className="sm:hidden border border-top-1 border-zinc-500/50 dark:border-zinc-300 w-25 mt-6 mx-auto" /> */}
                             <p className="mt-6 text-lg max-w-2xl mx-auto">
                                 Building performant, user-focused tools <br />and sites that solve real problems.
                             </p>
@@ -83,8 +84,8 @@ export default async function Home() {
                                                     <Button variant="link" className="p-0 h-0"><i>Unityper Agency</i></Button>
                                                 </HoverCardTrigger>
                                                 <HoverCardContent className="flex w-64 flex-col gap-0.5 mt-3">
-                                                    <div>Official WordPress plugin for per-page JSON-LD schema customization, 8,500+ downloads and counting!</div>
-                                                    <Link href={'https://unityper.com'} className="flex justify-center"><Button variant={"outline"} className="mt-3">Schema Scalpel website</Button></Link>
+                                                    <div>Get fast, secure, accessible, and SEO-aware websites made to order!</div>
+                                                    <Link href={'https://unityper.com'} className="flex justify-center"><Button variant={"outline"} className="mt-3">Unityper website</Button></Link>
                                                 </HoverCardContent>
                                             </HoverCard>, a full-service web dev studio specializing in fast, secure, accessible, and SEO-aware websites.
                                         </p>
@@ -163,7 +164,7 @@ export default async function Home() {
                                         </CardHeader>
 
                                         <CardContent className="flex-1">
-                                            <p className="text-muted-foreground line-clamp-3">
+                                            <p className="text-foreground line-clamp-3">
                                                 {post.excerpt}
                                             </p>
                                         </CardContent>
