@@ -1,3 +1,4 @@
+// src/components/Navbar.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -57,13 +58,18 @@ export default function Navbar() {
                     className="min-w-[200px] mt-1 rounded-lg border bg-zinc-100/90 dark:bg-zinc-800 backdrop-blur-md shadow-lg"
                 >
                     <DropdownMenuGroup>
-                        <DropdownMenuItem asChild>
+                        <DropdownMenuItem>
                             <TransitionLink
                                 href="/blog"
                                 className={cn(
                                     "flex items-center justify-between w-full cursor-pointer px-2 py-1.5 text-sm",
                                     isActive("/blog") && "bg-accent font-medium"
                                 )}
+                                onClick={() => {
+                                    // Force close the dropdown immediately
+                                    const closeEvent = new KeyboardEvent("keydown", { key: "Escape" });
+                                    document.dispatchEvent(closeEvent);
+                                }}
                             >
                                 <div className="flex items-center gap-2">
                                     <code className="text-xs">//PlainText</code>
@@ -74,13 +80,17 @@ export default function Navbar() {
 
                         <DropdownMenuSeparator className="bg-zinc-200/70 dark:bg-zinc-700/70" />
 
-                        <DropdownMenuItem asChild>
+                        <DropdownMenuItem>
                             <TransitionLink
                                 href="/contact"
                                 className={cn(
                                     "flex items-center justify-between w-full cursor-pointer px-2 py-1.5 text-sm",
                                     isActive("/contact") && "bg-accent font-medium"
                                 )}
+                                onClick={() => {
+                                    const closeEvent = new KeyboardEvent("keydown", { key: "Escape" });
+                                    document.dispatchEvent(closeEvent);
+                                }}
                             >
                                 <span>Contact</span>
                                 <span className="text-xs text-zinc-400 font-mono">/contact</span>
@@ -88,7 +98,7 @@ export default function Navbar() {
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
-            </DropdownMenu>
-        </div>
+            </DropdownMenu >
+        </div >
     );
 }

@@ -330,6 +330,10 @@ body[data-scroll-locked] {
     transition: clip-path 0.8s ease-in-out;
 }
 
+.dark #nav-overlay {
+    background-color: oklch(12.9% 0.042 264.695);
+}
+
 #nav-overlay.overlay-active {
     clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
 }

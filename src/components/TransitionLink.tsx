@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useLoading } from "@/components/LoadingScreen";   // ← new import
 import React from "react";
 
 interface TransitionLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -12,24 +13,28 @@ interface TransitionLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorEleme
 
 export default function TransitionLink({ href, children, className, ...props }: TransitionLinkProps) {
     const router = useRouter();
+    const { startTransition } = useLoading();
 
     const handleTransition = (e: React.MouseEvent<HTMLAnchorElement>) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
 
-        // 1. Check if animations are enabled
-        const isEnabled = localStorage.getItem("particles-enabled") !== "false";
-
-        // 2. If DISABLED: Navigate immediately and exit
-        if (!isEnabled) {
-            return; // Let the default <Link> behavior take over or call router.push(href)
-        }
-
-        // 3. If ENABLED: Run the flashy stuff
-        e.preventDefault();
-        const { clientX, clientY } = e;
-
+        // Always close dropdown immediately
         document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
 
+        const isEnabled = localStorage.getItem("particles-enabled") !== "false";
+
+        if (!isEnabled) {
+            // Normal navigation (still wrapped so loading screen can show if needed)
+            startTransition(() => router.push(href));
+            return;
+        }
+
+        // Fancy path
+        e.preventDefault();
+
+        const { clientX, clientY } = e;
+
+        // Trigger explosion (particles) – completely independent now
         window.dispatchEvent(new CustomEvent("trigger-explosion", {
             detail: { x: clientX, y: clientY }
         }));
@@ -41,10 +46,15 @@ export default function TransitionLink({ href, children, className, ...props }: 
             overlay.classList.add("overlay-active");
         }
 
-        setTimeout(() => {
+        // Start the transition → loading screen appears and stays until page is ready
+        startTransition(() => {
             router.push(href);
-            setTimeout(() => overlay?.classList.remove("overlay-active"), 500);
-        }, 800);
+
+            // Clean up overlay after navigation (small delay for smoothness)
+            setTimeout(() => {
+                overlay?.classList.remove("overlay-active");
+            }, 400);
+        });
     };
 
     return (

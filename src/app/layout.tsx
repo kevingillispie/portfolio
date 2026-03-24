@@ -1,3 +1,4 @@
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import SettingsMenu from "@/components/SettingsMenu";
@@ -81,16 +82,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                     <div id="nav-overlay" />
                     <TransitionCanvas />
-                    <div className="relative z-10 flex flex-col min-h-screen">
-                        <HALHUDFrame />
-                        <Navbar />
-                        <SettingsMenu />
+                    <LoadingScreen>
+                        <div className="relative z-10 flex flex-col min-h-screen">
+                            <HALHUDFrame />
+                            <Navbar />
+                            <SettingsMenu />
 
-                        <main className="flex-1">{children}</main>
+                            <main className="flex-1">{children}</main>
 
-                        <Footer />
-                    </div>
-
+                            <Footer />
+                        </div>
+                    </LoadingScreen>
                     <Toaster position="top-right" richColors closeButton duration={5000} />
                 </ThemeProvider>
             </body>
