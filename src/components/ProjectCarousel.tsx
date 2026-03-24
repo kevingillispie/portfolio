@@ -55,7 +55,7 @@ export function ProjectCarousel() {
                 <CarouselContent>
                     {projects.map((project) => (
                         <CarouselItem key={project.slug} className="pl-2 md:pl-4">
-                            <div className="relative h-[45vh] xs:h-[50vh] sm:h-[725px] lg:h-[699px] flex items-center justify-center overflow-hidden rounded-xl">
+                            <div className="relative h-[45vh] xs:h-[50vh] sm:h-[725px] lg:h-[699px] flex items-center justify-center overflow-hidden">
                                 <div className="absolute inset-0">
                                     <Image
                                         src={project.image}
