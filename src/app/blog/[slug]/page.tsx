@@ -3,6 +3,7 @@ import { getPostData, getAdjacentPosts, getRelatedPosts } from '@/lib/server/pos
 import { wpQuery } from '@/lib/graphql';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import Image from "next/image";
 import Script from 'next/script';
 import { ReadingProgressBar } from '@/components/ReadingProgressBar';
 import { ShareButtons } from '@/components/ShareButtons';
@@ -144,7 +145,7 @@ export default async function PostPage({ params }: Props) {
                         ))}
 
                         {post.tags.map((tag) => (
-                            <Badge key={tag} className="border-green-500 bg-transparent text-green-500 dark:text-blue-300">
+                            <Badge key={tag} className="border-green-500 bg-transparent text-green-500 dark:text-green-400">
                                 #{tag}
                             </Badge>
                         ))}
@@ -152,6 +153,20 @@ export default async function PostPage({ params }: Props) {
                 </div>
 
                 <hr className="my-10 border-border/60" />
+
+                {/* Featured Image */}
+                {post.featuredImage?.sourceUrl ? (
+                    <div className="relative w-full aspect-[16/9] md:aspect-[2/1] mb-12 rounded-xl overflow-hidden shadow-xl">
+                        <Image
+                            src={post.featuredImage.sourceUrl}
+                            alt={post.featuredImage.altText || post.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 768px"
+                            priority
+                        />
+                    </div>
+                ) : null}
 
                 <div
                     className="prose dark:prose-invert max-w-none"

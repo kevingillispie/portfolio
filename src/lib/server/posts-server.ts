@@ -38,6 +38,20 @@ export interface PostData {
     readTime?: string;
     contentHtml: string;
     seo?: SeoData;
+    featuredImage?: {
+        sourceUrl: string;
+        altText?: string;
+        mediaDetails?: {
+            width: number;
+            height: number;
+            sizes?: Array<{
+                name: string;
+                sourceUrl: string;
+                width: number;
+                height: number;
+            }>;
+        };
+    };
 }
 
 const WORDS_PER_MINUTE = 225;
@@ -72,6 +86,17 @@ type WPPostResponse = {
         tags: { nodes: { name: string }[] };
         categories: { nodes: { name: string }[] };
         seo: SeoData;
+        featuredImage?: {
+            node?: {
+                sourceUrl: string;
+                altText?: string;
+                mediaDetails?: {
+                    width: number;
+                    height: number;
+                    sizes?: any[];
+                };
+            };
+        };
     } | null;
 };
 
@@ -98,6 +123,22 @@ export async function getPostData(slug: string): Promise<PostData | null> {
                 twitterTitle
                 twitterDescription
                 twitterImage { sourceUrl }
+            }
+            featuredImage {
+                node {
+                    sourceUrl
+                    altText
+                    mediaDetails {
+                        width
+                        height
+                        sizes {
+                        name
+                        sourceUrl
+                        width
+                        height
+                        }
+                    }
+                }
             }
         }
     }
@@ -130,6 +171,22 @@ const GET_LATEST_POSTS = `
                 tags { nodes { name } }
                 categories { nodes { name } }
                 postFeaturedFlag {featurePost}
+                featuredImage {
+                    node {
+                        sourceUrl
+                        altText
+                        mediaDetails {
+                            width
+                            height
+                            sizes {
+                                name
+                                sourceUrl
+                                width
+                                height
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -162,6 +219,22 @@ const GET_FEATURED_AND_RECENT = `
                 tags { nodes { name } }
                 categories { nodes { name } }
                 postFeaturedFlag {featurePost}
+                featuredImage {
+                    node {
+                        sourceUrl
+                        altText
+                        mediaDetails {
+                            width
+                            height
+                            sizes {
+                                name
+                                sourceUrl
+                                width
+                                height
+                            }
+                        }
+                    }
+                }
             }
         }
         publishedPostCount
@@ -175,8 +248,8 @@ export async function getFeaturedAndRecent(): Promise<{
     try {
         const data = await wpQuery<any>(GET_FEATURED_AND_RECENT, { first: 50 });
         const rawPosts = data?.posts?.nodes ?? [];
+
         const mapped = rawPosts.map((node: any) => {
-            // Reuse same mapping logic as getLatestPosts
             const allTags = [
                 ...(node.categories?.nodes?.map((c: any) => c.name) ?? []),
                 ...(node.tags?.nodes?.map((t: any) => t.name) ?? []),
@@ -189,6 +262,22 @@ export async function getFeaturedAndRecent(): Promise<{
 
             const fullContent = node.content ?? '';
 
+            let featuredImage: PostData['featuredImage'] = undefined;
+            const rawUrl = node.featuredImage?.node?.sourceUrl;
+
+            if (rawUrl) {
+                const uploadPath = rawUrl.split('/wp-content/uploads/')[1];
+                const cleanPath = uploadPath ? `/media/${uploadPath}` : null;
+
+                if (cleanPath) {
+                    featuredImage = {
+                        sourceUrl: cleanPath,
+                        altText: node.featuredImage.node.altText,
+                        mediaDetails: node.featuredImage.node.mediaDetails,
+                    };
+                }
+            }
+
             return {
                 slug: node.slug,
                 title: node.title,
@@ -199,6 +288,7 @@ export async function getFeaturedAndRecent(): Promise<{
                 featured: node.postFeaturedFlag?.featurePost ?? false,
                 readTime: calculateReadTime(fullContent),
                 contentHtml: fullContent,
+                featuredImage,
             };
         });
 
@@ -244,6 +334,17 @@ type WPPostNode = {
     content: string | null;
     tags: { nodes: { name: string }[] };
     categories: { nodes: { name: string }[] };
+    featuredImage?: {
+        node?: {
+            sourceUrl: string;
+            altText?: string;
+            mediaDetails?: {
+                width: number;
+                height: number;
+                sizes?: any[];
+            };
+        };
+    };
 };
 
 type WPPostsConnection = {
@@ -464,6 +565,24 @@ function mapNodeToPostData(node: any): PostData {
         selectors: [{ selector: 'a', options: { ignoreHref: true } }],
     }).trim();
 
+    // Transform featured image URL → clean /media/... path
+    let featuredImage = undefined;
+    const rawUrl = node.featuredImage?.node?.sourceUrl;
+
+    if (rawUrl) {
+        // Extract everything after /wp-content/uploads/
+        const uploadPath = rawUrl.split('/wp-content/uploads/')[1];
+        const cleanPath = uploadPath ? `/media/${uploadPath}` : null;
+
+        if (cleanPath) {
+            featuredImage = {
+                sourceUrl: cleanPath,                    // ← This is what <Image> will see: /media/...
+                altText: node.featuredImage.node.altText,
+                mediaDetails: node.featuredImage.node.mediaDetails,
+            };
+        }
+    }
+
     return {
         slug: node.slug,
         title: node.title,
@@ -476,5 +595,6 @@ function mapNodeToPostData(node: any): PostData {
         readTime: calculateReadTime(fullContent),
         contentHtml: fullContent,
         seo: node.seo || undefined,
+        featuredImage,   // now contains clean /media/... path
     };
 }

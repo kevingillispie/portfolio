@@ -123,15 +123,23 @@ export default async function Home() {
 
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                             {latestPosts.length > 0 ? (
-                                latestPosts.map((post) => (
+                                latestPosts.map((post, index) => (
                                     <Card key={post.slug} className="flex flex-col overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-900 dark:to-slate-800">
                                         <div className="aspect-video relative">
-                                            <Image
-                                                src="/placeholder.svg?height=400&width=600&text=Blog+Post"
-                                                alt={post.title}
-                                                fill
-                                                className="object-cover"
-                                            />
+                                            {post.featuredImage?.sourceUrl ? (
+                                                <Image
+                                                    src={post.featuredImage.sourceUrl}
+                                                    alt={post.featuredImage.altText || post.title}
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    priority={index === 0} // Prioritize first image for LCP
+                                                />
+                                            ) : (
+                                                <div className="absolute inset-0 flex items-center justify-center text-zinc-400 dark:text-zinc-600">
+                                                    <span className="text-sm">No image</span>
+                                                </div>
+                                            )}
                                         </div>
 
                                         <CardHeader>

@@ -1,9 +1,9 @@
 // src/app/blog/page.tsx
 import React from 'react';
-import { wpQuery } from '@/lib/graphql';
 import { getFeaturedAndRecent, getPaginatedPosts } from '@/lib/server/posts-server';
 import type { PostData } from '@/lib/server/posts-server';
 import type { Metadata } from 'next';
+import Image from "next/image";
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
 import TransitionLink from '@/components/TransitionLink';
@@ -44,15 +44,9 @@ export const metadata: Metadata = {
         images: '/opengraph-image.png',
         type: 'website',
     },
-    // Add twitter, robots, etc. if needed
 };
 
 const POSTS_PER_PAGE = 20;
-const GET_TOTAL_COUNT = `
-    query GetPostTotalCount {
-        publishedPostCount
-    }
-`;
 
 export default async function BlogListPage({
     params,
@@ -73,7 +67,7 @@ export default async function BlogListPage({
     // Featured + recent
     const { featured, recent } = await getFeaturedAndRecent();
 
-    // Paginated posts (cumulative fetch)
+    // Paginated posts
     let allPosts: PostData[] = [];
     let endCursor: string | null = null;
     let hasMore = true;
@@ -88,18 +82,9 @@ export default async function BlogListPage({
     const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
     const paginatedPosts = allPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
-    let totalCount = 0;
-    try {
-        const totalData = await wpQuery<{ publishedPostCount: number }>(GET_TOTAL_COUNT);
-        totalCount = totalData?.publishedPostCount ?? 0;
-    } catch (error) {
-        console.warn('Could not fetch publishedPostCount:', error);
-        // Fallback to approximation if plugin not active
-    }
+    // Note: You can keep your totalCount query if you want, but it's optional now
 
-    const totalPages = totalCount > 0
-        ? Math.ceil(totalCount / POSTS_PER_PAGE)
-        : Math.ceil(allPosts.length / POSTS_PER_PAGE) || 1;
+    const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE) || 1;
 
     if (currentPage > totalPages && allPosts.length > 0) {
         notFound();
@@ -117,6 +102,7 @@ export default async function BlogListPage({
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
                 />
             ))}
+
             <div className="container mx-auto max-w-5xl py-12 md:py-20 px-6 lg:px-0 min-h-screen">
                 {/* Hero */}
                 <div className="hero-container text-center mt-8 pb-12">
@@ -164,10 +150,23 @@ export default async function BlogListPage({
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* Featured Image */}
                                     <div className="md:w-1/2 h-64 md:h-auto bg-muted relative">
-                                        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/30 text-6xl font-bold">
-                                            Featured
-                                        </div>
+                                        {featured.featuredImage?.sourceUrl ? (
+                                            <Image
+                                                src={featured.featuredImage.sourceUrl}
+                                                alt={featured.featuredImage.altText || featured.title}
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width: 768px) 100vw, 50vw"
+                                                priority
+                                            />
+                                        ) : (
+                                            <div className="absolute inset-0 flex items-center justify-center text-zinc-400 dark:text-zinc-600 bg-zinc-100 dark:bg-zinc-900">
+                                                No featured image
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </Card>
@@ -186,7 +185,24 @@ export default async function BlogListPage({
                         <div className="grid gap-8 md:grid-cols-2">
                             {recent.map((post: PostData) => (
                                 <TransitionLink key={post.slug} href={`/blog/${post.slug}`} className="group block no-underline">
-                                    <Card className="h-full transition-all hover:shadow-xl hover:-translate-y-1">
+                                    <Card className="h-full overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
+                                        {/* Image for Recent Posts */}
+                                        <div className="aspect-video relative bg-zinc-100 dark:bg-zinc-900">
+                                            {post.featuredImage?.sourceUrl ? (
+                                                <Image
+                                                    src={post.featuredImage.sourceUrl}
+                                                    alt={post.featuredImage.altText || post.title}
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                />
+                                            ) : (
+                                                <div className="absolute inset-0 flex items-center justify-center text-zinc-400 dark:text-zinc-600">
+                                                    No image
+                                                </div>
+                                            )}
+                                        </div>
+
                                         <CardHeader>
                                             <div className="flex flex-wrap gap-2 mb-3">
                                                 {post.tags.map((tag) => (
@@ -207,11 +223,13 @@ export default async function BlogListPage({
                                                 </Badge>
                                             </CardDescription>
                                         </CardHeader>
+
                                         <CardContent>
-                                            <p className="text-muted-foreground line-clamp-3 p-2 pl-3 bg-zinc-100 dark:bg-zinc-800 rounded-sm border-l-4 shadow-md">
+                                            <p className="text-muted-foreground line-clamp-3">
                                                 {post.excerpt}
                                             </p>
                                         </CardContent>
+
                                         <CardFooter>
                                             <span className="text-sm font-medium text-primary group-hover:underline">
                                                 Read more →
@@ -228,7 +246,7 @@ export default async function BlogListPage({
                     )}
                 </section>
 
-                {/* All Posts */}
+                {/* All Posts List */}
                 <section>
                     <h2 className="text-2xl font-bold mb-6 text-center md:text-left">All Posts</h2>
 
@@ -253,16 +271,12 @@ export default async function BlogListPage({
                                     <div className="flex items-center gap-6 text-xs text-muted-foreground whitespace-nowrap">
                                         <div className="flex items-center gap-1">
                                             <Badge variant="default">
-                                                <div className="flex gap-2">
-                                                    <CalendarDays className="h-3.5 w-3.5" />
-                                                    {post.date}
-                                                </div>
+                                                <CalendarDays className="h-3.5 w-3.5 mr-1" />
+                                                {post.date}
                                             </Badge>
                                             <Badge variant="secondary">
-                                                <div className="flex gap-2">
-                                                    <Clock className="h-4 w-4" />
-                                                    {post.readTime || 'TBD'}
-                                                </div>
+                                                <Clock className="h-4 w-4 mr-1" />
+                                                {post.readTime || 'TBD'}
                                             </Badge>
                                         </div>
                                         <ChevronRight
@@ -279,7 +293,8 @@ export default async function BlogListPage({
                         </div>
                     )}
 
-                    {totalPages > 0 ? (
+                    {/* Pagination */}
+                    {totalPages > 1 && (
                         <div className="mt-12 mb-24 md:mb-10 flex justify-center">
                             <Pagination>
                                 <PaginationContent>
@@ -336,8 +351,6 @@ export default async function BlogListPage({
                                 </PaginationContent>
                             </Pagination>
                         </div>
-                    ) : (
-                        <div className="mb-24" />
                     )}
                 </section>
             </div>
