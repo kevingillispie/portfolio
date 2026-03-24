@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Clock, Tag } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
-import SkillSpheroid from "@/components/SkillSpheroid";
+import SkillNexus from "@/components/SkillNexus";
 import HALWireframeWall from "@/components/HALWireframeWall";
 import {
     Card,
@@ -107,7 +107,7 @@ export default async function Home() {
                                                 </HoverCardContent>
                                             </HoverCard> anti-phishing browser extension.
                                         </p>
-                                        <SkillSpheroid />
+                                        <SkillNexus />
                                     </div>
                                 </div>
                             </div>

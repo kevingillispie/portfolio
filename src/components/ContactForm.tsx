@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 import {
     Card,
     CardContent,
@@ -37,7 +39,14 @@ const formSchema = z.object({
         .max(500, { message: "Message is too long (max 500 chars)." }),
 });
 
+type FormState = {
+    success: boolean;
+    message: string;
+} | null;
+
 export default function ContactForm() {
+    const router = useRouter();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -46,26 +55,39 @@ export default function ContactForm() {
             subject: "",
             message: "",
         },
+        mode: "onBlur", // or "onChange" if you prefer real-time
     });
 
-    const [state, formAction, isPending] = useActionState(sendContactForm, null);
+    const [state, formAction, isPending] = useActionState<FormState, FormData>(
+        sendContactForm,
+        null
+    );
 
-    React.useEffect(() => {
+    // Handle success → toast + reset + redirect
+    useEffect(() => {
         if (state?.success) {
-            toast.success("Message sent!", {
+            toast.success("Message sent successfully!", {
                 description: state.message,
             });
             form.reset();
-        } else if (state && !state.success) {
-            toast.error("Error", {
-                description: state.message || "Something went wrong",
+
+            // Redirect after a short delay so the user sees the toast
+            const timer = setTimeout(() => {
+                router.push("/thank-you");
+            }, 1200);
+
+            return () => clearTimeout(timer);
+        }
+        else if (state && !state.success) {
+            toast.error("Submission failed", {
+                description: state.message || "Please try again.",
             });
         }
-    }, [state, form]);
+    }, [state, form, router]);
 
     return (
         <Card className="max-w-lg mx-auto dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-950 shadow-xl">
-            <CardContent className="pt-6">
+            <CardContent>
                 <Form {...form}>
                     <form action={formAction} className="space-y-6">
                         <FormField
@@ -75,7 +97,7 @@ export default function ContactForm() {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="First Last" {...field} />
+                                        <Input placeholder="ex: First Last" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -89,7 +111,7 @@ export default function ContactForm() {
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
-                                        <Input type="email" placeholder="you@example.com" {...field} />
+                                        <Input type="email" placeholder="ex: me@example.com" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -123,23 +145,25 @@ export default function ContactForm() {
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormDescription>
-                                        Max 500 characters — <i>concision is precision!</i>
-                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
                         <CardFooter className="p-0">
-                            <Button type="submit" className="ml-auto" size="lg" disabled={isPending}>
+                            <Button
+                                type="submit"
+                                className="ml-auto"
+                                size="lg"
+                                disabled={isPending}
+                            >
                                 {isPending ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                         Sending...
                                     </>
                                 ) : (
-                                    "Send"
+                                    "Send Message"
                                 )}
                             </Button>
                         </CardFooter>

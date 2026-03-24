@@ -19,10 +19,6 @@ const nextConfig = {
             },
         ],
     },
-    experimental: {
-        useDeploymentId: true,           // Helps with static assets
-        useDeploymentIdServerActions: true,   // Helps specifically with Server Actions
-    },
 
     trailingSlash: false,
 }

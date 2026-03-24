@@ -2,6 +2,7 @@
 'use server';
 
 import { z } from 'zod';
+import { redirect } from 'next/navigation';
 
 const formSchema = z.object({
     name: z.string().min(2),
@@ -10,7 +11,10 @@ const formSchema = z.object({
     message: z.string().min(10).max(500),
 });
 
-type FormState = { success: boolean; message: string } | null;
+type FormState = {
+    success: boolean;
+    message: string
+} | null;
 
 export async function sendContactForm(
     prevState: FormState,
@@ -53,6 +57,7 @@ export async function sendContactForm(
                 success: true,
                 message: result.message || 'Thank you! Your message has been sent successfully.',
             };
+
         } else {
             console.error('CF7 error:', result);
             return {

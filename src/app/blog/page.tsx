@@ -260,11 +260,11 @@ export default async function BlogListPage({
                                         "group flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 px-5 py-4 rounded-lg border transition-all bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 hover:-translate-y-1 hover:bg-zinc-50/50 shadow-lg hover:shadow-xl"
                                     )}
                                 >
-                                    <div className="flex-1 min-w-0">
+                                    <div className="flex-1 min-w-0 sm:border-r-1 border-zinc-300 sm:pr-4">
                                         <div className="flex items-center gap-3 mb-2">
                                             <h3 className="font-bold">{post.title}</h3>
                                         </div>
-                                        <p className="mt-1 p-2 pl-3 text-sm italic text-muted-foreground bg-zinc-100 dark:bg-slate-800 rounded-sm border-l-4 shadow-md">
+                                        <p className="mt-1 p-2 pl-3 text-sm italic text-foreground bg-zinc-100 dark:bg-slate-800 rounded-sm border-l-4 shadow-md">
                                             {post.excerpt}
                                         </p>
                                     </div>

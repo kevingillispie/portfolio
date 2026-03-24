@@ -158,7 +158,7 @@ function Cloud({ radius = 6.4, isMobile = false, isInView = false }) {
     );
 }
 
-export default function SkillSpheroid() {
+export default function SkillNexus() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
     const [isInView, setIsInView] = useState(false);
