@@ -1,20 +1,74 @@
 // src/app/actions/contact.ts
-"use server";  // ← This makes ALL exports in the file Server Actions
+'use server';
 
-export async function sendContactForm(prevState: any, formData: FormData) {
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const message = formData.get("message") as string;
+import { z } from 'zod';
 
-    // Simulate processing (replace with real email/Resend later)
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // fake delay
+const formSchema = z.object({
+    name: z.string().min(2),
+    email: z.string().email(),
+    subject: z.string().min(2),
+    message: z.string().min(10).max(500),
+});
 
-    console.log("Contact form submitted:", { name, email, message });
+type FormState = {
+    success: boolean;
+    message: string;
+} | null;
 
-    // Return success (or throw/return error)
-    return { success: true, message: "Thanks! I'll get back to you soon." };
+export async function sendContactForm(
+    prevState: FormState,
+    formData: FormData
+): Promise<FormState> {
+    const validated = formSchema.safeParse({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+    });
 
-    // For real error handling:
-    // throw new Error("Something went wrong.");
-    // or return { success: false, error: "Failed to send." };
+    if (!validated.success) {
+        return {
+            success: false,
+            message: 'Please check the form fields.',
+        };
+    }
+
+    const { name, email, subject, message } = validated.data;
+
+    const formId = '808360e';
+
+    const cf7Endpoint = `https://api.kevingillispie.com/wp-json/contact-form-7/v1/contact-forms/${formId}/feedback`;
+
+    const body = new FormData();
+    body.append('sender-name', name);
+    body.append('sender-email', email);
+    body.append('sender-subject', subject);
+    body.append('sender-message', message);
+
+    try {
+        const response = await fetch(cf7Endpoint, {
+            method: 'POST',
+            body,
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'mail_sent') {
+            return {
+                success: true,
+                message: result.message || 'Thank you! Your message has been sent successfully.',
+            };
+        } else {
+            return {
+                success: false,
+                message: result.message || 'The form could not be sent. Please try again.',
+            };
+        }
+    } catch (error) {
+        console.error('Contact form submission error:', error);
+        return {
+            success: false,
+            message: 'Failed to connect to the server. Please try again later.',
+        };
+    }
 }

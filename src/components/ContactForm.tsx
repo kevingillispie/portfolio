@@ -10,7 +10,7 @@ import {
     Card,
     CardContent,
     CardFooter,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
     Form,
     FormControl,
@@ -30,6 +30,7 @@ import { sendContactForm } from "@/app/actions/contact";
 const formSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
     email: z.string().email({ message: "Please enter a valid email." }),
+    subject: z.string().min(2, { message: "Please enter a brief subject." }),
     message: z
         .string()
         .min(10, { message: "Message must be at least 10 characters." })
@@ -42,6 +43,7 @@ export default function ContactForm() {
         defaultValues: {
             name: "",
             email: "",
+            subject: "",
             message: "",
         },
     });
@@ -63,7 +65,7 @@ export default function ContactForm() {
 
     return (
         <Card className="max-w-lg mx-auto dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-950 shadow-xl">
-            <CardContent>
+            <CardContent className="pt-6">
                 <Form {...form}>
                     <form action={formAction} className="space-y-6">
                         <FormField
@@ -79,6 +81,7 @@ export default function ContactForm() {
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
                             name="email"
@@ -92,6 +95,21 @@ export default function ContactForm() {
                                 </FormItem>
                             )}
                         />
+
+                        <FormField
+                            control={form.control}
+                            name="subject"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Subject</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Brief description of your inquiry" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <FormField
                             control={form.control}
                             name="message"
@@ -106,21 +124,22 @@ export default function ContactForm() {
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Max 500 characters—<i>concision is precision!</i>
+                                        Max 500 characters — <i>concision is precision!</i>
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         <CardFooter className="p-0">
-                            <Button type="submit" className="ml-auto" size={'lg'} disabled={isPending}>
+                            <Button type="submit" className="ml-auto" size="lg" disabled={isPending}>
                                 {isPending ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                         Sending...
                                     </>
                                 ) : (
-                                    "Send Message"
+                                    "Send"
                                 )}
                             </Button>
                         </CardFooter>

@@ -152,8 +152,6 @@ export default async function PostPage({ params }: Props) {
                     </div>
                 </div>
 
-                <hr className="my-10 border-border/60" />
-
                 {/* Featured Image */}
                 {post.featuredImage?.sourceUrl ? (
                     <div className="relative w-full aspect-[16/9] md:aspect-[2/1] mb-12 rounded-xl overflow-hidden shadow-xl">
