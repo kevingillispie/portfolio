@@ -10,10 +10,7 @@ const formSchema = z.object({
     message: z.string().min(10).max(500),
 });
 
-type FormState = {
-    success: boolean;
-    message: string;
-} | null;
+type FormState = { success: boolean; message: string } | null;
 
 export async function sendContactForm(
     prevState: FormState,
@@ -27,24 +24,21 @@ export async function sendContactForm(
     });
 
     if (!validated.success) {
-        return {
-            success: false,
-            message: 'Please check the form fields.',
-        };
+        return { success: false, message: 'Please check the form fields.' };
     }
 
     const { name, email, subject, message } = validated.data;
 
-    const formId = '808360e';
+    const formId = 55;
 
     const cf7Endpoint = `https://api.kevingillispie.com/wp-json/contact-form-7/v1/contact-forms/${formId}/feedback`;
 
     const body = new FormData();
+    body.append('_wpcf7_unit_tag', `wpcf7-f${formId}-p0-o1`);
     body.append('sender-name', name);
     body.append('sender-email', email);
     body.append('sender-subject', subject);
     body.append('sender-message', message);
-    body.append('_wpcf7_unit_tag', `wpcf7-f${formId}-p0-o1`);
 
     try {
         const response = await fetch(cf7Endpoint, {
@@ -60,9 +54,10 @@ export async function sendContactForm(
                 message: result.message || 'Thank you! Your message has been sent successfully.',
             };
         } else {
+            console.error('CF7 error:', result);
             return {
                 success: false,
-                message: result.message || 'The form could not be sent. Please try again.',
+                message: result.message || 'The form could not be sent.',
             };
         }
     } catch (error) {

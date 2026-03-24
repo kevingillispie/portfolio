@@ -171,7 +171,7 @@ export default async function Home() {
                                         <CardFooter className="pt-0">
                                             <div className="flex flex-wrap gap-2">
                                                 {post.tags.slice(0, 3).map((tag) => (
-                                                    <Badge key={tag} variant="secondary" className="border-green-500 bg-transparent text-green-500 dark:text-blue-300">
+                                                    <Badge key={tag} variant="secondary" className="border-green-500 bg-transparent text-green-500 dark:text-green-400">
                                                         #{tag}
                                                     </Badge>
                                                 ))}
