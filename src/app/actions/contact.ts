@@ -44,6 +44,7 @@ export async function sendContactForm(
     body.append('sender-email', email);
     body.append('sender-subject', subject);
     body.append('sender-message', message);
+    body.append('_wpcf7_unit_tag', `wpcf7-f${formId}-p0-o1`);
 
     try {
         const response = await fetch(cf7Endpoint, {

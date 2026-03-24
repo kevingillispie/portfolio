@@ -247,7 +247,7 @@ export default async function BlogListPage({
                 </section>
 
                 {/* All Posts List */}
-                <section>
+                <section className='mb-28'>
                     <h2 className="text-2xl font-bold mb-6 text-center md:text-left">All Posts</h2>
 
                     {paginatedPosts.length > 0 ? (
@@ -295,7 +295,7 @@ export default async function BlogListPage({
 
                     {/* Pagination */}
                     {totalPages > 1 && (
-                        <div className="mt-12 mb-24 md:mb-10 flex justify-center">
+                        <div className="mt-12 md:mb-10 flex justify-center">
                             <Pagination>
                                 <PaginationContent>
                                     <PaginationItem>
