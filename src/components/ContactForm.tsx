@@ -86,7 +86,7 @@ export default function ContactForm() {
     }, [state, form, router]);
 
     return (
-        <Card className="max-w-lg mx-auto dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-950 shadow-xl">
+        <Card className="max-w-lg mx-auto bg-linear-to-br from-zinc-100 via-zinc-50 to-zinc-200 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 shadow-xl">
             <CardContent>
                 <Form {...form}>
                     <form action={formAction} className="space-y-6">
@@ -94,13 +94,17 @@ export default function ContactForm() {
                             control={form.control}
                             name="name"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="ex: First Last" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
+                                <>
+                                    <FormItem className="rounded bg-linear-to-r from-zinc-50 to-zinc-100 dark:bg-linear-to-r dark:from-slate-800 dark:to-slate-950">
+                                        <FormLabel className="sr-only">Full Name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Full Name" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                    <div className="relative">
+                                        <FormMessage className="absolute -top-6" />
+                                    </div>
+                                </>
                             )}
                         />
 
@@ -108,13 +112,17 @@ export default function ContactForm() {
                             control={form.control}
                             name="email"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input type="email" placeholder="ex: me@example.com" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
+                                <>
+                                    <FormItem className="rounded bg-linear-to-r from-zinc-50 to-zinc-100 dark:bg-linear-to-r dark:from-slate-800 dark:to-slate-950">
+                                        <FormLabel className="sr-only">Email</FormLabel>
+                                        <FormControl>
+                                            <Input type="email" placeholder="Email" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                    <div className="relative">
+                                        <FormMessage className="absolute -top-6" />
+                                    </div>
+                                </>
                             )}
                         />
 
@@ -122,13 +130,17 @@ export default function ContactForm() {
                             control={form.control}
                             name="subject"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Subject</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Brief description of your inquiry" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
+                                <>
+                                    <FormItem className="rounded bg-linear-to-r from-zinc-50 to-zinc-100 dark:bg-linear-to-r dark:from-slate-800 dark:to-slate-950">
+                                        <FormLabel className="sr-only">Subject</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Subject" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                    <div className="relative">
+                                        <FormMessage className="absolute -top-6" />
+                                    </div>
+                                </>
                             )}
                         />
 
@@ -136,24 +148,29 @@ export default function ContactForm() {
                             control={form.control}
                             name="message"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Message</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            placeholder="Tell me all about it!"
-                                            className="min-h-[120px]"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
+                                <>
+                                    <FormItem className="rounded bg-linear-to-br from-zinc-50 to-zinc-100 dark:bg-linear-to-br dark:from-slate-800 dark:to-slate-950">
+                                        <FormLabel className="sr-only">Message</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="Message"
+                                                className="min-h-[120px]"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                    <div className="relative">
+                                        <FormMessage className="absolute -top-6" />
+                                    </div>
+                                </>
                             )}
                         />
 
                         <CardFooter className="p-0">
                             <Button
+                                variant="default"
                                 type="submit"
-                                className="ml-auto"
+                                className="mb-0 ml-auto dark:bg-transparent dark:text-foreground dark:hover:text-white dark:border dark:hover:bg-slate-700 cursor-pointer"
                                 size="lg"
                                 disabled={isPending}
                             >
@@ -170,6 +187,6 @@ export default function ContactForm() {
                     </form>
                 </Form>
             </CardContent>
-        </Card>
+        </Card >
     );
 }

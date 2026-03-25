@@ -10,12 +10,12 @@ export default function Footer() {
                     <p className="text-sm">
                         © {new Date().getFullYear()} Kevin Gillispie. All rights reserved.
                     </p>
-                    {/* <p className="text-xs mt-1 opacity-70">
+                    <p className="text-xs mt-1 opacity-70">
                         Built with Next.js, TypeScript, Tailwind CSS, and shadcn/ui.
-                    </p> */}
+                    </p>
                 </div>
 
-                {/* Center/Right: Links + Socials */}
+                {/* Right: Links + Socials */}
                 <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
                     {/* Quick nav – use Link for internal */}
                     <div className="flex gap-6 text-sm">
@@ -49,9 +49,6 @@ export default function Footer() {
                             aria-label="LinkedIn"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-zinc-200 transition-colors" fill="currentColor" viewBox="0 0 640 640"><path d="M160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 160C544 124.7 515.3 96 480 96L160 96zM165 266.2L231.5 266.2L231.5 480L165 480L165 266.2zM236.7 198.5C236.7 219.8 219.5 237 198.2 237C176.9 237 159.7 219.8 159.7 198.5C159.7 177.2 176.9 160 198.2 160C219.5 160 236.7 177.2 236.7 198.5zM413.9 480L413.9 376C413.9 351.2 413.4 319.3 379.4 319.3C344.8 319.3 339.5 346.3 339.5 374.2L339.5 480L273.1 480L273.1 266.2L336.8 266.2L336.8 295.4L337.7 295.4C346.6 278.6 368.3 260.9 400.6 260.9C467.8 260.9 480.3 305.2 480.3 362.8L480.3 480L413.9 480z" /></svg>
-                        </a>
-                        <a href="mailto:your@email.com" aria-label="Email" className="flex flex-col justify-center hover:text-zinc-200 transition-colors">
-                            <AtSign width={16} height={16} />
                         </a>
                     </div>
                 </div>
