@@ -1,3 +1,4 @@
+// src/lib/graphql.ts
 import { GraphQLClient } from 'graphql-request';
 
 const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL || 'https://api.kevingillispie.com/graphql';
