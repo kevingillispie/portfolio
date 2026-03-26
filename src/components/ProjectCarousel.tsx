@@ -1,3 +1,4 @@
+// src/components/ProjectCarousel.tsx
 "use client";
 
 import * as React from "react";
@@ -62,12 +63,14 @@ export function ProjectCarousel() {
                                         alt={`${project.name} screenshot`}
                                         fill
                                         className="object-cover brightness-[0.6] transition-transform duration-700 hover:scale-105"
-                                        priority={projects.indexOf(project) === 0} // only first is priority
+                                        priority={projects.indexOf(project) === 0}  // Keep for the first slide (LCP candidate)
+                                        fetchPriority={projects.indexOf(project) === 0 ? "high" : "auto"}  // Explicitly boost the first one
+                                        loading={projects.indexOf(project) === 0 ? "eager" : "lazy"}     // Optional: reinforce eager for first
                                     />
                                 </div>
 
                                 <div className="relative z-10 text-white text-center p-4 xs:py-6 xs:px-6 sm:px-10 md:px-12 max-w-[90%] sm:max-w-3xl md:max-w-4xl rounded-xl">
-                                    <Image src={project.logo} alt={`${project.name} screenshot`} width={100} height={100} className="mx-auto mb-3 w-16 md:w-[100px]" />
+                                    <Image src={project.logo} alt={`${project.name} screenshot`} width={100} height={100} className="rounded-xl mx-auto mb-3 w-16 md:w-[100px]" />
                                     <h3 className={`text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-3 sm:mb-4 drop-shadow-lg ${project.name === "Unityper" ? "condor" : ''}`}>
                                         {project.name}
                                     </h3>
