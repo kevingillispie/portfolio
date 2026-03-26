@@ -127,13 +127,13 @@ export default async function BlogListPage({
                                         <div>
                                             <div className="flex flex-wrap gap-2 mb-4">
                                                 {featured.categories.map((cat) => (
-                                                    <Badge key={cat} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
+                                                    <Badge key={cat} className="border-blue-600 bg-zinc-50 dark:bg-slate-800 text-blue-600 dark:text-blue-300">
                                                         <Tag />
                                                         {cat}
                                                     </Badge>
                                                 ))}
                                                 {featured.tags.map((tag) => (
-                                                    <Badge key={tag} variant="secondary" className="border-green-500 bg-transparent text-green-500 dark:text-green-400">
+                                                    <Badge key={tag} variant="secondary" className="border-green-700 bg-zinc-50 dark:bg-slate-800 text-green-700 dark:text-green-400">
                                                         #{tag}
                                                     </Badge>
                                                 ))}

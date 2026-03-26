@@ -118,7 +118,7 @@ export default async function Home() {
                     {/* Recent / Featured Section */}
                     <section className="container py-16 md:py-24 p-6">
                         <div className="text-center mb-12">
-                            <h2 className="text-3xl font-bold">Latest from <code className="font-semibold bg-zinc-300 dark:bg-slate-800 rounded px-2">//PlainText</code></h2>
+                            <h2 className="text-3xl font-bold">Latest from <TransitionLink href={'/blog'}><code className="font-semibold bg-zinc-300 dark:bg-slate-800 rounded px-2">&#47;&#47;PlainText</code></TransitionLink></h2>
                             <p className="text-small text-zinc-400">Updates and observations.</p>
                         </div>
 
@@ -155,7 +155,7 @@ export default async function Home() {
                                                     {post.readTime}
                                                 </Badge>
                                                 {post.categories.map((cat) => (
-                                                    <Badge key={cat} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
+                                                    <Badge key={cat} className="border-blue-500 bg-white dark:bg-slate-800 text-blue-500 dark:text-blue-300">
                                                         <Tag />
                                                         {cat}
                                                     </Badge>
@@ -172,12 +172,12 @@ export default async function Home() {
                                         <CardFooter className="pt-0">
                                             <div className="flex flex-wrap gap-2">
                                                 {post.tags.slice(0, 3).map((tag) => (
-                                                    <Badge key={tag} variant="secondary" className="border-green-500 bg-transparent text-green-500 dark:text-green-400">
+                                                    <Badge key={tag} variant="secondary" className="border-green-600 bg-white dark:bg-slate-800 text-green-600 dark:text-green-400">
                                                         #{tag}
                                                     </Badge>
                                                 ))}
                                             </div>
-                                            <Button variant="outline" asChild className="ml-auto">
+                                            <Button variant="outline" asChild className="ml-auto shadow-xl">
                                                 <TransitionLink href={`/blog/${post.slug}`}>
                                                     Read more →
                                                 </TransitionLink>
@@ -193,7 +193,7 @@ export default async function Home() {
                         </div>
 
                         <div className="text-center mt-12 mb-20 md:mb-0">
-                            <Button asChild variant="outline" size="lg">
+                            <Button asChild variant="outline" size="lg" className="font-semibold hover:shadow-lg hover:bg-zinc-800 hover:text-white hover:-translate-y-1">
                                 <TransitionLink href="/blog">View all posts →</TransitionLink>
                             </Button>
                         </div>
