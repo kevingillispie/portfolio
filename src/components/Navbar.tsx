@@ -22,23 +22,16 @@ export default function Navbar() {
     return (
         <div className="fixed top-4 left-2 lg:left-4 xl:left-10 z-50 flex items-center gap-3">
             {/* Home Button */}
-            <Button
-                variant="outline"
-                size="icon"
-                className="rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border size-10"
-                aria-label="Home button"
+            <TransitionLink
+                href="/"
+                className={cn(
+                    "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 rounded-lg bg-zinc-100/90 backdrop-blur-md shadow-lg border size-10",
+                    isActive("/") && "font-medium"
+                )}
+                aria-label="Link to homepage"
             >
-                <TransitionLink
-                    href="/"
-                    className={cn(
-                        "flex items-center justify-center",
-                        isActive("/") && "font-medium"
-                    )}
-                    aria-label="Link to homepage."
-                >
-                    <House className="size-5" />
-                </TransitionLink>
-            </Button>
+                <House className="size-5" aria-hidden="true" />
+            </TransitionLink>
 
             {/* Menu Dropdown - styled to match the home button */}
             <DropdownMenu>

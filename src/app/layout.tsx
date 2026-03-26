@@ -1,3 +1,5 @@
+// src/app/layout.tsx
+import SkipLink from "@/components/SkipLink";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
@@ -81,13 +83,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                     <TransitionCanvas />
+                    <SkipLink />
                     <LoadingScreen>
                         <div className="relative z-10 flex flex-col min-h-screen">
                             <HALHUDFrame />
                             <Navbar />
                             <SettingsMenu />
 
-                            <main className="flex-1">{children}</main>
+                            <main id="main-content" className="flex-1">{children}</main>
 
                             <Footer />
                         </div>

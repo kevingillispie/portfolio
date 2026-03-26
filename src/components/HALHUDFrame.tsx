@@ -1,3 +1,4 @@
+// src/components/HALHUDFrame.tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -283,7 +284,7 @@ export default function HALHUDFrame() {
     }, []);
 
     return (
-        <div className="absolute mt-8 inset-0 -z-[1] pointer-events-none overflow-hidden font-mono text-[10px] uppercase tracking-widest text-white/40 min-h-screen">
+        <div className="absolute mt-8 inset-0 -z-[1] pointer-events-none overflow-hidden font-mono text-[10px] uppercase tracking-widest text-white/40 min-h-screen" role="region" aria-label="System diagnostics HUD" aria-describedby="hud-skip-note">
 
             {/* Top Navigation Bar */}
             <div className="absolute left-4 md:left-8 xl:left-16 right-4 md:right-8 xl:right-16 flex justify-between md:border-t border-zinc-400 dark:border-white/20 pt-3 top-auto md:top-10 bottom-[218px] md:bottom-auto">
