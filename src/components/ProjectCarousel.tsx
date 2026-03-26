@@ -20,7 +20,7 @@ const projects = [
         url: "https://schemascalpel.com",
         description: "Boost your <strong>search engine rankings</strong> with <i>surgical control</i> over your brand&rsquo;s identity!",
         logo: "/scalpel-scalpel-logo.png",
-        image: "/schema-scalpel-hero-background.png"
+        image: "/media/carousel-schema-scalpel.png"
     },
     {
         name: "OverPhish",
@@ -28,7 +28,7 @@ const projects = [
         url: "https://overphish.app",
         description: "Lightweight browser extension that blocks <strong>1M+</strong> phishing domains in <i>milliseconds</i>.",
         logo: "/overphish-logo.png",
-        image: "/overphish-hero-background.png",
+        image: "/media/carousel-overphish.png",
     },
     {
         name: "Unityper",
@@ -36,7 +36,7 @@ const projects = [
         url: "https://unityper.com",
         description: "Modern, <i>AI-enhanced</i> web agency — building secure, performant sites with maximal <strong>SEO</strong> value.",
         logo: "/unityper-logo.png",
-        image: "/unityper-hero-background.png",
+        image: "/media/carousel-unityper.png",
     },
 ];
 
