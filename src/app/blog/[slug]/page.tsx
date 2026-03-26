@@ -36,46 +36,46 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         };
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kevingillispie.com';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kevingillispie.com';
     const pageUrl = `${siteUrl}/blog/${slug}`;
 
-    // Prefer Yoast SEO fields; fall back to post data
-    const seoTitle = post.seo?.title || post.title + ' | Kevin Gillispie';
-    const seoDesc = post.seo?.metaDesc || htmlToText(post.excerpt, { wordwrap: false }).trim() || 'Full-stack web developer insights and projects.';
-    const ogImage = post.seo?.opengraphImage?.sourceUrl
-        ? new URL(post.seo.opengraphImage.sourceUrl, process.env.NEXT_PUBLIC_WORDPRESS_URL || siteUrl).toString()
-        : `${siteUrl}/opengraph-image.png`;
+    const seo = post.seo || {};   // seo is now already rewritten
 
-    const imageWidth = post.seo?.opengraphImage?.mediaDetails?.width || 1200;
-    const imageHeight = post.seo?.opengraphImage?.mediaDetails?.height || 630;
+    const seoTitle = seo.title || `${post.title} | Kevin Gillispie`;
+    const seoDesc = seo.metaDesc || htmlToText(post.excerpt, { wordwrap: false }).trim() || 'Full-stack web developer insights and projects.';
+
+    // og:image is now a clean /media/... path (or falls back)
+    const ogImage = seo.opengraphImage?.sourceUrl || `${siteUrl}/opengraph-image.png`;
+
+    const imageWidth = seo.opengraphImage?.mediaDetails?.width || 1200;
+    const imageHeight = seo.opengraphImage?.mediaDetails?.height || 630;
 
     return {
-        metadataBase: new URL(siteUrl), // Required for proper relative → absolute resolution
+        metadataBase: new URL(siteUrl),
         title: seoTitle,
         description: seoDesc,
         alternates: {
-            canonical: post.seo?.canonical || pageUrl,
+            canonical: seo.canonical || pageUrl,
         },
         openGraph: {
-            title: post.seo?.opengraphTitle || seoTitle,
-            description: post.seo?.opengraphDescription || seoDesc,
+            title: seo.opengraphTitle || seoTitle,
+            description: seo.opengraphDescription || seoDesc,
             url: pageUrl,
             siteName: 'Kevin Gillispie',
             images: [{ url: ogImage, width: imageWidth, height: imageHeight }],
             type: 'article',
             publishedTime: new Date(post.date).toISOString(),
-            // You could add modifiedTime if available from WP
         },
         twitter: {
             card: 'summary_large_image',
-            title: post.seo?.twitterTitle || seoTitle,
-            description: post.seo?.twitterDescription || seoDesc,
-            images: [post.seo?.twitterImage?.sourceUrl ? new URL(post.seo.twitterImage.sourceUrl, process.env.NEXT_PUBLIC_WORDPRESS_URL || siteUrl).toString() : ogImage],
+            title: seo.twitterTitle || seoTitle,
+            description: seo.twitterDescription || seoDesc,
+            images: [seo.twitterImage?.sourceUrl || ogImage],
             creator: '@kevinlgillispie',
         },
         robots: {
-            index: post.seo?.metaRobotsNoindex !== 'noindex',
-            follow: post.seo?.metaRobotsNofollow !== 'nofollow',
+            index: seo.metaRobotsNoindex !== 'noindex',
+            follow: seo.metaRobotsNofollow !== 'nofollow',
         },
     };
 }

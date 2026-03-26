@@ -1,5 +1,6 @@
 // src/lib/server/posts-server.ts
 import { wpQuery } from '@/lib/graphql';
+import { rewriteSeoObject } from './rewrite-urls';
 import { format } from 'date-fns';
 import { htmlToText } from 'html-to-text';
 
@@ -593,7 +594,7 @@ function mapNodeToPostData(node: any): PostData {
         featured: node.postFeaturedFlag?.featurePost ?? false,
         readTime: calculateReadTime(fullContent),
         contentHtml: fullContent,
-        seo: node.seo || undefined,
+        seo: rewriteSeoObject(node.seo) || undefined,   // ← This fixes everything
         featuredImage,   // now contains clean /media/... path
     };
 }
