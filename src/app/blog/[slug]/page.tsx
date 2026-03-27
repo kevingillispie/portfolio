@@ -134,17 +134,17 @@ export default async function PostPage({ params }: Props) {
                         {post.readTime}
                     </Badge>
                     {/* Inside your [slug]/page.tsx */}
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3 border-l-1 border-zinc-400 pl-3">
                         {/* Categories as primary badges */}
                         {post.categories.map((cat) => (
-                            <Badge key={cat} className="border-blue-400 bg-transparent text-blue-400 dark:text-blue-300">
+                            <Badge key={cat} variant={'outline'} className='shadow-md dark:border-slate-500'>
                                 <Tag />
                                 {cat}
                             </Badge>
                         ))}
 
                         {post.tags.map((tag) => (
-                            <Badge key={tag} className="border-green-500 bg-transparent text-green-500 dark:text-green-400">
+                            <Badge key={tag} variant={'outline'} className='shadow dark:border-slate-500'>
                                 #{tag}
                             </Badge>
                         ))}

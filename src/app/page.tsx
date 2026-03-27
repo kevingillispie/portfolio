@@ -1,6 +1,6 @@
 import { getLatestPosts } from "@/lib/server/posts-server";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, Clock, Tag } from 'lucide-react';
+import { CalendarDays, Clock, Hash, Tag } from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
 import SkillNexus from "@/components/SkillNexus";
@@ -155,7 +155,7 @@ export default async function Home() {
                                                     {post.readTime}
                                                 </Badge>
                                                 {post.categories.map((cat) => (
-                                                    <Badge key={cat} className="border-blue-500 bg-white dark:bg-slate-800 text-blue-500 dark:text-blue-300">
+                                                    <Badge key={cat} variant={'outline'}>
                                                         <Tag />
                                                         {cat}
                                                     </Badge>
@@ -172,8 +172,9 @@ export default async function Home() {
                                         <CardFooter className="pt-0">
                                             <div className="flex flex-wrap gap-2">
                                                 {post.tags.slice(0, 3).map((tag) => (
-                                                    <Badge key={tag} variant="secondary" className="border-green-600 bg-white dark:bg-slate-800 text-green-600 dark:text-green-400">
-                                                        #{tag}
+                                                    <Badge key={tag} variant="secondary">
+                                                        <Hash className="-mt-[2px]" />
+                                                        {tag}
                                                     </Badge>
                                                 ))}
                                             </div>

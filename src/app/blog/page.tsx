@@ -26,7 +26,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
-import { CalendarDays, Clock, ChevronRight, Tag } from 'lucide-react';
+import { CalendarDays, Clock, ChevronRight, Hash, Tag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getScscSchema } from '@/lib/server/get-scsc-schema';
 
@@ -127,14 +127,15 @@ export default async function BlogListPage({
                                         <div>
                                             <div className="flex flex-wrap gap-2 mb-4">
                                                 {featured.categories.map((cat) => (
-                                                    <Badge key={cat} className="border-blue-600 bg-zinc-50 dark:bg-slate-800 text-blue-600 dark:text-blue-300">
+                                                    <Badge key={cat} variant={'outline'} className='shadow-md dark:border-slate-500'>
                                                         <Tag />
                                                         {cat}
                                                     </Badge>
                                                 ))}
                                                 {featured.tags.map((tag) => (
-                                                    <Badge key={tag} variant="secondary" className="border-green-700 bg-zinc-50 dark:bg-slate-800 text-green-700 dark:text-green-400">
-                                                        #{tag}
+                                                    <Badge key={tag} variant="secondary" className='shadow dark:border-slate-500'>
+                                                        <Hash className="-mt-[2px]" />
+                                                        {tag}
                                                     </Badge>
                                                 ))}
                                             </div>
@@ -149,10 +150,9 @@ export default async function BlogListPage({
                                                     <CalendarDays className="h-4 w-4" />
                                                     {featured.date}
                                                 </span>
-                                                <span className="flex items-center gap-1.5">
-                                                    <Clock className="h-4 w-4" />
-                                                    {featured.readTime || 'Reading time TBD'}
-                                                </span>
+                                                <Badge variant="secondary" className='shadow dark:border-slate-500 dark:text-slate-400'>
+                                                    <Clock className="h-4 w-4 -mt-[2px] mr-1" /> {featured.readTime || 'TBD'}
+                                                </Badge>
                                             </div>
                                         </div>
                                     </div>
