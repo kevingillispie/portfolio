@@ -1,4 +1,6 @@
 // src/app/layout.tsx
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import SkipLink from "@/components/SkipLink";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -97,6 +99,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     </LoadingScreen>
                     <Toaster position="top-right" richColors closeButton duration={5000} />
                 </ThemeProvider>
+
+                {/* Vercel Analytics + Speed Insights – placed at the end for minimal impact */}
+                <Analytics mode="production" />
+                <SpeedInsights />
             </body>
         </html>
     );
