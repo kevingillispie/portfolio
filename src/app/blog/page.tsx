@@ -134,7 +134,7 @@ export default async function BlogListPage({
                                                 ))}
                                                 {featured.tags.map((tag) => (
                                                     <Badge key={tag} variant="secondary" className='shadow dark:border-slate-500'>
-                                                        <Hash className="-mt-[2px]" />
+                                                        <Hash className="-mt-[2px] -mr-[2px]" />
                                                         {tag}
                                                     </Badge>
                                                 ))}

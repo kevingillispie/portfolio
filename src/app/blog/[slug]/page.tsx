@@ -8,7 +8,7 @@ import Script from 'next/script';
 import { ReadingProgressBar } from '@/components/ReadingProgressBar';
 import { ShareButtons } from '@/components/ShareButtons';
 import { BackToTop } from '@/components/BackToTop';
-import { CalendarDays, Clock, ChevronLeft, ChevronRight, Heart, Tag } from 'lucide-react';
+import { CalendarDays, Clock, ChevronLeft, ChevronRight, Hash, Heart, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { BackButton } from '@/components/BackButton';
 import TransitionLink from '@/components/TransitionLink';
@@ -145,7 +145,8 @@ export default async function PostPage({ params }: Props) {
 
                         {post.tags.map((tag) => (
                             <Badge key={tag} variant={'outline'} className='shadow dark:border-slate-500'>
-                                #{tag}
+                                <Hash className="-mt-[2px] -mr-[2px]" />
+                                {tag}
                             </Badge>
                         ))}
                     </div>

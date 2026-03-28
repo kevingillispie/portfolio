@@ -1,3 +1,4 @@
+// app/robots.ts
 import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
@@ -7,8 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            // If you ever add private routes later:
-            // disallow: ['/api/', '/draft/', '/admin/'],
         },
         sitemap: `${baseUrl}/sitemap.xml`,
     };

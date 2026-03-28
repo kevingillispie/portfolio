@@ -173,7 +173,7 @@ export default async function Home() {
                                             <div className="flex flex-wrap gap-2">
                                                 {post.tags.slice(0, 3).map((tag) => (
                                                     <Badge key={tag} variant="secondary">
-                                                        <Hash className="-mt-[2px]" />
+                                                        <Hash className="-mt-[2px] -mr-[2px]" />
                                                         {tag}
                                                     </Badge>
                                                 ))}
