@@ -58,7 +58,7 @@ export default async function Home() {
                             <p className="text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto font-semibold md:font-normal">
                                 <span className="sm:hidden">• </span>Full-Stack Web Development • Cyber&nbsp;Security <br className="hidden sm:block" /> WP Plugins<span className="hidden sm:inline"> • </span><br className="sm:hidden" />Browser Extensions
                             </p>
-                            <p className="mt-2 text-lg italic">(...and more!)</p>
+                            <Badge variant={'default'} className="italic mt-6">...and more!</Badge>
                             {/* <hr className="sm:hidden border border-top-1 border-zinc-500/50 dark:border-zinc-300 w-25 mt-6 mx-auto" /> */}
                             <p className="mt-6 text-lg max-w-2xl mx-auto">
                                 Building performant, user-focused tools <br />and sites that solve real problems.
