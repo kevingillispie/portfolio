@@ -133,7 +133,7 @@ export default async function Home() {
                                                     alt={post.featuredImage.altText || post.title}
                                                     fill
                                                     className="object-cover"
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 473px"
                                                     priority={index === 0} // Prioritize first image for LCP
                                                 />
                                             ) : (
