@@ -34,6 +34,15 @@ export default async function ContactPage() {
                     />
                 ))
             }
+
+            {/* Cloudflare Turnstile script */}
+            <Script
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                async
+                defer
+                strategy="afterInteractive"
+            />
+
             <div className="container mx-auto mb-24 max-w-5xl py-12 md:py-20 px-6 md:px-0">
                 <div className="hero-container text-center mt-8 pb-12">
                     <Badge variant="secondary" className="mb-6 pr-3 shadow-lg bg-background/80 backdrop-blur-sm dark:border dark:border-gray-600">
@@ -47,6 +56,10 @@ export default async function ContactPage() {
                     </p>
                 </div>
                 <ContactForm />
+                <p className="text-[10px] text-muted-foreground text-center mt-6 flex items-center justify-center gap-1">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                    Protected by Cloudflare Turnstile + OWASP compliance.
+                </p>
             </div>
         </>
     );

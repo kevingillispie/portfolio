@@ -2,24 +2,87 @@
 'use server';
 
 import { z } from 'zod';
-import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
+import { Ratelimit } from '@upstash/ratelimit';
+import { kv } from '@vercel/kv';
 
 const formSchema = z.object({
-    name: z.string().min(2),
-    email: z.string().email(),
-    subject: z.string().min(2),
-    message: z.string().min(10).max(500),
+    name: z.string().min(2).trim(),
+    email: z.string().email().trim(),
+    subject: z.string().min(2).trim(),
+    message: z.string().min(10).max(500).trim(),
 });
 
 type FormState = {
     success: boolean;
-    message: string
+    message: string;
 } | null;
+
+const getRateLimiter = () => new Ratelimit({
+    redis: kv,
+    limiter: Ratelimit.slidingWindow(5, '60 m'), // 5 submissions per IP per hour
+    analytics: true,  // if you want Upstash analytics
+});
 
 export async function sendContactForm(
     prevState: FormState,
     formData: FormData
 ): Promise<FormState> {
+    // ====================== RATE LIMITING (first line of defense) ======================
+    const ratelimit = getRateLimiter();
+    const ip = headers().get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+
+    const { success: limitOk, limit, remaining, reset } = await ratelimit.limit(ip);
+
+    if (!limitOk) {
+        console.warn(`Rate limit exceeded for IP: ${ip} (remaining: ${remaining}, reset in ~${Math.ceil((reset - Date.now()) / 1000)}s)`);
+        return {
+            success: false,
+            message: 'Too many requests. Please try again later.',
+        };
+    }
+
+    // ====================== ANTI-SPAM LAYERS ======================
+
+    // 1. Honeypot
+    const honeypot = formData.get('website');
+    if (honeypot && String(honeypot).trim().length > 0) {
+        return { success: false, message: 'Invalid submission.' };
+    }
+
+    // 2. Timestamp check (must be 2s < age < 30min)
+    const timestampStr = formData.get('timestamp') as string | null;
+    const timestamp = timestampStr ? parseInt(timestampStr, 10) : 0;
+    const now = Math.floor(Date.now() / 1000);
+
+    if (isNaN(timestamp) || now - timestamp < 2 || now - timestamp > 1800) {
+        return { success: false, message: 'Invalid submission.' };
+    }
+
+    // 3. Cloudflare Turnstile verification
+    const token = formData.get('cf-turnstile-response') as string | null;
+    if (!token) {
+        return { success: false, message: 'Please verify you are human.' };
+    }
+
+    const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            secret: process.env.TURNSTILE_SECRET_KEY!,
+            response: token,
+            remoteip: ip,
+        }),
+    });
+
+    const verifyData = await verifyRes.json();
+
+    if (!verifyData.success) {
+        console.warn('Turnstile verification failed:', verifyData);
+        return { success: false, message: 'Invalid submission.' };
+    }
+
+    // ====================== NORMAL VALIDATION ======================
     const validated = formSchema.safeParse({
         name: formData.get('name'),
         email: formData.get('email'),
@@ -33,8 +96,8 @@ export async function sendContactForm(
 
     const { name, email, subject, message } = validated.data;
 
+    // ====================== SEND TO CF7 ======================
     const formId = 55;
-
     const cf7Endpoint = `https://api.kevingillispie.com/wp-json/contact-form-7/v1/contact-forms/${formId}/feedback`;
 
     const body = new FormData();
@@ -57,7 +120,6 @@ export async function sendContactForm(
                 success: true,
                 message: result.message || 'Thank you! Your message has been sent successfully.',
             };
-
         } else {
             console.error('CF7 error:', result);
             return {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,6 @@ import {
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -46,6 +45,8 @@ type FormState = {
 
 export default function ContactForm() {
     const router = useRouter();
+
+    const [submissionTime] = useState(() => Math.floor(Date.now() / 1000).toString());
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -126,6 +127,19 @@ export default function ContactForm() {
                             )}
                         />
 
+                        {/* HONEYPOT — bots fill it, humans never see it */}
+                        <div className="absolute -left-[9999px] overflow-hidden h-0">
+                            <input
+                                type="text"
+                                name="website"
+                                tabIndex={-1}
+                                autoComplete="off"
+                            />
+                        </div>
+
+                        {/* TIMESTAMP — proves the page was loaded in a real browser */}
+                        <input type="hidden" name="timestamp" value={submissionTime} />
+
                         <FormField
                             control={form.control}
                             name="subject"
@@ -167,6 +181,14 @@ export default function ContactForm() {
                         />
 
                         <CardFooter className="p-0">
+                            {/* CLOUDFLARE TURNSTILE WIDGET */}
+                            <div
+                                className="cf-turnstile mx-auto"
+                                data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY}
+                                data-theme="auto"
+                                data-appearance="always"
+                                data-response-field-name="cf-turnstile-response"
+                            />
                             <Button
                                 variant="default"
                                 type="submit"
