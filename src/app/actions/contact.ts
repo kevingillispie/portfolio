@@ -21,21 +21,26 @@ type FormState = {
 const getRateLimiter = () => new Ratelimit({
     redis: kv,
     limiter: Ratelimit.slidingWindow(5, '60 m'), // 5 submissions per IP per hour
-    analytics: true,  // if you want Upstash analytics
 });
 
 export async function sendContactForm(
     prevState: FormState,
     formData: FormData
 ): Promise<FormState> {
-    // ====================== RATE LIMITING (first line of defense) ======================
+    // ====================== RATE LIMITING ======================
     const ratelimit = getRateLimiter();
-    const ip = headers().get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
 
-    const { success: limitOk, limit, remaining, reset } = await ratelimit.limit(ip);
+    // Await headers() first — required in Next.js 15+
+    const headersList = await headers();
+    const ip = headersList
+        .get('x-forwarded-for')
+        ?.split(',')[0]
+        ?.trim() || 'unknown';
+
+    const { success: limitOk } = await ratelimit.limit(ip);
 
     if (!limitOk) {
-        console.warn(`Rate limit exceeded for IP: ${ip} (remaining: ${remaining}, reset in ~${Math.ceil((reset - Date.now()) / 1000)}s)`);
+        console.warn(`Rate limit exceeded for IP: ${ip}`);
         return {
             success: false,
             message: 'Too many requests. Please try again later.',
@@ -50,7 +55,7 @@ export async function sendContactForm(
         return { success: false, message: 'Invalid submission.' };
     }
 
-    // 2. Timestamp check (must be 2s < age < 30min)
+    // 2. Timestamp check (2s < age < 30min)
     const timestampStr = formData.get('timestamp') as string | null;
     const timestamp = timestampStr ? parseInt(timestampStr, 10) : 0;
     const now = Math.floor(Date.now() / 1000);
