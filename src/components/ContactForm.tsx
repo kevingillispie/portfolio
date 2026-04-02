@@ -188,7 +188,7 @@ export default function ContactForm() {
                                     data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY}
                                     data-theme="auto"
                                     data-appearance="interaction-only"
-                                    data-size="compact"
+                                    data-size="normal"
                                     data-response-field-name="cf-turnstile-response"
                                 />
                             </div>
