@@ -4,7 +4,7 @@
 import { z } from 'zod';
 import { headers } from 'next/headers';
 import { Ratelimit } from '@upstash/ratelimit';
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 
 const formSchema = z.object({
     name: z.string().min(2).trim(),
@@ -18,8 +18,11 @@ type FormState = {
     message: string;
 } | null;
 
+// Create Redis client from environment variables (injected by Vercel Upstash integration)
+const redis = Redis.fromEnv();
+
 const getRateLimiter = () => new Ratelimit({
-    redis: kv,
+    redis,                    // ← now uses @upstash/redis
     limiter: Ratelimit.slidingWindow(5, '60 m'), // 5 submissions per IP per hour
 });
 
@@ -30,7 +33,6 @@ export async function sendContactForm(
     // ====================== RATE LIMITING ======================
     const ratelimit = getRateLimiter();
 
-    // Await headers() first — required in Next.js 15+
     const headersList = await headers();
     const ip = headersList
         .get('x-forwarded-for')
@@ -48,7 +50,6 @@ export async function sendContactForm(
     }
 
     // ====================== ANTI-SPAM LAYERS ======================
-
     // 1. Honeypot
     const honeypot = formData.get('website');
     if (honeypot && String(honeypot).trim().length > 0) {
@@ -113,11 +114,7 @@ export async function sendContactForm(
     body.append('sender-message', message);
 
     try {
-        const response = await fetch(cf7Endpoint, {
-            method: 'POST',
-            body,
-        });
-
+        const response = await fetch(cf7Endpoint, { method: 'POST', body });
         const result = await response.json();
 
         if (result.status === 'mail_sent') {

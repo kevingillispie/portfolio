@@ -180,19 +180,23 @@ export default function ContactForm() {
                             )}
                         />
 
-                        <CardFooter className="p-0">
-                            {/* CLOUDFLARE TURNSTILE WIDGET */}
-                            <div
-                                className="cf-turnstile mx-auto"
-                                data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY}
-                                data-theme="auto"
-                                data-appearance="always"
-                                data-response-field-name="cf-turnstile-response"
-                            />
+                        <CardFooter className="p-0 pt-6 flex flex-col sm:flex-row gap-4 items-center">
+                            {/* Turnstile centered on mobile, left-aligned on larger screens */}
+                            <div className="flex-1 flex justify-center sm:justify-start">
+                                <div
+                                    className="cf-turnstile"
+                                    data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY}
+                                    data-theme="auto"
+                                    data-appearance="interaction-only"
+                                    data-size="compact"
+                                    data-response-field-name="cf-turnstile-response"
+                                />
+                            </div>
+
                             <Button
                                 variant="default"
                                 type="submit"
-                                className="mb-0 ml-auto dark:bg-transparent dark:text-foreground dark:hover:text-white dark:border dark:hover:bg-slate-700 cursor-pointer"
+                                className="w-full sm:w-auto dark:bg-transparent dark:text-foreground dark:hover:text-white dark:border dark:hover:bg-slate-700"
                                 size="lg"
                                 disabled={isPending}
                             >
