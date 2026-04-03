@@ -352,43 +352,16 @@ body[data-scroll-locked] {
     box-shadow: 0 3px 2px 1px rgba(255, 255, 255, .4);
 }
 
-@font-face {
-    font-family: "condor";
-    src: url("https://use.typekit.net/af/a36231/00000000000000007735d221/31/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i8&v=3") format("woff2"), url("https://use.typekit.net/af/a36231/00000000000000007735d221/31/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i8&v=3") format("woff"), url("https://use.typekit.net/af/a36231/00000000000000007735d221/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i8&v=3") format("opentype");
-    font-display: swap;
-    font-style: italic;
-    font-weight: 800;
-    font-stretch: normal;
-}
-
 .condor {
     font-family: 'condor', sans-serif;
     font-weight: 800;
     font-style: italic;
 }
 
-@font-face {
-    font-family: "obvia-expanded";
-    src: url("https://use.typekit.net/af/d89ba5/00000000000000007735bd11/31/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3") format("woff2"), url("https://use.typekit.net/af/d89ba5/00000000000000007735bd11/31/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3") format("woff"), url("https://use.typekit.net/af/d89ba5/00000000000000007735bd11/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3") format("opentype");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 800;
-    font-stretch: normal;
-}
-
 .obvia-exapanded {
     font-family: 'obvia-expanded', sans-serif;
     font-weight: 800;
     font-style: normal;
-}
-
-@font-face {
-    font-family: "omnes-pro";
-    src: url("https://use.typekit.net/af/780d18/000000000000000077359c15/31/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"), url("https://use.typekit.net/af/780d18/000000000000000077359c15/31/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"), url("https://use.typekit.net/af/780d18/000000000000000077359c15/31/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
-    font-display: auto;
-    font-style: normal;
-    font-weight: 400;
-    font-stretch: normal;
 }
 
 .omnes-light {

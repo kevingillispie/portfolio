@@ -76,6 +76,19 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
+            <head>
+                {/* Resource hints - critical for speed */}
+                <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
+                <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
+
+                {/* Preload the kit CSS if you know the exact URL */}
+                <link
+                    rel="preload"
+                    href="https://use.typekit.net/YOUR_KIT_ID.css"
+                    as="style"
+                    crossOrigin="anonymous"
+                />
+            </head>
             <body
                 className={`
                     text-foreground dark:text-zinc-300
@@ -103,6 +116,30 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {/* Vercel Analytics + Speed Insights – placed at the end for minimal impact */}
                 <Analytics mode="production" />
                 <SpeedInsights />
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            (function(d) {
+                                var config = {
+                                kitId: 'hsh2igh',
+                                scriptTimeout: 3000,
+                                async: true
+                                },
+                                h=d.documentElement,
+                                t=setTimeout(function(){h.className=h.className.replace(/\\bwf-loading\\b/g,"")+" wf-inactive";},config.scriptTimeout),
+                                tk=d.createElement("script"),
+                                f=false,
+                                s=d.getElementsByTagName("script")[0],
+                                a;
+                                h.className+=" wf-loading";
+                                tk.src='https://use.typekit.net/'+config.kitId+'.js';
+                                tk.async=true;
+                                tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};
+                                s.parentNode.insertBefore(tk,s)
+                            })(document);
+                        `,
+                    }}
+                />
             </body>
         </html>
     );
