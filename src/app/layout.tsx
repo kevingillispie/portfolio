@@ -84,7 +84,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {/* Preload the kit CSS if you know the exact URL */}
                 <link
                     rel="preload"
-                    href="https://use.typekit.net/YOUR_KIT_ID.css"
+                    href="https://use.typekit.net/hsh2igh.css"
                     as="style"
                     crossOrigin="anonymous"
                 />
