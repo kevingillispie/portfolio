@@ -55,12 +55,12 @@ const nextConfig = {
                         key: "Content-Security-Policy",
                         value: `
                         default-src 'self';
-                        script-src 'self' 'unsafe-inline' 'unsafe-eval' https: blob: use.typekit.net;
+                        script-src 'self' 'unsafe-inline' 'unsafe-eval' https: blob: use.typekit.net https://challenges.cloudflare.com;
                         style-src 'self' 'unsafe-inline' https://fonts.googleapis.com use.typekit.net;
                         img-src 'self' data: blob: https: https://api.kevingillispie.com p.typekit.net;
                         font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com use.typekit.net;
                         connect-src 'self' https: wss: https://api.kevingillispie.com;
-                        frame-src 'self';
+                        frame-src 'self' https://challenges.cloudflare.com;
                         frame-ancestors 'none';
                         object-src 'none';
                         base-uri 'self';
