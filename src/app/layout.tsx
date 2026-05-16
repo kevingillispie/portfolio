@@ -88,6 +88,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     as="style"
                     crossOrigin="anonymous"
                 />
+                <script src="https://analytics.ahrefs.com/analytics.js" data-key="qEYZFP8Irs4G2IvAINLs/g" async></script>
             </head>
             <body
                 className={`
