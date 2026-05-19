@@ -27,6 +27,9 @@ const nextConfig = {
     poweredByHeader: false,
 
     async headers() {
+        if (process.env.NODE_ENV !== 'production') {
+            return []; // ← No strict headers in dev
+        }
         return [
             {
                 source: "/(.*)",

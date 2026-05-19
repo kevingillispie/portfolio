@@ -83,7 +83,7 @@ export function ProjectCarousel() {
                                     </div>
                                     <div className="flex flex-row gap-2">
                                         <h3 style={{ lineHeight: "0.8" }} className={`w-[100%] text-5xl md:text-9xl lg:text-[11rem] font-bold tracking-tight drop-shadow-lg ${project.font} ${project.slug === "schemascalpel" ? 'lg:mb-4 xl:mb-0' : (project.slug === "unityper" ? 'lg:mb-8 xl:mb-0' : '')}`}>
-                                            {project.name}
+                                            {(project.slug === "overphish" ? <span className="overphish-super" dangerouslySetInnerHTML={{ __html: 'O<div>ver</div>Phish' }} /> : project.name)}
                                         </h3>
                                     </div>
                                     <p className="relative sm:text-lg md:text-xl lg:text-xl xl:max-w-xs xl:max-w-sm my-4 p-2">

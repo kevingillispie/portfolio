@@ -385,3 +385,27 @@ body[data-scroll-locked] {
         left: initial;
     }
 }
+
+.overphish-super {
+    display: flex;
+    justify-content: center;
+}
+
+.overphish-super div {
+    position: relative;
+    transform: translateY(-1.7rem);
+}
+
+@media screen and (max-width:1042px) {
+    .overphish-super div {
+        position: relative;
+        transform: translateY(-1.2rem);
+    }
+}
+
+@media screen and (max-width:768px) {
+    .overphish-super div {
+        position: relative;
+        transform: translateY(-.5rem);
+    }
+}

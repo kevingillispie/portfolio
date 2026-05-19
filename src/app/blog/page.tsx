@@ -32,7 +32,7 @@ import { getScscSchema } from '@/lib/server/get-scsc-schema';
 
 const schemas = await getScscSchema('/blog');
 
-const metaDescription = "Thoughts, tutorials, and lessons on web development, Next.js, security, SEO, and more.";
+const metaDescription = "Thoughts and observations on life in a device-driven, AI-optimized world — personal essays, practical tips, and ideas for living better with tech.";
 
 export const metadata: Metadata = {
     title: '//PlainText by Kevin Gillispie',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: '//PlainText by Kevin Gillispie',
         description: metaDescription,
-        url: 'https://kevingillispie.com/blog',
+        url: 'https://www.kevingillispie.com/blog',
         images: '/opengraph-image.png',
         type: 'website',
     },
