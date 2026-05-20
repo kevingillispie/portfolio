@@ -13,6 +13,7 @@ import { GeistMono } from 'geist/font/mono';
 import TransitionCanvas from "@/components/TransitionCanvas";
 import { Toaster } from "@/components/ui/sonner";
 import HALHUDFrame from "@/components/HALHUDFrame";
+import Script from "next/script";
 
 import "./globals.css";
 
@@ -88,7 +89,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     as="style"
                     crossOrigin="anonymous"
                 />
-                <script src="https://analytics.ahrefs.com/analytics.js" data-key="qEYZFP8Irs4G2IvAINLs/g" async></script>
+                <Script strategy="afterInteractive" src="https://analytics.ahrefs.com/analytics.js" data-key="qEYZFP8Irs4G2IvAINLs/g" async />
             </head>
             <body
                 className={`
